@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">grocery_brasil_app</string>
+    <string name="facebook_app_id">3333744790024748</string>
+    <string name="fb_login_protocol_scheme">fb3333744790024748</string>
+
+</resources>
