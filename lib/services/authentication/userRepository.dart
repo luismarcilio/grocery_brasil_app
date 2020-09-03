@@ -30,6 +30,7 @@ class UserRepository extends ChangeNotifier {
         : !_user.emailVerified && _user.providerData[0].providerId == 'password'
             ? Status.Unverified
             : Status.Authenticated;
+    this._user = _user;
     notifyListeners();
   }
 
