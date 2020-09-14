@@ -32,12 +32,15 @@ dependencies:
   firebase_core: "^0.5.0"
   firebase_auth: "^0.18.0+1"
   firebase_dynamic_links: ^0.5.1
-  flutter_facebook_auth: "^0.2.3"
-  google_sign_in: "^4.5.1"
+  flutter_facebook_auth: ^0.2.3
+  google_sign_in: ^4.5.1
   provider: ^4.3.2+1
   webview_flutter: ^0.3.22+1
   cloud_firestore: ^0.14.0+2
   intl: ^0.16.1
+  barcode_scan: ^3.0.1
+  qr_flutter: ^3.1.0
+
 
 dev_dependencies:
   flutter_test:

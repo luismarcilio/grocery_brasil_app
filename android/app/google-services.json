@@ -1,34 +1,42 @@
 {
   "project_info": {
-    "project_number": "948633080553",
-    "firebase_url": "https://grocerybrasil-4f43b.firebaseio.com",
-    "project_id": "grocerybrasil-4f43b",
-    "storage_bucket": "grocerybrasil-4f43b.appspot.com"
+    "project_number": "301850316531",
+    "firebase_url": "https://grocery-brasil-app.firebaseio.com",
+    "project_id": "grocery-brasil-app",
+    "storage_bucket": "grocery-brasil-app.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:948633080553:android:90fc8c3c1f6ed980875678",
+        "mobilesdk_app_id": "1:301850316531:android:36c3b8f614e4e9fd5a3186",
         "android_client_info": {
           "package_name": "com.luismarcilio.grocery_brasil_app"
         }
       },
       "oauth_client": [
         {
-          "client_id": "948633080553-5n5uc906aoat996es13aehsce4g80r18.apps.googleusercontent.com",
+          "client_id": "301850316531-u3um5piovsb8nmdflq04f6jufaf6hieg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.luismarcilio.grocery_brasil_app",
+            "certificate_hash": "4ef17613c88c36410ba7de5142cf383618ce3262"
+          }
+        },
+        {
+          "client_id": "301850316531-u7b0rvjturs6megr6d85pls1j48p7aeo.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAs5Il8p960wtOF8U2v3n94oLmArZzmXSM"
+          "current_key": "AIzaSyB_3Rv0MrMkJuW2nZ6ENRnx68oi2nku974"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "948633080553-5n5uc906aoat996es13aehsce4g80r18.apps.googleusercontent.com",
+              "client_id": "301850316531-u7b0rvjturs6megr6d85pls1j48p7aeo.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
