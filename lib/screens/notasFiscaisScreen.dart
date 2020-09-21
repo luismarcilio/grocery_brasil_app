@@ -18,7 +18,7 @@ class NotasFiscaisScreen extends StatelessWidget {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Text("Loading");
           }
-          return new Column(
+          return new ListView(
               children: snapshot.data.docs.map((DocumentSnapshot document) {
             return resumoNfCard(
                 document: document,

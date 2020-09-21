@@ -10,7 +10,6 @@ Stream<dynamic> getResumeNfForUser() {
 }
 
 Future<DocumentSnapshot> getFullNfFromDocId(String docId) async {
-  final String userId = 'USERID:${FirebaseAuth.instance.currentUser.uid}';
   final DocumentReference docReference = FirebaseFirestore.instance
       .collection('COMPRAS')
       .doc(FirebaseAuth.instance.currentUser.uid)

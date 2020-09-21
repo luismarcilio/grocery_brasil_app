@@ -128,7 +128,7 @@ class NfProviderRJ extends NfProvider {
   @override
   String getSetAccessKeyJavascript(String accessKey) {
     final js =
-        "javascript:SetNfKey.postMessage(document.querySelector('#chaveAcesso').value='$accessKey');";
+        "javascript:SetNfKey.postMessage(document.querySelector('#chaveAcesso').value='$accessKey');document.querySelector('#captcha').focus()";
     print("js: $js");
     return js;
   }
