@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:grocery_brasil_app/screens/ScanNfScreen.dart';
+import 'package:grocery_brasil_app/screens/produtosScreen.dart';
 
 import 'SetupAccountScreen.dart';
 import 'notasFiscaisScreen.dart';
@@ -14,7 +15,7 @@ class _DashboardState extends State<Dashboard> {
   int selectedIndex = 0;
   Map<int, Widget> scaffoldBodyMap = {
     0: NotasFiscaisScreen(),
-    1: NotasFiscaisScreen(),
+    1: ProdutosScreen(),
     2: AccountSetupScreen()
   };
 

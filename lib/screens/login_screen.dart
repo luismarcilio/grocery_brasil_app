@@ -73,17 +73,6 @@ class _LoginScreenState extends State<LoginScreen> {
             }
           } catch (e) {
             throw e;
-            dialog(
-                context: context,
-                title: "Error",
-                text: e.toString(),
-                actions: List.from([
-                  FlatButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                      child: Text("Ok"))
-                ]));
           }
         });
   }

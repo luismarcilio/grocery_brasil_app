@@ -40,7 +40,8 @@ dependencies:
   intl: ^0.16.1
   barcode_scan: ^3.0.1
   qr_flutter: ^3.1.0
-  autocomplete_textfield: ^1.7.3
+  flutter_typeahead: ^1.8.8
+  geolocator: ^6.0.0
 
 
 dev_dependencies:

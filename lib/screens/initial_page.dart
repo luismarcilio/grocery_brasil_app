@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:grocery_brasil_app/screens/common/loading.dart';
 import 'package:grocery_brasil_app/screens/dashboard.dart';
-import 'package:grocery_brasil_app/screens/loading.dart';
 import 'package:grocery_brasil_app/screens/login_screen.dart';
 import 'package:grocery_brasil_app/screens/register_screen.dart';
 import 'package:grocery_brasil_app/services/authentication/userRepository.dart';

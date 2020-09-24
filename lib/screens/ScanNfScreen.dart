@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:grocery_brasil_app/screens/loading.dart';
+import 'package:grocery_brasil_app/screens/common/loading.dart';
 import 'package:grocery_brasil_app/services/FiscalNoteBusiness.dart';
 import 'package:grocery_brasil_app/services/qrcode.dart';
 import 'package:webview_flutter/webview_flutter.dart';
