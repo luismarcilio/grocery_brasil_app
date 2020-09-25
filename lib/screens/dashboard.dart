@@ -23,7 +23,7 @@ class _DashboardState extends State<Dashboard> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("AppBar"),
+        title: Text("Suas Compras mais barato"),
       ),
       body: scaffoldBodyMap[selectedIndex],
       floatingActionButton: FloatingActionButton.extended(
