@@ -1,9 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:grocery_brasil_app/screens/ScanNfScreen.dart';
-import 'package:grocery_brasil_app/screens/produtosScreen.dart';
 
+import '../features/scanQrCode/domain/QRCode.dart';
+import '../features/scanQrCode/presentation/pages/qrcodeScreen.dart';
 import 'SetupAccountScreen.dart';
 import 'notasFiscaisScreen.dart';
+import 'produtosScreen.dart';
 
 class Dashboard extends StatefulWidget {
   static const route = '/dashboard';
@@ -19,6 +21,13 @@ class _DashboardState extends State<Dashboard> {
     2: AccountSetupScreen()
   };
 
+  Widget logout() {
+    FirebaseAuth.instance.signOut();
+    return Container(
+      child: Text("logout"),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,9 +36,10 @@ class _DashboardState extends State<Dashboard> {
       ),
       body: scaffoldBodyMap[selectedIndex],
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => ScanNfScreen()));
+        onPressed: () async {
+          QRCode qrcode = await Navigator.push<QRCode>(
+              context, MaterialPageRoute(builder: (context) => QrCodeScreen()));
+          print("qrcode: ${qrcode.url}");
         },
         label: Text('Escanear nota'),
         icon: Icon(Icons.add),

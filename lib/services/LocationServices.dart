@@ -3,9 +3,9 @@ import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:grocery_brasil_app/model/Model.dart';
 import 'package:http/http.dart' as http;
 
+import '../domain/Address.dart';
 import 'apiConfiguration.dart' as apiConfiguration;
 
 String _geolocationApiKey;
@@ -45,8 +45,8 @@ Future<String> _getGeoLocationApiKey() async {
 }
 
 Future<Position> getPosition() async {
-  Position position = await getCurrentPosition(
-      desiredAccuracy: LocationAccuracy.best, timeLimit: Duration(seconds: 10));
+  Position position =
+      await getCurrentPosition(desiredAccuracy: LocationAccuracy.best);
   return position;
 }
 
@@ -88,7 +88,7 @@ Future<List<GeolocationSuggestion>> getGeolocationAutocompleteSuggestion(
   throw Exception(result['error_message']);
 }
 
-Future<Position> getPositionByAddress(String address) async {
+Future<Map<String, dynamic>> getAddressByRawAddress(String address) async {
   print('getPositionByAddress($address)');
   final String geolocationApiKey = await _getGeoLocationApiKey();
   final Uri uri = Uri(
@@ -109,10 +109,35 @@ Future<Position> getPositionByAddress(String address) async {
   }
   final result = json.decode(response.body);
   if (result['status'] == 'OK') {
-    Position position = Position(
-        latitude: result['results'][0]['geometry']['location']['lat'],
-        longitude: result['results'][0]['geometry']['location']['lng']);
-    return position;
+    return result;
+  }
+  if (result['status'] == 'ZERO_RESULTS') {
+    throw Exception(result['ENDERECO_NAO_ENCONTRADO']);
+  }
+  throw Exception(result['error_message']);
+}
+
+Future<Map<String, dynamic>> getAddressByPosition(Position position) async {
+  final String geolocationApiKey = await _getGeoLocationApiKey();
+  final Uri uri = Uri(
+      scheme: 'https',
+      host: 'maps.googleapis.com',
+      port: 443,
+      path: 'maps/api/geocode/json',
+      queryParameters: {
+        'latlng': '${position.latitude},${position.longitude}',
+        'key': geolocationApiKey,
+        'language': 'pt-BR'
+      });
+  print("uri: ${uri.toString()}");
+  final http.Response response =
+      await http.get(uri, headers: {"Content-Type": "application/json"});
+  if (response.statusCode != 200) {
+    throw Exception('Failed to fetch suggestion');
+  }
+  final result = json.decode(response.body);
+  if (result['status'] == 'OK') {
+    return result;
   }
   if (result['status'] == 'ZERO_RESULTS') {
     throw Exception(result['ENDERECO_NAO_ENCONTRADO']);

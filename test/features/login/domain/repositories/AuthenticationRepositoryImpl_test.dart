@@ -1,0 +1,187 @@
+import 'package:dartz/dartz.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:grocery_brasil_app/core/errors/exceptions.dart';
+import 'package:grocery_brasil_app/core/errors/failures.dart';
+import 'package:grocery_brasil_app/domain/User.dart';
+import 'package:grocery_brasil_app/features/login/data/datasources/AuthenticationDataSource.dart';
+import 'package:grocery_brasil_app/features/login/data/repositories/AuthenticationRepositoryImpl.dart';
+import 'package:grocery_brasil_app/features/login/domain/repositories/AuthenticationRepository.dart';
+import 'package:grocery_brasil_app/features/login/domain/usecases/AsyncLogin.dart';
+import 'package:mockito/mockito.dart';
+
+class MockAuthenticationDataSource extends Mock
+    implements AuthenticationDataSource {}
+
+void main() {
+  AuthenticationRepository authenticationRepository;
+  MockAuthenticationDataSource mockAuthenticationDataSource;
+
+  setUp(() {
+    mockAuthenticationDataSource = MockAuthenticationDataSource();
+    authenticationRepository = AuthenticationRepositoryImpl(
+        authenticationDataSource: mockAuthenticationDataSource);
+  });
+
+  final User authenticatedUser = User(email: 'test@email.com', userId: '1');
+
+  group('Authenticate with google', () {
+    test('Should call authenticateWithGoogle', () async {
+      //Setup
+      when(mockAuthenticationDataSource.authenticateWithGoogle())
+          .thenAnswer((realInvocation) async => authenticatedUser);
+      //Act
+      final result = await authenticationRepository.authenticateWithGoogle();
+      //Assert
+      expect(result, Right(authenticatedUser));
+      verify(mockAuthenticationDataSource.authenticateWithGoogle());
+      verifyNoMoreInteractions(mockAuthenticationDataSource);
+    });
+
+    test('Should catch  AuthenticationException', () async {
+      //Setup
+      when(mockAuthenticationDataSource.authenticateWithGoogle()).thenThrow(
+          AuthenticationException(
+              messageId: MessageIds.UNEXPECTED, message: "erro"));
+      //Act
+      final result = await authenticationRepository.authenticateWithGoogle();
+      // //Assert
+      verify(mockAuthenticationDataSource.authenticateWithGoogle());
+      verifyNoMoreInteractions(mockAuthenticationDataSource);
+      expect(
+          result,
+          equals(Left(AuthenticationFailure(
+              messageId: MessageIds.UNEXPECTED,
+              message: 'Operação falhou. (Mensagem original: [erro])'))));
+    });
+  });
+
+  group('Authenticate with facebook', () {
+    test('Should call authenticateWithFacebook', () async {
+      //Setup
+      when(mockAuthenticationDataSource.authenticateWithFacebook())
+          .thenAnswer((realInvocation) async => authenticatedUser);
+      //Act
+      final result = await authenticationRepository.authenticateWithFacebook();
+      //Assert
+      expect(result, Right(authenticatedUser));
+      verify(mockAuthenticationDataSource.authenticateWithFacebook());
+      verifyNoMoreInteractions(mockAuthenticationDataSource);
+    });
+
+    test('Should catch  AuthenticationException', () async {
+      //Setup
+      when(mockAuthenticationDataSource.authenticateWithFacebook()).thenThrow(
+          AuthenticationException(
+              messageId: MessageIds.UNEXPECTED, message: "erro"));
+      //Act
+      final result = await authenticationRepository.authenticateWithFacebook();
+      // //Assert
+      verify(mockAuthenticationDataSource.authenticateWithFacebook());
+      verifyNoMoreInteractions(mockAuthenticationDataSource);
+      expect(
+        result,
+        equals(
+          Left(
+            AuthenticationFailure(
+                messageId: MessageIds.UNEXPECTED,
+                message: 'Operação falhou. (Mensagem original: [erro])'),
+          ),
+        ),
+      );
+    });
+  });
+
+  group('Authenticate with email and password', () {
+    test('Should call authenticateWithEmailAndPassword', () async {
+      //Setup
+
+      final email = 'user@test.com';
+      final password = 'test';
+
+      when(mockAuthenticationDataSource.authenticateWithEmailAndPassword(
+              email, password))
+          .thenAnswer((realInvocation) async => authenticatedUser);
+      //Act
+      final result = await authenticationRepository
+          .authenticateWithEmailAndPassword(email, password);
+      //Assert
+      expect(result, Right(authenticatedUser));
+      verify(mockAuthenticationDataSource.authenticateWithEmailAndPassword(
+          email, password));
+      verifyNoMoreInteractions(mockAuthenticationDataSource);
+    });
+
+    test('Should catch  AuthenticationException', () async {
+      //Setup
+      final email = 'user@test.com';
+      final password = 'test';
+
+      when(mockAuthenticationDataSource.authenticateWithEmailAndPassword(
+              email, password))
+          .thenThrow(AuthenticationException(
+              messageId: MessageIds.EMAIL_NOT_VERIFIED));
+      //Act
+      final result = await authenticationRepository
+          .authenticateWithEmailAndPassword(email, password);
+      // //Assert
+      verify(mockAuthenticationDataSource.authenticateWithEmailAndPassword(
+          email, password));
+      verifyNoMoreInteractions(mockAuthenticationDataSource);
+      expect(
+        result,
+        equals(
+          Left(
+            AuthenticationFailure(
+                messageId: MessageIds.EMAIL_NOT_VERIFIED,
+                message: 'Por favor verifique seu email'),
+          ),
+        ),
+      );
+    });
+  });
+
+  group('Async authentication', () {
+    test('Should should return user when success', () {
+      //Setup
+
+      final user =
+          User(email: 'user@test.com', userId: '1', emailVerified: true);
+
+      when(mockAuthenticationDataSource.asyncAuthentication())
+          .thenAnswer((realInvocation) => Stream<User>.fromIterable([user]));
+      //Act
+      final result = authenticationRepository.asyncAuthentication();
+      //Assert
+      expect(result, emitsInOrder([Right(user)]));
+    });
+    test('Should return NOT_LOGGED_IN  when user is null', () {
+      //Setup
+
+      final user = null;
+      final expected = AsyncLoginFailure(
+          asyncLoginFailureId: AsyncLoginFailureId.NOT_LOGGED_IN);
+      when(mockAuthenticationDataSource.asyncAuthentication())
+          .thenAnswer((realInvocation) => Stream<User>.fromIterable([user]));
+      //Act
+      final result = authenticationRepository.asyncAuthentication();
+      //Assert
+      expect(result, emitsInOrder([Left(expected)]));
+    });
+
+    test('Should fail when email is not verified', () {
+      //Setup
+
+      final user =
+          User(email: 'user@test.com', userId: '1', emailVerified: false);
+      final expected = AsyncLoginFailure(
+          asyncLoginFailureId: AsyncLoginFailureId.EMAIL_NOT_VERIFIED_FAILURE,
+          message: "Por favor verifique seu email");
+      when(mockAuthenticationDataSource.asyncAuthentication())
+          .thenAnswer((realInvocation) => Stream<User>.fromIterable([user]));
+      //Act
+      final result = authenticationRepository.asyncAuthentication();
+      //Assert
+      expect(result, emitsInOrder([Left(expected)]));
+    });
+  });
+}

@@ -21,7 +21,7 @@ Future<http.Response> saveNf(String html, String state) async {
       scheme: apiConfiguration.scheme,
       host: apiConfiguration.host,
       port: apiConfiguration.port,
-      path: '${apiConfiguration.path}/${state.toLowerCase()}');
+      path: '${apiConfiguration.path}/parseAndSaveNf/${state.toLowerCase()}');
   print("uri: ${uri.toString()}");
   final http.Response response =
       await http.post(uri.toString(), body: jsonEncode(data), headers: {

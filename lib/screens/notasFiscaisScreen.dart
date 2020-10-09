@@ -1,37 +1,122 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:grocery_brasil_app/screens/FullFiscalNote.dart';
-import 'package:grocery_brasil_app/screens/common/ResumoNfCard.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../services/notasFiscaisRepository.dart';
+import '../bloc/purchase_bloc.dart';
+import '../domain/Purchase.dart';
+import '../services/PurchaseRepository.dart';
+import 'FullFiscalNote.dart';
+import 'NFScreensWidgets.dart';
+import 'common/loading.dart';
 
 class NotasFiscaisScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<QuerySnapshot>(
-      stream: getResumeNfForUser(),
-      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-        if (snapshot.hasError) {
-          return Text('Something went wrong');
-        }
+    return BlocProvider(
+      create: (context) => PurchaseBloc(FirestorePurchaseRepository()),
+      child: PurchaseResumeScreen(),
+    );
+  }
+}
 
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return Text("Loading");
+class PurchaseResumeScreen extends StatelessWidget {
+  final String _userId = FirebaseAuth.instance.currentUser.uid;
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocConsumer<PurchaseBloc, PurchaseState>(
+      listener: (context, state) {
+        if (state is PurchaseError) {
+          Scaffold.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Error'),
+            ),
+          );
         }
-        return ListView(
-            children: snapshot.data.docs.map((DocumentSnapshot document) {
-          return resumoNfCard(
-              document: document,
-              onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => FullFiscalNoteScreen(document)));
-              },
-              onLongPress: () {});
-        }).toList());
       },
-//
+      builder: (context, state) {
+        if (state is PurchaseInitial) {
+          BlocProvider.of<PurchaseBloc>(context)
+              .add(LoadResumePurchaseByUserId(_userId));
+          return Loading();
+        } else if (state is PurchaseLoading) {
+          return Loading();
+        } else if (state is PurchaseResumeLoaded) {
+          return BuildListOfPurchases(state.resumes);
+        } else if (state is PurchaseLoaded) {
+          return BuildPurchaseScreen(state.purchase);
+        } else {
+          return Loading();
+        }
+      },
+    );
+  }
+}
+
+class BuildListOfPurchases extends StatelessWidget {
+  final Stream<List<Purchase>> _resumes;
+
+  BuildListOfPurchases(this._resumes);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(child: StreamBuilder(stream: _resumes, builder: _builder));
+  }
+
+  Widget _builder(
+      BuildContext context, AsyncSnapshot<List<Purchase>> purchases) {
+    if (purchases.hasData) {
+      return ListView(
+        children: purchases.data
+            .map((purchase) => NFScreensWidgets.resumoNfCard(
+                onLongPress: () {},
+                onTap: () => _loadFullPurchase(context, purchase),
+                context: context,
+                purchase: purchase))
+            .toList(),
+      );
+    } else if (purchases.hasError) {
+      return Loading();
+    } else {
+      return Loading();
+    }
+  }
+
+  // Widget Function(Purchase) mapListTile(BuildContext context) {
+  //   return (Purchase purchase) => ListTile(
+  //         leading: Icon(Icons.shopping_cart),
+  //         title: Text(purchase.fiscalNote.company.name),
+  //         subtitle: Text(purchase.totalAmount.toString()),
+  //         trailing: moreItemsMenu(context),
+  //         onTap: () => _loadFullPurchase(context, purchase),
+  //       );
+  // }
+  //
+  // Widget moreItemsMenu(BuildContext context) {
+  //   return PopupMenuButton(
+  //     itemBuilder: (BuildContext context) => [
+  //       const PopupMenuItem(child: Icon(Icons.share)),
+  //       const PopupMenuItem(child: Icon(Icons.delete)),
+  //     ],
+  //   );
+  // }
+
+  void _loadFullPurchase(BuildContext context, Purchase purchase) {
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) =>
+            FullFiscalNoteScreen(purchase.fiscalNote.accessKey)));
+  }
+}
+
+class BuildPurchaseScreen extends StatelessWidget {
+  final Purchase _purchase;
+
+  BuildPurchaseScreen(this._purchase);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Text(_purchase.toString()),
     );
   }
 }

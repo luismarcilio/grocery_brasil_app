@@ -9,7 +9,7 @@ Future<void> initializeApiConfiguration() async {
   if (host == "" || port == 0 || scheme == "" || path == "") {
     DocumentSnapshot configSnapshot = await FirebaseFirestore.instance
         .collection('apiConfiguration')
-        .doc('apiConfiguration')
+        .doc('v1')
         .get();
     host = configSnapshot.data()['host'];
     port = configSnapshot.data()['port'];

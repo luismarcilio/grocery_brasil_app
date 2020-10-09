@@ -1,120 +1,162 @@
+import 'dart:developer' as dartDeveloper;
+import 'dart:math';
+
+import 'package:firebase_auth/firebase_auth.dart' show FirebaseAuth;
 import 'package:flutter/material.dart';
-import 'package:flutter_native_admob/flutter_native_admob.dart';
-import 'package:flutter_native_admob/native_admob_controller.dart';
-import 'package:flutter_typeahead/flutter_typeahead.dart';
-import 'package:grocery_brasil_app/services/LocationServices.dart';
-import 'package:grocery_brasil_app/services/UserRepository.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../cubit/user_cubit.dart';
+import '../domain/User.dart';
+import '../services/LocationServices.dart';
+import '../services/UserRepository.dart';
+import 'UserAddress.dart';
+import 'common/CommonWidgets.dart';
+import 'common/loading.dart';
 
 class AccountSetupScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    TextEditingController textEditingController = TextEditingController();
-    final _controller = NativeAdmobController();
-    final _adUnitID = 'ca-app-pub-3940256099942544/8135179316';
-
-    final TypeAheadField textField = TypeAheadField<GeolocationSuggestion>(
-      textFieldConfiguration:
-          TextFieldConfiguration(controller: textEditingController),
-      suggestionsCallback: (location) async {
-        if (location.length > 5) {
-          print('location: $location');
-          return await getGeolocationAutocompleteSuggestion(location);
-        }
-        return Iterable.empty();
-      },
-      itemBuilder: (context, suggestion) {
-        return ListTile(
-          leading: Icon(Icons.home),
-          title: Text(suggestion.description),
-        );
-      },
-      onSuggestionSelected: (suggestion) {
-        textEditingController.text = suggestion.description;
-        getPositionByPlaceId(suggestion.placeId).then((address) {
-          saveUserAddress(address);
-        });
-      },
+    FirebaseAuth.instance.signOut();
+    return BlocProvider(
+      create: (context) => UserCubit(UserRepository()),
+      child: UserDetailsForm(),
     );
+  }
+}
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Setup Account'),
+class UserDetailsForm extends StatefulWidget {
+  @override
+  _UserDetailsFormState createState() => _UserDetailsFormState();
+}
+
+class UserForm extends StatelessWidget {
+  final _formKey = GlobalKey<FormState>();
+
+  final User _user;
+  UserForm(this._user);
+
+  static void saveUser(BuildContext context, User user) {
+    final userCubit = context.bloc<UserCubit>();
+    userCubit.updateUser(user);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    TextEditingController _controller =
+        TextEditingController(text: _user.address.rawAddress);
+    return Padding(
+      padding: const EdgeInsets.only(top: 40),
+      child: Form(
+        key: _formKey,
+        child: Column(
+          children: [
+            ApplicationFormField(
+                controller: _controller,
+                keyboardType: TextInputType.multiline,
+                hint: 'Endereço',
+                labelText: 'Endereço',
+                onTap: () async {
+                  GeolocationSuggestion newAddress = await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            UserAddressScreen(_controller.text)),
+                  );
+                  _controller.text = newAddress.description;
+                  await _user.setAddressByRawAddress(newAddress.description);
+                  saveUser(context, _user);
+                }),
+            TextRaisedButton(
+              onLongPress: () {},
+              onPressed: () async {
+                await _user.setAddressByCurrentPosition();
+                saveUser(context, _user);
+              },
+              label: 'Usar Posição atual',
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(12.0)),
+                  border: Border.all(color: Colors.black45),
+                ),
+                child: Column(
+                  children: [
+                    Container(
+                      padding: EdgeInsets.all(8),
+                      child: Text(
+                        'Distância máxima para procurar os produtos: ${_user.preferences.searchRadius}m',
+                        style: TextStyle(fontSize: 18),
+                      ),
+                    ),
+                    AppSlider(
+                      initialValue:
+                          log(_user.preferences.searchRadius.toDouble()) /
+                              log(10),
+                      onChangeEnd: (value) {
+                        _user.preferences.searchRadius =
+                            pow(10.0, value).round();
+                        saveUser(context, _user);
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
-      body: ListView(
-        children: [
-          ConstrainedBox(
-            constraints: BoxConstraints(maxHeight: 200),
-            child: NativeAdmob(
-              // Your ad unit id
-              adUnitID: _adUnitID,
-              numberAds: 1,
-              controller: _controller,
-              type: NativeAdmobType.full,
+    );
+  }
+}
+
+class _UserDetailsFormState extends State<UserDetailsForm> {
+  final _userId = FirebaseAuth.instance.currentUser.uid;
+
+  Widget userInitial() {
+    return Loading();
+  }
+
+  Widget userLoading() {
+    return Loading();
+  }
+
+  Widget userSaving() {
+    return Loading();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    FirebaseAuth.instance.currentUser
+        .getIdToken(true)
+        .then((jwt) => dartDeveloper.log(jwt));
+
+    return BlocConsumer<UserCubit, UserState>(
+      listener: (context, state) {
+        if (state is UserError) {
+          Scaffold.of(context).showSnackBar(
+            SnackBar(
+              content: Text(state.message),
             ),
-          ),
-          ConstrainedBox(
-            constraints: BoxConstraints(maxHeight: 200),
-            child: NativeAdmob(
-              // Your ad unit id
-              adUnitID: _adUnitID,
-              numberAds: 2,
-              controller: _controller,
-              type: NativeAdmobType.banner,
-            ),
-          ),
-          ConstrainedBox(
-            constraints: BoxConstraints(maxHeight: 200),
-            child: NativeAdmob(
-              // Your ad unit id
-              adUnitID: _adUnitID,
-              numberAds: 3,
-              controller: _controller,
-              type: NativeAdmobType.full,
-            ),
-          ),
-          ConstrainedBox(
-            constraints: BoxConstraints(maxHeight: 200),
-            child: NativeAdmob(
-              // Your ad unit id
-              adUnitID: _adUnitID,
-              numberAds: 4,
-              controller: _controller,
-              type: NativeAdmobType.banner,
-            ),
-          ),
-          ConstrainedBox(
-            constraints: BoxConstraints(maxHeight: 200),
-            child: NativeAdmob(
-              // Your ad unit id
-              adUnitID: _adUnitID,
-              numberAds: 5,
-              controller: _controller,
-              type: NativeAdmobType.full,
-            ),
-          ),
-        ],
-      ),
-//      body: Column(
-//        children: [
-//          textField,
-//          FutureBuilder(
-//            future: FirebaseAuth.instance.currentUser.getIdToken(true),
-//            builder: (context, snapshot) {
-//              if (!snapshot.hasData) {
-//                return Loading();
-//              }
-//              final String jwt = snapshot.data.toString();
-//              final pattern =
-//                  RegExp('.{1,800}'); // 800 is the size of each chunk
-//              pattern.allMatches(jwt).forEach((match) => print(match.group(0)));
-//              return Text(snapshot.data.toString());
-//            },
-//          ),
-//          FlatButton(
-//              child: Text('Logoff'),
-//              onPressed: () => FirebaseAuth.instance.signOut()),
-//        ],
-//      ),
+          );
+        }
+      },
+      builder: (context, state) {
+        if (state is UserInitial) {
+          final userCubit = context.bloc<UserCubit>();
+          userCubit.getUser(_userId);
+          return userInitial();
+        } else if (state is UserLoading) {
+          return userLoading();
+        } else if (state is UserLoaded) {
+          return UserForm(state.user);
+        } else if (state is UserSaving) {
+          return userSaving();
+        } else {
+          return userInitial();
+        }
+      },
     );
   }
 }
