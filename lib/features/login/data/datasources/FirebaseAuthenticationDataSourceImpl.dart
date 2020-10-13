@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:firebase_auth/firebase_auth.dart'
     show FirebaseAuth, UserCredential, User;
 import 'package:grocery_brasil_app/core/errors/exceptions.dart';
@@ -69,9 +71,16 @@ class FirebaseAuthenticationDataSourceImpl implements AuthenticationDataSource {
   }
 
   @override
-  Future<String> getJWT() {
-    // TODO: implement getJWT
-    throw UnimplementedError();
+  Future<String> getJWT() async {
+    try {
+      final jwt = await firebaseAuth.currentUser.getIdToken(true);
+      log(jwt);
+      return jwt;
+    } catch (e) {
+      throw AuthenticationException(
+          messageId: MessageIds.UNEXPECTED,
+          message: 'Operação falhou. (Mensagem original: [${e.toString()}])');
+    }
   }
 
   domain.User _getUserFromUserCredential(User firebaseUser) {

@@ -4,18 +4,18 @@ import 'package:meta/meta.dart';
 
 import '../../../core/errors/failures.dart';
 import '../../../core/usecases/usecase.dart';
-import 'NfHtmlFromSite.dart';
-import 'ReadNFRepository.dart';
+import 'DetailsFromUrlRepository.dart';
+import 'model/NFProcessData.dart';
 
-class ReadNFUseCase implements UseCase<NfHtmlFromSite, Params> {
-  final ReadNFRepository repository;
+class GetDetailsfromUrlUseCase implements UseCase<NFProcessData, Params> {
+  final DetailsFromUrlRepository repository;
 
-  ReadNFUseCase(this.repository);
+  GetDetailsfromUrlUseCase({this.repository});
 
   @override
-  Future<Either<NfHtmlFromSiteFailure, NfHtmlFromSite>> call(
+  Future<Either<NFProcessDataFailure, NFProcessData>> call(
       Params params) async {
-    return await repository.readHtml(params.url);
+    return repository(url: params.url);
   }
 }
 

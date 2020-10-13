@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:grocery_brasil_app/features/readNfFromSite/presentation/pages/ReadNfScreen.dart';
 
 import '../features/scanQrCode/domain/QRCode.dart';
 import '../features/scanQrCode/presentation/pages/qrcodeScreen.dart';
@@ -40,6 +41,14 @@ class _DashboardState extends State<Dashboard> {
           QRCode qrcode = await Navigator.push<QRCode>(
               context, MaterialPageRoute(builder: (context) => QrCodeScreen()));
           print("qrcode: ${qrcode.url}");
+          await Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ReadNfScreen(
+                url: qrcode.url,
+              ),
+            ),
+          );
         },
         label: Text('Escanear nota'),
         icon: Icon(Icons.add),
@@ -53,11 +62,11 @@ class _DashboardState extends State<Dashboard> {
         },
         items: [
           BottomNavigationBarItem(
-              icon: Icon(Icons.receipt), title: Text('Notas Fiscais')),
+              icon: Icon(Icons.receipt), label: 'Notas Fiscais'),
           BottomNavigationBarItem(
-              icon: Icon(Icons.local_grocery_store), title: Text('Produtos')),
+              icon: Icon(Icons.local_grocery_store), label: 'Produtos'),
           BottomNavigationBarItem(
-              icon: Icon(Icons.perm_identity), title: Text('Conta')),
+              icon: Icon(Icons.perm_identity), label: 'Conta'),
         ],
         currentIndex: selectedIndex,
       ),

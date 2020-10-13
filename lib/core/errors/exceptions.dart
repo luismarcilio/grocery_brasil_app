@@ -2,7 +2,13 @@ import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 import 'package:sprintf/sprintf.dart';
 
-enum MessageIds { EMAIL_NOT_VERIFIED, UNEXPECTED, NOT_LOGGED_IN, CANCELLED }
+enum MessageIds {
+  EMAIL_NOT_VERIFIED,
+  UNEXPECTED,
+  NOT_LOGGED_IN,
+  CANCELLED,
+  NOT_FOUND
+}
 
 class ApplicatonException extends Equatable implements Exception {
   final MessageIds messageId;
@@ -38,5 +44,20 @@ class RegistrationException extends ApplicatonException {
 
 class QRCodeException extends ApplicatonException {
   QRCodeException({@required messageId, message})
+      : super(messageId: messageId, message: message);
+}
+
+class NFReaderException extends ApplicatonException {
+  NFReaderException({@required messageId, message})
+      : super(messageId: messageId, message: message);
+}
+
+class FunctionsDetailsDataSourceException extends ApplicatonException {
+  FunctionsDetailsDataSourceException({@required messageId, message})
+      : super(messageId: messageId, message: message);
+}
+
+class NfException extends ApplicatonException {
+  NfException({@required messageId, message})
       : super(messageId: messageId, message: message);
 }

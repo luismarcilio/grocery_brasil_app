@@ -38,8 +38,16 @@ class QRCodeFailure extends Failure {
   List<Object> get props => [messageId, message];
 }
 
-class NfHtmlFromSiteFailure extends Failure {
-  NfHtmlFromSiteFailure({@required MessageIds messageId, String message})
+class NFProcessDataFailure extends Failure {
+  NFProcessDataFailure({@required MessageIds messageId, String message})
+      : super(messageId: messageId, message: message);
+
+  @override
+  List<Object> get props => [messageId, message];
+}
+
+class NfFailure extends Failure {
+  NfFailure({@required MessageIds messageId, String message})
       : super(messageId: messageId, message: message);
 
   @override

@@ -63,9 +63,14 @@ class AuthenticationRepositoryImpl extends AuthenticationRepository {
   }
 
   @override
-  Future<Either<Failure, String>> getJWT() {
-    // TODO: implement getJWT
-    throw UnimplementedError();
+  Future<Either<Failure, String>> getJWT() async {
+    try {
+      return Right(await authenticationDataSource.getJWT());
+    } on AuthenticationException catch (authenticationException) {
+      return Left(AuthenticationFailure(
+          messageId: authenticationException.messageId,
+          message: authenticationException.formattedMessage));
+    }
   }
 
   @override

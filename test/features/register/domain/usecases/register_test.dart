@@ -2,7 +2,6 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:grocery_brasil_app/core/errors/exceptions.dart';
 import 'package:grocery_brasil_app/core/errors/failures.dart';
-import 'package:grocery_brasil_app/core/usecases/usecase.dart';
 import 'package:grocery_brasil_app/domain/User.dart';
 import 'package:grocery_brasil_app/features/register/domain/repository/RegistrationRepository.dart';
 import 'package:grocery_brasil_app/features/register/domain/usecases/register.dart';
