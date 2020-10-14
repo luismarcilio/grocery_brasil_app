@@ -2,9 +2,9 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:grocery_brasil_app/core/errors/exceptions.dart';
 import 'package:grocery_brasil_app/core/errors/failures.dart';
+import 'package:grocery_brasil_app/features/common/data/PurchaseRepositoryImpl.dart';
+import 'package:grocery_brasil_app/features/common/domain/PurchaseRepository.dart';
 import 'package:grocery_brasil_app/features/readNfFromSite/data/NFDataSource.dart';
-import 'package:grocery_brasil_app/features/readNfFromSite/data/NfRepositoryImpl.dart';
-import 'package:grocery_brasil_app/features/readNfFromSite/domain/NfRepository.dart';
 import 'package:grocery_brasil_app/features/readNfFromSite/domain/model/NfHtmlFromSite.dart';
 import 'package:mockito/mockito.dart';
 
@@ -12,11 +12,11 @@ class MockNFDataSource extends Mock implements NFDataSource {}
 
 main() {
   MockNFDataSource mockNFDataSource;
-  NfRepository nfRepository;
+  PurchaseRepository nfRepository;
 
   setUp(() {
     mockNFDataSource = MockNFDataSource();
-    nfRepository = NfRepositoryImpl(nfDataSource: mockNFDataSource);
+    nfRepository = PurchaseRepositoryImpl(nfDataSource: mockNFDataSource);
   });
 
   group('NfRepositoryImpl.save', () {

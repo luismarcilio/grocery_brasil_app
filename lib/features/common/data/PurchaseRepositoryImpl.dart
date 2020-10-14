@@ -1,16 +1,17 @@
 import 'package:dartz/dartz.dart';
+import 'package:grocery_brasil_app/domain/Purchase.dart';
 import 'package:meta/meta.dart';
 
 import '../../../core/errors/exceptions.dart';
 import '../../../core/errors/failures.dart';
-import '../domain/NfRepository.dart';
-import '../domain/model/NfHtmlFromSite.dart';
-import 'NFDataSource.dart';
+import '../../readNfFromSite/data/NFDataSource.dart';
+import '../../readNfFromSite/domain/model/NfHtmlFromSite.dart';
+import '../domain/PurchaseRepository.dart';
 
-class NfRepositoryImpl extends NfRepository {
+class PurchaseRepositoryImpl extends PurchaseRepository {
   final NFDataSource nfDataSource;
 
-  NfRepositoryImpl({@required this.nfDataSource});
+  PurchaseRepositoryImpl({@required this.nfDataSource});
   @override
   Future<Either<NfFailure, NfHtmlFromSite>> save(
       {NfHtmlFromSite nfHtmlFromSite}) async {
@@ -29,5 +30,11 @@ class NfRepositoryImpl extends NfRepository {
             message: 'Operação falhou: Mensagem original: [${e.toString()}]'),
       );
     }
+  }
+
+  @override
+  Future<Either<Failure, Stream<Purchase>>> listNFOrderedByDateDesc() {
+    // TODO: implement listNFOrderedByDateDesc
+    throw UnimplementedError();
   }
 }

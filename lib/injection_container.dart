@@ -1,12 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
-import 'package:grocery_brasil_app/features/readNfFromSite/data/NFDataSource.dart';
-import 'package:grocery_brasil_app/features/readNfFromSite/data/NfRepositoryImpl.dart';
-import 'features/readNfFromSite/domain/SaveNfUseCase.dart';
 import 'package:http/http.dart' as http;
 
 import 'features/apisDetails/data/FunctionsDetailsDataSource.dart';
+import 'features/common/data/PurchaseRepositoryImpl.dart';
+import 'features/common/domain/PurchaseRepository.dart';
 import 'features/login/data/datasources/AuthenticationDataSource.dart';
 import 'features/login/data/datasources/FirebaseAuthenticationDataSourceImpl.dart';
 import 'features/login/data/datasources/FirebaseOAuthProvider.dart';
@@ -20,9 +19,10 @@ import 'features/login/domain/usecases/Logout.dart';
 import 'features/login/presentation/bloc/login_bloc.dart';
 import 'features/readNfFromSite/data/DetailsFromUrlDataSource.dart';
 import 'features/readNfFromSite/data/DetailsFromUrlRepositoryImpl.dart';
+import 'features/readNfFromSite/data/NFDataSource.dart';
 import 'features/readNfFromSite/domain/DetailsFromUrlRepository.dart';
 import 'features/readNfFromSite/domain/GetDetailsfromUrlUseCase.dart';
-import 'features/readNfFromSite/domain/NfRepository.dart';
+import 'features/readNfFromSite/domain/SaveNfUseCase.dart';
 import 'features/readNfFromSite/presentation/bloc/readnf_bloc.dart';
 import 'features/register/data/datasource/FirebaseRegistrationDataSourceImpl.dart';
 import 'features/register/data/datasource/RegistrationDataSource.dart';
@@ -63,7 +63,7 @@ void init() {
   sl.registerLazySingleton(() => RegistrationUseCase(sl()));
   sl.registerLazySingleton(() => ScanQRCode(sl()));
   sl.registerLazySingleton(() => GetDetailsfromUrlUseCase(repository: sl()));
-  sl.registerLazySingleton(() => SaveNfUseCase(nfRepository: sl()));
+  sl.registerLazySingleton(() => SaveNfUseCase(purchaseRepository: sl()));
 
   //Repository
   sl.registerLazySingleton<AuthenticationRepository>(
@@ -72,8 +72,8 @@ void init() {
       () => RegistrationRepositoryImpl(registrationDataSource: sl()));
   sl.registerLazySingleton<DetailsFromUrlRepository>(
       () => DetailsFromUrlRepositoryImpl(detailsFromUrldataSource: sl()));
-  sl.registerLazySingleton<NfRepository>(
-      () => NfRepositoryImpl(nfDataSource: sl()));
+  sl.registerLazySingleton<PurchaseRepository>(
+      () => PurchaseRepositoryImpl(nfDataSource: sl()));
 
 //Datasources
   sl.registerLazySingleton<AuthenticationDataSource>(() =>
