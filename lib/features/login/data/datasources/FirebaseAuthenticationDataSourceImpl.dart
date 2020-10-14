@@ -116,4 +116,9 @@ class FirebaseAuthenticationDataSourceImpl implements AuthenticationDataSource {
         .authStateChanges()
         .asyncMap((firebaseUser) => _getUserFromUserCredential(firebaseUser));
   }
+
+  @override
+  String getUserId() {
+    return firebaseAuth.currentUser.uid;
+  }
 }

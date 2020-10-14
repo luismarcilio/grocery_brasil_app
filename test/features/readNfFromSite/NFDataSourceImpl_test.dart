@@ -65,11 +65,11 @@ void main() {
       expect(actual, expected);
     });
 
-    test('should throw NFException in case of error', () async {
+    test('should throw PurchaseException in case of error', () async {
       //setup
 
-      final NfException expected =
-          NfException(messageId: MessageIds.UNEXPECTED, message: '500: erro');
+      final PurchaseException expected = PurchaseException(
+          messageId: MessageIds.UNEXPECTED, message: '500: erro');
       final NfHtmlFromSite nfHtmlFromSite =
           NfHtmlFromSite(html: "html", uf: 'MG');
 

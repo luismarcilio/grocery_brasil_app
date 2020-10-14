@@ -57,7 +57,7 @@ class FunctionsDetailsDataSourceException extends ApplicatonException {
       : super(messageId: messageId, message: message);
 }
 
-class NfException extends ApplicatonException {
-  NfException({@required messageId, message})
+class PurchaseException extends ApplicatonException {
+  PurchaseException({@required messageId, message})
       : super(messageId: messageId, message: message);
 }

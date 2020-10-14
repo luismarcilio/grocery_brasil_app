@@ -1,19 +1,26 @@
 import 'package:dartz/dartz.dart';
-import 'package:grocery_brasil_app/domain/Purchase.dart';
 import 'package:meta/meta.dart';
 
 import '../../../core/errors/exceptions.dart';
 import '../../../core/errors/failures.dart';
+import '../../../domain/Purchase.dart';
+import '../../login/data/datasources/AuthenticationDataSource.dart';
 import '../../readNfFromSite/data/NFDataSource.dart';
 import '../../readNfFromSite/domain/model/NfHtmlFromSite.dart';
 import '../domain/PurchaseRepository.dart';
+import 'PurchaseDataSource.dart';
 
 class PurchaseRepositoryImpl extends PurchaseRepository {
   final NFDataSource nfDataSource;
+  final PurchaseDataSource purchaseDataSource;
+  final AuthenticationDataSource authenticationDataSource;
 
-  PurchaseRepositoryImpl({@required this.nfDataSource});
+  PurchaseRepositoryImpl(
+      {@required this.authenticationDataSource,
+      @required this.purchaseDataSource,
+      @required this.nfDataSource});
   @override
-  Future<Either<NfFailure, NfHtmlFromSite>> save(
+  Future<Either<PurchaseFailure, NfHtmlFromSite>> save(
       {NfHtmlFromSite nfHtmlFromSite}) async {
     try {
       final NfHtmlFromSite result =
@@ -21,11 +28,12 @@ class PurchaseRepositoryImpl extends PurchaseRepository {
       return Right(result);
     } catch (e) {
       print('Erro: ${e.toString()}');
-      if (e is NfException) {
-        return Left(NfFailure(messageId: e.messageId, message: e.message));
+      if (e is PurchaseException) {
+        return Left(
+            PurchaseFailure(messageId: e.messageId, message: e.message));
       }
       return Left(
-        NfFailure(
+        PurchaseFailure(
             messageId: MessageIds.UNEXPECTED,
             message: 'Operação falhou: Mensagem original: [${e.toString()}]'),
       );
@@ -33,8 +41,42 @@ class PurchaseRepositoryImpl extends PurchaseRepository {
   }
 
   @override
-  Future<Either<Failure, Stream<Purchase>>> listNFOrderedByDateDesc() {
-    // TODO: implement listNFOrderedByDateDesc
-    throw UnimplementedError();
+  Future<Either<Failure, Stream<List<Purchase>>>> listPurchaseResume() async {
+    try {
+      final Stream<List<Purchase>> purchaseStream = purchaseDataSource
+          .listPurchaseResume(userId: authenticationDataSource.getUserId());
+      return (Right(purchaseStream));
+    } catch (e) {
+      if (e is PurchaseException) {
+        return Left(
+          PurchaseFailure(messageId: e.messageId, message: e.message),
+        );
+      }
+      return Left(
+        PurchaseFailure(
+            messageId: MessageIds.UNEXPECTED,
+            message: 'Operação falhou. Mensagem original: [${e.toString()}]'),
+      );
+    }
+  }
+
+  @override
+  Future<Either<Failure, Purchase>> getPurchaseById({String purchaseId}) async {
+    try {
+      final Purchase purchase = await purchaseDataSource.getPurchaseById(
+          purchaseId: purchaseId, userId: authenticationDataSource.getUserId());
+      return (Right(purchase));
+    } catch (e) {
+      if (e is PurchaseException) {
+        return Left(
+          PurchaseFailure(messageId: e.messageId, message: e.message),
+        );
+      }
+      return Left(
+        PurchaseFailure(
+            messageId: MessageIds.UNEXPECTED,
+            message: 'Operação falhou. Mensagem original: [${e.toString()}]'),
+      );
+    }
   }
 }

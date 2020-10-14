@@ -7,4 +7,5 @@ abstract class AuthenticationDataSource {
   Future<void> logout();
   Future<String> getJWT();
   Stream<User> asyncAuthentication();
+  String getUserId();
 }

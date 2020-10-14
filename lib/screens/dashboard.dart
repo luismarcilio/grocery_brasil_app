@@ -1,11 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:grocery_brasil_app/features/readNfFromSite/presentation/pages/ReadNfScreen.dart';
 
+import '../features/purchase/presentation/pages/ResumePurchaseList.dart';
+import '../features/readNfFromSite/presentation/pages/ReadNfScreen.dart';
 import '../features/scanQrCode/domain/QRCode.dart';
 import '../features/scanQrCode/presentation/pages/qrcodeScreen.dart';
 import 'SetupAccountScreen.dart';
-import 'notasFiscaisScreen.dart';
 import 'produtosScreen.dart';
 
 class Dashboard extends StatefulWidget {
@@ -17,7 +17,7 @@ class Dashboard extends StatefulWidget {
 class _DashboardState extends State<Dashboard> {
   int selectedIndex = 0;
   Map<int, Widget> scaffoldBodyMap = {
-    0: NotasFiscaisScreen(),
+    0: ResumePurchaseList(),
     1: ProdutosScreen(),
     2: AccountSetupScreen()
   };

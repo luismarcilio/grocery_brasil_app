@@ -26,9 +26,9 @@ class GetDetailsFromUrlError extends ReadnfState {
 class SaveNfDoing extends ReadnfState {}
 
 class SaveNfError extends ReadnfState {
-  final NfFailure nfFailure;
+  final PurchaseFailure purchaseFailure;
 
-  SaveNfError({@required this.nfFailure});
+  SaveNfError({@required this.purchaseFailure});
 }
 
 class SaveNfDone extends ReadnfState {}

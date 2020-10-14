@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../bloc/purchase_bloc.dart';
+import '../bloc_backup/purchase_bloc.dart';
 import '../domain/Purchase.dart';
+import '../features/purchase/presentation/widgets/NFScreensWidgets.dart';
 import '../services/PurchaseRepository.dart';
-import 'NFScreensWidgets.dart';
 import 'common/loading.dart';
 
 class FullFiscalNoteScreen extends StatelessWidget {
@@ -86,46 +86,3 @@ class BuildPurchaseScreen extends StatelessWidget {
         ));
   }
 }
-
-// class FullFiscalNoteScreen extends StatelessWidget {
-//   final DocumentSnapshot document;
-//   FullFiscalNoteScreen(this.document);
-//   final FirestorePurchaseRepository _repository = FirestorePurchaseRepository();
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: resumoNfCard(
-//             document: document,
-//             onTap: () {
-//               Navigator.pop(context);
-//             },
-//             onLongPress: () {}),
-//       ),
-//       body: FutureBuilder(
-//           future: _repository.getPurchaseFromDocId(document.id),
-//           builder: (BuildContext context, AsyncSnapshot<Purchase> snapshot) {
-//             if (snapshot.hasError) {
-//               //TODO
-//               return Text('Error');
-//             }
-//             if (!snapshot.hasData) {
-//               return Center(
-//                 child: SizedBox(
-//                   child: CircularProgressIndicator(),
-//                   width: 60,
-//                   height: 60,
-//                 ),
-//               );
-//             }
-//
-//             return ListView(
-//               children: snapshot.data.purchaseItemlist.map<Widget>((item) {
-//                 return nfItemCard(
-//                     purchaseItem: item, onTap: () {}, onLongPress: () {});
-//               }).toList(),
-//             );
-//           }),
-//     );
-//   }
-// }

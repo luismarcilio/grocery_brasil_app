@@ -46,8 +46,8 @@ class NFProcessDataFailure extends Failure {
   List<Object> get props => [messageId, message];
 }
 
-class NfFailure extends Failure {
-  NfFailure({@required MessageIds messageId, String message})
+class PurchaseFailure extends Failure {
+  PurchaseFailure({@required MessageIds messageId, String message})
       : super(messageId: messageId, message: message);
 
   @override

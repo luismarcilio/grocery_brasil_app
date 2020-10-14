@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../domain/Purchase.dart';
-import '../domain/PurchaseItem.dart';
+import '../../../../domain/Purchase.dart';
+import '../../../../domain/PurchaseItem.dart';
 
 class NFScreensWidgets {
   static Hero resumoNfCard(

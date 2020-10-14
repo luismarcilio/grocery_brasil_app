@@ -13,7 +13,7 @@ class SaveNfUseCase implements UseCase<NfHtmlFromSite, Params> {
   SaveNfUseCase({@required this.purchaseRepository});
 
   @override
-  Future<Either<NfFailure, NfHtmlFromSite>> call(Params params) {
+  Future<Either<PurchaseFailure, NfHtmlFromSite>> call(Params params) {
     return purchaseRepository.save(nfHtmlFromSite: params.nfHtmlFromSite);
   }
 }

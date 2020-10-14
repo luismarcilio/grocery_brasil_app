@@ -1,27 +1,24 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:grocery_brasil_app/features/purchase/presentation/widgets/NFScreensWidgets.dart';
 
-import '../bloc_backup/purchase_bloc.dart';
-import '../domain/Purchase.dart';
-import '../services/PurchaseRepository.dart';
-import 'FullFiscalNote.dart';
-import 'common/loading.dart';
+import '../../../../domain/Purchase.dart';
+import '../../../../injection_container.dart';
+import '../../../../screens/common/loading.dart';
+import '../bloc/purchase_bloc.dart';
+import '../widgets/NFScreensWidgets.dart';
+import 'FullPurchaseList.dart';
 
-class NotasFiscaisScreen extends StatelessWidget {
+class ResumePurchaseList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => PurchaseBloc(FirestorePurchaseRepository()),
+      create: (_) => sl<PurchaseBloc>(),
       child: PurchaseResumeScreen(),
     );
   }
 }
 
 class PurchaseResumeScreen extends StatelessWidget {
-  final String _userId = FirebaseAuth.instance.currentUser.uid;
-
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<PurchaseBloc, PurchaseState>(
@@ -36,18 +33,13 @@ class PurchaseResumeScreen extends StatelessWidget {
       },
       builder: (context, state) {
         if (state is PurchaseInitial) {
-          BlocProvider.of<PurchaseBloc>(context)
-              .add(LoadResumePurchaseByUserId(_userId));
-          return Loading();
+          BlocProvider.of<PurchaseBloc>(context).add(ListResumeEvent());
         } else if (state is PurchaseLoading) {
           return Loading();
-        } else if (state is PurchaseResumeLoaded) {
-          return BuildListOfPurchases(state.resumes);
-        } else if (state is PurchaseLoaded) {
-          return BuildPurchaseScreen(state.purchase);
-        } else {
-          return Loading();
+        } else if (state is ResumeListed) {
+          return BuildListOfPurchases(state.purchaseStreamList);
         }
+        return Loading();
       },
     );
   }
@@ -85,19 +77,6 @@ class BuildListOfPurchases extends StatelessWidget {
   void _loadFullPurchase(BuildContext context, Purchase purchase) {
     Navigator.of(context).push(MaterialPageRoute(
         builder: (context) =>
-            FullFiscalNoteScreen(purchase.fiscalNote.accessKey)));
-  }
-}
-
-class BuildPurchaseScreen extends StatelessWidget {
-  final Purchase _purchase;
-
-  BuildPurchaseScreen(this._purchase);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: Text(_purchase.toString()),
-    );
+            FullPurchaseList(purchaseId: purchase.fiscalNote.accessKey)));
   }
 }

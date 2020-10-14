@@ -6,8 +6,10 @@ import '../../../domain/Purchase.dart';
 import '../../readNfFromSite/domain/model/NfHtmlFromSite.dart';
 
 abstract class PurchaseRepository {
-  Future<Either<NfFailure, NfHtmlFromSite>> save(
+  Future<Either<PurchaseFailure, NfHtmlFromSite>> save(
       {@required NfHtmlFromSite nfHtmlFromSite});
 
-  Future<Either<Failure, Stream<Purchase>>> listNFOrderedByDateDesc();
+  Future<Either<Failure, Stream<List<Purchase>>>> listPurchaseResume();
+  Future<Either<Failure, Purchase>> getPurchaseById(
+      {@required String purchaseId});
 }

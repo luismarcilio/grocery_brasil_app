@@ -2,27 +2,39 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:grocery_brasil_app/core/errors/exceptions.dart';
 import 'package:grocery_brasil_app/core/errors/failures.dart';
+import 'package:grocery_brasil_app/features/common/data/PurchaseDataSource.dart';
 import 'package:grocery_brasil_app/features/common/data/PurchaseRepositoryImpl.dart';
 import 'package:grocery_brasil_app/features/common/domain/PurchaseRepository.dart';
+import 'package:grocery_brasil_app/features/login/data/datasources/AuthenticationDataSource.dart';
 import 'package:grocery_brasil_app/features/readNfFromSite/data/NFDataSource.dart';
 import 'package:grocery_brasil_app/features/readNfFromSite/domain/model/NfHtmlFromSite.dart';
 import 'package:mockito/mockito.dart';
 
 class MockNFDataSource extends Mock implements NFDataSource {}
 
+class MockPurchaseDataSource extends Mock implements PurchaseDataSource {}
+
+class MockAuthenticationDataSource extends Mock
+    implements AuthenticationDataSource {}
+
 main() {
   MockNFDataSource mockNFDataSource;
   PurchaseRepository nfRepository;
+  MockPurchaseDataSource mockPurchaseDataSource;
+  MockAuthenticationDataSource mockAuthenticationDataSource;
 
   setUp(() {
     mockNFDataSource = MockNFDataSource();
-    nfRepository = PurchaseRepositoryImpl(nfDataSource: mockNFDataSource);
+    nfRepository = PurchaseRepositoryImpl(
+        purchaseDataSource: mockPurchaseDataSource,
+        authenticationDataSource: mockAuthenticationDataSource,
+        nfDataSource: mockNFDataSource);
   });
 
   group('NfRepositoryImpl.save', () {
     test('should return NFProcessDataFailure on error', () async {
       //setup
-      final expected = NfFailure(
+      final expected = PurchaseFailure(
           messageId: MessageIds.UNEXPECTED,
           message: 'Operação falhou: Mensagem original: [Exception: erro]');
 

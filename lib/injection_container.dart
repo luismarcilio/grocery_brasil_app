@@ -1,9 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
+import 'package:grocery_brasil_app/features/purchase/domain/GetFullPurchaseUseCase.dart';
 import 'package:http/http.dart' as http;
 
 import 'features/apisDetails/data/FunctionsDetailsDataSource.dart';
+import 'features/common/data/PurchaseDataSource.dart';
 import 'features/common/data/PurchaseRepositoryImpl.dart';
 import 'features/common/domain/PurchaseRepository.dart';
 import 'features/login/data/datasources/AuthenticationDataSource.dart';
@@ -17,6 +19,8 @@ import 'features/login/domain/usecases/AuthenticateWithFacebook.dart';
 import 'features/login/domain/usecases/AuthenticateWithGoogle.dart';
 import 'features/login/domain/usecases/Logout.dart';
 import 'features/login/presentation/bloc/login_bloc.dart';
+import 'features/purchase/domain/ListPurchasesUseCase.dart';
+import 'features/purchase/presentation/bloc/purchase_bloc.dart';
 import 'features/readNfFromSite/data/DetailsFromUrlDataSource.dart';
 import 'features/readNfFromSite/data/DetailsFromUrlRepositoryImpl.dart';
 import 'features/readNfFromSite/data/NFDataSource.dart';
@@ -53,6 +57,8 @@ void init() {
   sl.registerFactory(() => QrcodeBloc(scanQRCode: sl()));
   sl.registerFactory(
       () => ReadnfBloc(getDetailsfromUrlUseCase: sl(), saveNfUseCase: sl()));
+  sl.registerFactory(() =>
+      PurchaseBloc(listPurchasesUseCase: sl(), getFullPurchaseUseCase: sl()));
 
   //UseCases
   sl.registerLazySingleton(() => AuthenticateWithEmailAndPassword(sl()));
@@ -64,6 +70,8 @@ void init() {
   sl.registerLazySingleton(() => ScanQRCode(sl()));
   sl.registerLazySingleton(() => GetDetailsfromUrlUseCase(repository: sl()));
   sl.registerLazySingleton(() => SaveNfUseCase(purchaseRepository: sl()));
+  sl.registerLazySingleton(() => ListPurchasesUseCase(repository: sl()));
+  sl.registerLazySingleton(() => GetFullPurchaseUseCase(repository: sl()));
 
   //Repository
   sl.registerLazySingleton<AuthenticationRepository>(
@@ -72,8 +80,10 @@ void init() {
       () => RegistrationRepositoryImpl(registrationDataSource: sl()));
   sl.registerLazySingleton<DetailsFromUrlRepository>(
       () => DetailsFromUrlRepositoryImpl(detailsFromUrldataSource: sl()));
-  sl.registerLazySingleton<PurchaseRepository>(
-      () => PurchaseRepositoryImpl(nfDataSource: sl()));
+  sl.registerLazySingleton<PurchaseRepository>(() => PurchaseRepositoryImpl(
+      purchaseDataSource: sl(),
+      authenticationDataSource: sl(),
+      nfDataSource: sl()));
 
 //Datasources
   sl.registerLazySingleton<AuthenticationDataSource>(() =>
@@ -105,6 +115,10 @@ void init() {
       functionsDetailsDataSource: sl(),
       authenticationDataSource: sl(),
       httpClient: sl()));
+
+  sl.registerLazySingleton<PurchaseDataSource>(
+      () => PurchaseDataSourceImpl(firebaseFirestore: sl()));
+
   //External
 
   sl.registerLazySingleton<FirebaseFirestore>(() => FirebaseFirestore.instance);

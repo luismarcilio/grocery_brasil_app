@@ -1,20 +1,21 @@
 import 'package:dartz/dartz.dart';
-import 'package:grocery_brasil_app/features/common/domain/PurchaseRepository.dart';
 import 'package:meta/meta.dart';
 
 import '../../../core/errors/failures.dart';
 import '../../../core/usecases/usecase.dart';
 import '../../../domain/Purchase.dart';
+import '../../common/domain/PurchaseRepository.dart';
 import '../../register/domain/usecases/register.dart';
 
-class ListPurchasesUseCase implements UseCase<Stream<Purchase>, NoParams> {
+class ListPurchasesUseCase
+    implements UseCase<Stream<List<Purchase>>, NoParams> {
   final PurchaseRepository repository;
 
   ListPurchasesUseCase({@required this.repository});
 
   @override
-  Future<Either<Failure, Stream<Purchase>>> call(params) {
-    return repository.listNFOrderedByDateDesc();
+  Future<Either<Failure, Stream<List<Purchase>>>> call(params) {
+    return repository.listPurchaseResume();
   }
 }
 

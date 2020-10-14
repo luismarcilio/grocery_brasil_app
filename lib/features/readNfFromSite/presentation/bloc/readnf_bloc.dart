@@ -39,8 +39,8 @@ class ReadnfBloc extends Bloc<ReadnfEvent, ReadnfState> {
       yield SaveNfDoing();
       final result = await saveNfUseCase(
           SaveNfUseCase.Params(nfHtmlFromSite: event.nfHtmlFromSite));
-      yield* result.fold((nfFailure) async* {
-        yield SaveNfError(nfFailure: nfFailure);
+      yield* result.fold((purchaseFailure) async* {
+        yield SaveNfError(purchaseFailure: purchaseFailure);
       }, (nFProcessData) async* {
         yield SaveNfDone();
       });

@@ -35,7 +35,7 @@ class ReadNfScreen extends StatelessWidget {
           } else if (state is SaveNfError) {
             Scaffold.of(context).showSnackBar(
               SnackBar(
-                content: Text(state.nfFailure.message),
+                content: Text(state.purchaseFailure.message),
               ),
             );
           } else if (state is SaveNfDone) {

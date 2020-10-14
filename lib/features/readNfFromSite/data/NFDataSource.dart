@@ -48,7 +48,7 @@ class NFDataSourceImpl extends NFDataSource {
         body: jsonEncode(data), headers: httpHeaders);
 
     if (response.statusCode != 200) {
-      throw NfException(
+      throw PurchaseException(
           messageId: MessageIds.UNEXPECTED,
           message: '${response.statusCode}: ${response.body}');
     }
