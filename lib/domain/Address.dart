@@ -1,6 +1,23 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
+class Location extends Equatable {
+  final double lat;
+  final double lon;
+
+  Location({@required this.lat, @required this.lon});
+
+  @override
+  List<Object> get props => [lat, lon];
+
+  factory Location.fromJson(Map<String, dynamic> json) =>
+      Location(lat: json['lat'], lon: json['lon']);
+
+  factory Location.fromGoogleapisJson(Map<String, dynamic> json) =>
+      Location(lat: json['lat'], lon: json['lng']);
+  Map<String, dynamic> toJson() => {'lat': lat, 'lon': lon};
+}
+
 class Address extends Equatable {
   final String rawAddress;
   final String street;
@@ -11,8 +28,7 @@ class Address extends Equatable {
   final City city;
   final State state;
   final Country country;
-  final double lat;
-  final double lon;
+  final Location location;
 
   Address(
       {@required this.rawAddress,
@@ -24,8 +40,7 @@ class Address extends Equatable {
       this.country,
       this.state,
       this.city,
-      this.lat,
-      this.lon});
+      this.location});
 
   factory Address.fromGoogleapisJson(Map<String, dynamic> json) {
     List addressComponents = json['results'][0]['address_components'];
@@ -58,8 +73,8 @@ class Address extends Equatable {
         country: Country.fromGoogleapisJson(countryJson),
         county: countyJson['long_name'],
         number: numberJson['long_name'],
-        lat: json['results'][0]['geometry']['location']['lat'],
-        lon: json['results'][0]['geometry']['location']['lng'],
+        location: Location.fromGoogleapisJson(
+            json['results'][0]['geometry']['location']),
         poCode: poCodeJson['long_name'],
         state: State.fromGoogleapisJson(stateJson),
         street: streetJson['long_name']);
@@ -77,8 +92,7 @@ class Address extends Equatable {
       'country': this.country.toJson(),
       'state': this.state.toJson(),
       'city': this.city.toJson(),
-      'lat': this.lat,
-      'lon': this.lon
+      'location': this.location.toJson()
     };
   }
 
@@ -88,8 +102,7 @@ class Address extends Equatable {
         street: json['street'],
         state: State.fromJson(json['state']),
         poCode: json['poCode'],
-        lon: json['lon'],
-        lat: json['lat'],
+        location: Location.fromJson(json['location']),
         number: json['number'],
         county: json['county'],
         country: Country.fromJson(json['country']),
@@ -108,8 +121,7 @@ class Address extends Equatable {
         'country: $country, '
         'state: $state, '
         'city: $city, '
-        'lat: $lat, '
-        'lon: $lon }';
+        'location: $location, ';
   }
 
   @override
@@ -123,8 +135,7 @@ class Address extends Equatable {
         country,
         state,
         city,
-        lat,
-        lon
+        location
       ];
 }
 

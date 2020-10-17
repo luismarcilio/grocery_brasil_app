@@ -1,12 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import '../features/product/presentation/pages/products_screen.dart';
 import '../features/purchase/presentation/pages/ResumePurchaseList.dart';
 import '../features/readNfFromSite/presentation/pages/ReadNfScreen.dart';
 import '../features/scanQrCode/domain/QRCode.dart';
 import '../features/scanQrCode/presentation/pages/qrcodeScreen.dart';
 import 'SetupAccountScreen.dart';
-import 'produtosScreen.dart';
 
 class Dashboard extends StatefulWidget {
   static const route = '/dashboard';
@@ -18,7 +18,7 @@ class _DashboardState extends State<Dashboard> {
   int selectedIndex = 0;
   Map<int, Widget> scaffoldBodyMap = {
     0: ResumePurchaseList(),
-    1: ProdutosScreen(),
+    1: ProductsScreen(),
     2: AccountSetupScreen()
   };
 

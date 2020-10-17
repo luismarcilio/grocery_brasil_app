@@ -35,7 +35,7 @@ class PurchaseRepositoryImpl extends PurchaseRepository {
       return Left(
         PurchaseFailure(
             messageId: MessageIds.UNEXPECTED,
-            message: 'Operação falhou: Mensagem original: [${e.toString()}]'),
+            message: 'Operação falhou. (Mensagem original: [${e.toString()}])'),
       );
     }
   }
@@ -55,7 +55,7 @@ class PurchaseRepositoryImpl extends PurchaseRepository {
       return Left(
         PurchaseFailure(
             messageId: MessageIds.UNEXPECTED,
-            message: 'Operação falhou. Mensagem original: [${e.toString()}]'),
+            message: 'Operação falhou. (Mensagem original: [${e.toString()}])'),
       );
     }
   }
@@ -75,7 +75,7 @@ class PurchaseRepositoryImpl extends PurchaseRepository {
       return Left(
         PurchaseFailure(
             messageId: MessageIds.UNEXPECTED,
-            message: 'Operação falhou. Mensagem original: [${e.toString()}]'),
+            message: 'Operação falhou. (Mensagem original: [${e.toString()}])'),
       );
     }
   }

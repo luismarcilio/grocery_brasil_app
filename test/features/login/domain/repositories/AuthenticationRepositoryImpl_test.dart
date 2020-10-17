@@ -184,4 +184,59 @@ void main() {
       expect(result, emitsInOrder([Left(expected)]));
     });
   });
+
+  group('JWT', () {
+    test('should return jwt when all ok', () async {
+      //setup
+      final jwt = 'JWT';
+      when(mockAuthenticationDataSource.getJWT())
+          .thenAnswer((realInvocation) async => jwt);
+      //act
+      final actual = await authenticationRepository.getJWT();
+      //assert
+      expect(actual, Right(jwt));
+    });
+
+    test('should return failure when on error', () async {
+      //setup
+      final failure = AuthenticationFailure(
+          messageId: MessageIds.UNEXPECTED,
+          message: "Operação falhou. (Mensagem original: [erro])");
+      when(mockAuthenticationDataSource.getJWT()).thenThrow(
+          AuthenticationException(
+              messageId: MessageIds.UNEXPECTED, message: "erro"));
+      //act
+      final actual = await authenticationRepository.getJWT();
+      print(actual.fold((l) => l.message, (r) => null));
+      //assert
+      expect(actual, Left(failure));
+    });
+  });
+
+  group('Logout', () {
+    test('should Logout when all ok', () async {
+      //setup
+      when(mockAuthenticationDataSource.logout())
+          .thenAnswer((realInvocation) async => null);
+      //act
+      final actual = await authenticationRepository.logout();
+      //assert
+      expect(actual, Right(true));
+    });
+
+    test('should return failure when on error', () async {
+      //setup
+      final failure = AuthenticationFailure(
+          messageId: MessageIds.UNEXPECTED,
+          message: "Operação falhou. (Mensagem original: [erro])");
+      when(mockAuthenticationDataSource.logout()).thenThrow(
+          AuthenticationException(
+              messageId: MessageIds.UNEXPECTED, message: "erro"));
+      //act
+      final actual = await authenticationRepository.logout();
+      print(actual.fold((l) => l.message, (r) => null));
+      //assert
+      expect(actual, Left(failure));
+    });
+  });
 }

@@ -61,3 +61,8 @@ class PurchaseException extends ApplicatonException {
   PurchaseException({@required messageId, message})
       : super(messageId: messageId, message: message);
 }
+
+class ProductException extends ApplicatonException {
+  ProductException({@required messageId, message})
+      : super(messageId: messageId, message: message);
+}

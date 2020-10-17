@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
-import 'package:grocery_brasil_app/features/purchase/domain/GetFullPurchaseUseCase.dart';
 import 'package:http/http.dart' as http;
 
 import 'features/apisDetails/data/FunctionsDetailsDataSource.dart';
@@ -19,6 +18,7 @@ import 'features/login/domain/usecases/AuthenticateWithFacebook.dart';
 import 'features/login/domain/usecases/AuthenticateWithGoogle.dart';
 import 'features/login/domain/usecases/Logout.dart';
 import 'features/login/presentation/bloc/login_bloc.dart';
+import 'features/purchase/domain/GetFullPurchaseUseCase.dart';
 import 'features/purchase/domain/ListPurchasesUseCase.dart';
 import 'features/purchase/presentation/bloc/purchase_bloc.dart';
 import 'features/readNfFromSite/data/DetailsFromUrlDataSource.dart';

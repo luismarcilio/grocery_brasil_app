@@ -106,7 +106,8 @@ class FirebaseAuthenticationDataSourceImpl implements AuthenticationDataSource {
       await firebaseAuth.signOut();
     } catch (e) {
       throw AuthenticationException(
-          messageId: MessageIds.UNEXPECTED, message: e.toString());
+          messageId: MessageIds.UNEXPECTED,
+          message: 'Operação falhou. (Mensagem original: [${e.toString()}])');
     }
   }
 

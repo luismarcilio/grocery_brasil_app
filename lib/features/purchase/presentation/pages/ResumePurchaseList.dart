@@ -52,7 +52,7 @@ class BuildListOfPurchases extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(child: StreamBuilder(stream: _resumes, builder: _builder));
+    return StreamBuilder(stream: _resumes, builder: _builder);
   }
 
   Widget _builder(

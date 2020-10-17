@@ -36,7 +36,7 @@ main() {
       //setup
       final expected = PurchaseFailure(
           messageId: MessageIds.UNEXPECTED,
-          message: 'Operação falhou: Mensagem original: [Exception: erro]');
+          message: 'Operação falhou. (Mensagem original: [Exception: erro])');
 
       final nfHtmlFromSite = NfHtmlFromSite(html: "html", uf: "MG");
 

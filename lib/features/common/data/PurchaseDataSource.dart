@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:grocery_brasil_app/core/errors/exceptions.dart';
 import 'package:meta/meta.dart';
 
+import '../../../core/errors/exceptions.dart';
 import '../../../domain/Purchase.dart';
 
 abstract class PurchaseDataSource {

@@ -27,6 +27,7 @@ class PurchaseBloc extends Bloc<PurchaseEvent, PurchaseState> {
   ) async* {
     print("PurchaseEvent: $event");
     if (event is ListResumeEvent) {
+      yield PurchaseLoading();
       final list = await listPurchasesUseCase(NoParams());
       yield* list.fold((purchaseFailure) async* {
         yield PurchaseError(purchaseFailure: purchaseFailure);
@@ -34,6 +35,7 @@ class PurchaseBloc extends Bloc<PurchaseEvent, PurchaseState> {
         yield ResumeListed(purchaseStreamList: purchaseStreamList);
       });
     } else if (event is GetPurchaseByIdEvent) {
+      yield PurchaseLoading();
       final result =
           await getFullPurchaseUseCase(Params(purchaseId: event.purchaseId));
       yield* result.fold((purchaseFailure) async* {

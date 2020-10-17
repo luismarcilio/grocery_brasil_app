@@ -244,4 +244,91 @@ void main() {
       verifyNoMoreInteractions(mockFirebaseAuth);
     });
   });
+
+  group('GetJWT', () {
+    test('should return jwt ', () async {
+      //setup
+      final jwt = 'JWT';
+      when(mockFirebaseAuth.currentUser)
+          .thenAnswer((realInvocation) => mockUser);
+      when(mockUser.getIdToken(true)).thenAnswer((realInvocation) async => jwt);
+      //act
+      final actual = await authenticationDataSource.getJWT();
+      //assert
+      expect(actual, jwt);
+    });
+
+    test('should throw exception on error ', () async {
+      //setup
+      final expected = AuthenticationException(
+          messageId: MessageIds.UNEXPECTED,
+          message: 'Operação falhou. (Mensagem original: [Exception: erro])');
+      when(mockFirebaseAuth.currentUser)
+          .thenAnswer((realInvocation) => mockUser);
+      when(mockUser.getIdToken(true)).thenThrow(Exception('erro'));
+      //assert
+      expect(() async => authenticationDataSource.getJWT(), throwsA(expected));
+    });
+  });
+
+  group('logout', () {
+    test('should logout ', () async {
+//setup
+      when(mockFirebaseAuth.signOut())
+          .thenAnswer((realInvocation) async => null);
+//act
+      await authenticationDataSource.logout();
+//assert
+      verify(mockFirebaseAuth.signOut());
+    });
+
+    test('should throw exception on errors ', () async {
+//setup
+      final expected = AuthenticationException(
+          messageId: MessageIds.UNEXPECTED,
+          message: 'Operação falhou. (Mensagem original: [Exception: erro])');
+
+      when(await mockFirebaseAuth.signOut()).thenThrow(Exception('erro'));
+
+//assert
+
+      expect(() async => authenticationDataSource.logout(), throwsA(expected));
+    });
+  });
+
+  group('getUserId', () {
+    test('should when ', () {
+      //setup
+      when(mockFirebaseAuth.currentUser)
+          .thenAnswer((realInvocation) => mockUser);
+      when(mockUser.uid).thenAnswer((realInvocation) => "userId");
+
+      //act
+      final actual = authenticationDataSource.getUserId();
+      //assert
+      expect(actual, "userId");
+    });
+  });
+
+  group('asyncAuthentication', () {
+    test('should when ', () {
+      //setup
+      final user = Domain.User(
+          email: "teste@teste.com", userId: "userId", emailVerified: true);
+      when(mockFirebaseAuth.authStateChanges()).thenAnswer(
+          (realInvocation) => Stream<User>.fromIterable([mockUser]));
+      when(mockUser.providerData).thenAnswer(
+        (realInvocation) => List<UserInfo>.of([
+          UserInfo({'providerId': 'password'})
+        ]),
+      );
+      when(mockUser.email).thenAnswer((realInvocation) => "teste@teste.com");
+      when(mockUser.uid).thenAnswer((realInvocation) => "userId");
+      when(mockUser.emailVerified).thenAnswer((realInvocation) => true);
+      //act
+      final actual = authenticationDataSource.asyncAuthentication();
+      //assert
+      expectLater(actual, emits(user));
+    });
+  });
 }
