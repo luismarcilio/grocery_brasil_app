@@ -46,7 +46,9 @@ class DetailsFromUrlDataSourceImpl extends DetailsFromUrlDataSource {
       "Content-Type": "application/json"
     });
 
-    final response = await httpClient.get(uri, headers: httpHeaders);
+    final response = await httpClient
+        .get(uri, headers: httpHeaders)
+        .timeout(Duration(seconds: 5));
 
     if (response.statusCode != 200) {
       throw NFReaderException(

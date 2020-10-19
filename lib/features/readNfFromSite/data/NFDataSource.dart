@@ -44,8 +44,9 @@ class NFDataSourceImpl extends NFDataSource {
       HttpHeaders.authorizationHeader: 'Bearer $jwt',
       "Content-Type": "application/json"
     });
-    final http.Response response = await httpClient.post(uri.toString(),
-        body: jsonEncode(data), headers: httpHeaders);
+    final http.Response response = await httpClient
+        .post(uri.toString(), body: jsonEncode(data), headers: httpHeaders)
+        .timeout(Duration(seconds: 5));
 
     if (response.statusCode != 200) {
       throw PurchaseException(
