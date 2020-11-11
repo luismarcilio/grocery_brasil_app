@@ -66,3 +66,8 @@ class ProductException extends ApplicatonException {
   ProductException({@required messageId, message})
       : super(messageId: messageId, message: message);
 }
+
+class UserException extends ApplicatonException {
+  UserException({@required messageId, message})
+      : super(messageId: messageId, message: message);
+}
