@@ -61,3 +61,11 @@ class ProductFailure extends Failure {
   @override
   List<Object> get props => [messageId, message];
 }
+
+class UserFailure extends Failure {
+  UserFailure({@required MessageIds messageId, String message})
+      : super(messageId: messageId, message: message);
+
+  @override
+  List<Object> get props => [messageId, message];
+}
