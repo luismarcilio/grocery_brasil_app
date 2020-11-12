@@ -163,7 +163,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           break;
       }
     }, (user) async* {
-      yield LoginDone(user);
+      this.add(CreateUserEvent(user: user));
     });
   }
 }

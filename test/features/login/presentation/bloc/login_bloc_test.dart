@@ -71,6 +71,8 @@ void main() {
               Stream<Either<AsyncLoginFailure, User>>.fromIterable(
                   [Right(expectedUser)]),
         );
+        when(mockCreateUserUseCase.call(expectedUser))
+            .thenAnswer((realInvocation) async => Right(expectedUser));
       });
       blocTest('should login',
           build: () => LoginBloc(
@@ -82,7 +84,7 @@ void main() {
               createUser: mockCreateUserUseCase,
               asyncLogin: mockAsyncLogin),
           act: (bloc) {},
-          expect: [LoginRunning(), LoginDone(expectedUser)]);
+          expect: [LoginRunning(), UserCreating(), LoginDone(expectedUser)]);
     });
 
     group('should error', () {
