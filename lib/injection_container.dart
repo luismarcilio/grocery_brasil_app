@@ -1,8 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 
+import 'features/addressing/data/AddressingDataSource.dart';
+import 'features/addressing/data/AddressingDataSourceImpl.dart';
+import 'features/addressing/data/AddressingServiceAdapter.dart';
+import 'features/addressing/data/GPSServiceAdapter.dart';
+import 'features/addressing/data/GeocodingAddressingServiceAdapter.dart';
+import 'features/addressing/data/GeolocatorGPSServiceAdapter.dart';
 import 'features/apisDetails/data/FunctionsDetailsDataSource.dart';
 import 'features/common/data/PurchaseDataSource.dart';
 import 'features/common/data/PurchaseRepositoryImpl.dart';
@@ -40,6 +48,11 @@ import 'features/scanQrCode/data/QRCodeScannerImpl.dart';
 import 'features/scanQrCode/domain/QRCodeRepository.dart';
 import 'features/scanQrCode/domain/ScanQrCodeUseCase.dart';
 import 'features/scanQrCode/presentation/bloc/qrcode_bloc.dart';
+import 'features/user/data/FirbaseUserDataSource.dart';
+import 'features/user/data/UserDataSource.dart';
+import 'features/user/data/UserRepositoryImpl.dart';
+import 'features/user/domain/CreateUserUseCase.dart';
+import 'features/user/domain/UserRepository.dart';
 
 final sl = GetIt.instance;
 
@@ -51,7 +64,8 @@ void init() {
       authenticateWithFacebook: sl(),
       authenticateWithGoogle: sl(),
       logout: sl(),
-      asyncLogin: sl()));
+      asyncLogin: sl(),
+      createUser: sl()));
 
   sl.registerFactory(() => RegistrationBloc(registrationUseCase: sl()));
   sl.registerFactory(() => QrcodeBloc(scanQRCode: sl()));
@@ -72,6 +86,7 @@ void init() {
   sl.registerLazySingleton(() => SaveNfUseCase(purchaseRepository: sl()));
   sl.registerLazySingleton(() => ListPurchasesUseCase(repository: sl()));
   sl.registerLazySingleton(() => GetFullPurchaseUseCase(repository: sl()));
+  sl.registerLazySingleton(() => CreateUserUseCase(sl()));
 
   //Repository
   sl.registerLazySingleton<AuthenticationRepository>(
@@ -84,8 +99,14 @@ void init() {
       purchaseDataSource: sl(),
       authenticationDataSource: sl(),
       nfDataSource: sl()));
-
+  sl.registerLazySingleton<UserRepository>(() =>
+      UserRepositoryImpl(userDataSource: sl(), addressingDataSource: sl()));
 //Datasources
+  sl.registerLazySingleton<UserDataSource>(
+      () => FirbaseUserDataSource(firebaseFirestore: sl()));
+  sl.registerLazySingleton<AddressingDataSource>(() => AddressingDataSourceImpl(
+      gPSServiceAdapter: sl(), addressingServiceAdapter: sl()));
+
   sl.registerLazySingleton<AuthenticationDataSource>(() =>
       FirebaseAuthenticationDataSourceImpl(
           firebaseAuth: sl(), oAuthProvider: sl()));
@@ -119,10 +140,21 @@ void init() {
   sl.registerLazySingleton<PurchaseDataSource>(
       () => PurchaseDataSourceImpl(firebaseFirestore: sl()));
 
+  //Adapter
+
+  sl.registerLazySingleton<GPSServiceAdapter>(
+      () => GeolocatorGPSServiceAdapter(geolocatorPlatform: sl()));
+  sl.registerLazySingleton<AddressingServiceAdapter>(
+      () => GeocodingAddressingServiceAdapter(geocodingPlatform: sl()));
+
   //External
 
   sl.registerLazySingleton<FirebaseFirestore>(() => FirebaseFirestore.instance);
   sl.registerLazySingleton(() => http.Client());
+
+  sl.registerLazySingleton<GeolocatorPlatform>(
+      () => GeolocatorPlatform.instance);
+  sl.registerLazySingleton<GeocodingPlatform>(() => GeocodingPlatform.instance);
 }
 
 void initFeatures() {}
