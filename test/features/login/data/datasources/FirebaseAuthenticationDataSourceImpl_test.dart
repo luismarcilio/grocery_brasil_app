@@ -51,7 +51,8 @@ void main() {
         ]),
       );
 
-      final expected = Domain.User(userId: '1', email: 'user@test.com');
+      final expected =
+          Domain.User(userId: '1', email: 'user@test.com', emailVerified: true);
 
       when(mockFirebaseAuth.signInWithCredential(mockAuthCredential))
           .thenAnswer((_) => Future<UserCredential>.value(mockUserCredential));
@@ -104,7 +105,8 @@ void main() {
         ]),
       );
 
-      final expected = Domain.User(userId: '1', email: 'user@test.com');
+      final expected =
+          Domain.User(userId: '1', email: 'user@test.com', emailVerified: true);
 
       when(mockFirebaseAuth.signInWithCredential(mockAuthCredential))
           .thenAnswer((_) => Future<UserCredential>.value(mockUserCredential));
