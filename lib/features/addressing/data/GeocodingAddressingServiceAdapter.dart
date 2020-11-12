@@ -23,15 +23,16 @@ class GeocodingAddressingServiceAdapter implements AddressingServiceAdapter {
                 'No addresses found on location(lat: ${location.lat}, lon: ${location.lon})');
       }
       final address = Address(
-          rawAddress: placemarks[0].name,
+          rawAddress:
+              '${placemarks[0].street} ${placemarks[0].name}, ${placemarks[0].subLocality}, CEP: ${placemarks[0].postalCode}, ${placemarks[0].subAdministrativeArea}, ${placemarks[0].administrativeArea}, ${placemarks[0].country}',
           street: placemarks[0].street,
-          number: placemarks[0].thoroughfare,
+          number: placemarks[0].name,
           complement: '',
           poCode: placemarks[0].postalCode,
           county: placemarks[0].subLocality,
           country: Country(name: placemarks[0].country),
           state: State(name: placemarks[0].administrativeArea),
-          city: City(name: placemarks[0].locality),
+          city: City(name: placemarks[0].subAdministrativeArea),
           location: location);
       return address;
     } catch (e) {
