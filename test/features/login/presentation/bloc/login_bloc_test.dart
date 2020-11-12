@@ -125,12 +125,14 @@ void main() {
       setUp(() {
         when(mockAuthenticateWithEmailAndPassword(Params(email, password)))
             .thenAnswer((realInvocation) async => Right(expectedUser));
+        when(mockCreateUserUseCase.call(expectedUser))
+            .thenAnswer((realInvocation) async => Right(expectedUser));
       });
       blocTest('should authenticate when passed login and password',
           build: () => loginBloc,
           act: (bloc) => bloc.add(LoginWithUsernameAndPasswordEvent(
               email: email, password: password)),
-          expect: [LoginRunning(), LoginDone(expectedUser)]);
+          expect: [LoginRunning(), UserCreating(), LoginDone(expectedUser)]);
     });
     group('should fail when login fails', () {
       final expectedFail = AuthenticationFailure(
@@ -155,11 +157,13 @@ void main() {
       setUp(() {
         when(mockAuthenticateWithGoogle.call(NoParams()))
             .thenAnswer((realInvocation) async => Right(expectedUser));
+        when(mockCreateUserUseCase.call(expectedUser))
+            .thenAnswer((realInvocation) async => Right(expectedUser));
       });
       blocTest('should authenticate with google',
           build: () => loginBloc,
           act: (bloc) => bloc.add(LoginWithGoogleEvent()),
-          expect: [LoginRunning(), LoginDone(expectedUser)]);
+          expect: [LoginRunning(), UserCreating(), LoginDone(expectedUser)]);
     });
     group('should fail when login fails', () {
       final expectedFail = AuthenticationFailure(
@@ -182,11 +186,13 @@ void main() {
       setUp(() {
         when(mockAuthenticateWithFacebook.call(NoParams()))
             .thenAnswer((realInvocation) async => Right(expectedUser));
+        when(mockCreateUserUseCase.call(expectedUser))
+            .thenAnswer((realInvocation) async => Right(expectedUser));
       });
-      blocTest('should authenticate with facebool',
+      blocTest('should authenticate with facebook',
           build: () => loginBloc,
           act: (bloc) => bloc.add(LoginWithFacebookEvent()),
-          expect: [LoginRunning(), LoginDone(expectedUser)]);
+          expect: [LoginRunning(), UserCreating(), LoginDone(expectedUser)]);
     });
     group('should fail when login fails', () {
       final expectedFail = AuthenticationFailure(
@@ -227,7 +233,7 @@ void main() {
       blocTest('should create user',
           build: () => loginBloc,
           act: (bloc) => bloc.add(CreateUserEvent(user: user)),
-          expect: [UserCreating(), UserCreated(user)]);
+          expect: [UserCreating(), LoginDone(user)]);
     });
 
     group('should return error if fails', () {

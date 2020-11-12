@@ -66,15 +66,15 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     } else if (event is AsyncLoginEvent) {
       yield* _mapAsyncEvent(event);
     } else if (event is CreateUserEvent) {
-      yield* _mapCreateIserEvent(event);
+      yield* _mapCreateUserEvent(event);
     }
   }
 
-  Stream<LoginState> _mapCreateIserEvent(CreateUserEvent event) async* {
+  Stream<LoginState> _mapCreateUserEvent(CreateUserEvent event) async* {
     yield UserCreating();
     final status = await createUser(event.user);
     yield status.fold(
-        (failure) => CreateUserFailure(failure), (user) => UserCreated(user));
+        (failure) => CreateUserFailure(failure), (user) => LoginDone(user));
   }
 
   Stream<LoginState> _mapLoginWithUsernameAndPassword(
@@ -84,8 +84,11 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     Either<Failure, User> status = await authenticateWithEmailAndPassword
         .call(Params(event.email, event.password));
     print("status: $status");
-    yield status.fold(
-        (failure) => LoginError(failure), (user) => LoginDone(user));
+    yield* status.fold((failure) async* {
+      yield LoginError(failure);
+    }, (user) async* {
+      this.add(CreateUserEvent(user: user));
+    });
   }
 
   Stream<LoginState> _mapLoginWithFacebook(
@@ -93,16 +96,22 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     yield LoginRunning();
     Either<Failure, User> status =
         await authenticateWithFacebook.call(NoParams());
-    yield status.fold(
-        (failure) => LoginError(failure), (user) => LoginDone(user));
+    yield* status.fold((failure) async* {
+      yield LoginError(failure);
+    }, (user) async* {
+      this.add(CreateUserEvent(user: user));
+    });
   }
 
   Stream<LoginState> _mapLoginWithGoogle(LoginWithGoogleEvent event) async* {
     yield LoginRunning();
     Either<Failure, User> status =
         await authenticateWithGoogle.call(NoParams());
-    yield status.fold(
-        (failure) => LoginError(failure), (user) => LoginDone(user));
+    yield* status.fold((failure) async* {
+      yield LoginError(failure);
+    }, (user) async* {
+      this.add(CreateUserEvent(user: user));
+    });
   }
 
   Stream<LoginState> _mapLogout(LogoutEvent event) async* {
