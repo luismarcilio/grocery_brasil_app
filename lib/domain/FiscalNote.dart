@@ -5,7 +5,7 @@ import 'Company.dart';
 
 part 'FiscalNote.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class FiscalNote extends Equatable {
   final String accessKey;
   final String number;

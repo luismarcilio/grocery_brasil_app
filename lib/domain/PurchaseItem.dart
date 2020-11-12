@@ -6,7 +6,7 @@ import 'Unity.dart';
 
 part 'PurchaseItem.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class PurchaseItem extends Equatable {
   final Product product;
   final Unity unity;

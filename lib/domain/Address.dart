@@ -6,7 +6,7 @@ import 'Location.dart';
 
 part 'Address.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class Address extends Equatable {
   final String rawAddress;
   final String street;
@@ -103,65 +103,60 @@ class Address extends Equatable {
       ];
 }
 
+@JsonSerializable()
 class City extends Equatable {
   final String name;
   City({this.name});
   factory City.fromGoogleapisJson(Map<String, dynamic> json) =>
       City(name: json['long_name']);
 
-  factory City.fromJson(Map<String, dynamic> json) => City(name: json['name']);
+  factory City.fromJson(Map<String, dynamic> json) => _$CityFromJson(json);
+  Map<String, dynamic> toJson() => _$CityToJson(this);
 
   @override
   String toString() {
     return 'city: { name: $name}';
   }
 
-  Map<String, dynamic> toJson() {
-    return {'name': this.name};
-  }
-
   @override
   List<Object> get props => [name];
 }
 
+@JsonSerializable()
 class State extends Equatable {
   final String name;
   final String acronym;
   State({this.name, this.acronym});
   factory State.fromGoogleapisJson(Map<String, dynamic> json) =>
       State(name: json['long_name'], acronym: json['short_name']);
-  factory State.fromJson(Map<String, dynamic> json) =>
-      State(name: json['name'], acronym: json['acronym']);
 
   @override
   String toString() {
     return 'state: { name: $name, acronym: $acronym}';
   }
 
-  Map<String, dynamic> toJson() {
-    return {'name': this.name, 'acronym': this.acronym};
-  }
+  factory State.fromJson(Map<String, dynamic> json) => _$StateFromJson(json);
+  Map<String, dynamic> toJson() => _$StateToJson(this);
 
   @override
   List<Object> get props => [name, acronym];
 }
 
+@JsonSerializable()
 class Country extends Equatable {
   final String name;
   Country({this.name});
   factory Country.fromGoogleapisJson(Map<String, dynamic> json) =>
       Country(name: json['long_name']);
-  factory Country.fromJson(Map<String, dynamic> json) =>
-      Country(name: json['name']);
 
   @override
   String toString() {
     return 'country: { name: $name}';
   }
 
-  Map<String, dynamic> toJson() {
-    return {'name': this.name};
-  }
+  factory Country.fromJson(Map<String, dynamic> json) =>
+      _$CountryFromJson(json);
+  Map<String, dynamic> toJson() => _$CountryToJson(this);
 
   @override
   List<Object> get props => [name];

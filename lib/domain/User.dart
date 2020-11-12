@@ -7,7 +7,7 @@ import 'UserPreferences.dart';
 
 part 'User.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class User extends Equatable {
   final String email;
   final String userId;

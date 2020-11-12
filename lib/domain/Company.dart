@@ -5,7 +5,7 @@ import 'Address.dart';
 
 part 'Company.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class Company extends Equatable {
   final String name;
   final String taxIdentification;

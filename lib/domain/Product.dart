@@ -5,7 +5,7 @@ import 'Unity.dart';
 
 part 'Product.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class Product extends Equatable {
   final String name;
   final String eanCode;

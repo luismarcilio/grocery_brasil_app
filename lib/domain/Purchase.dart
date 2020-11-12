@@ -9,7 +9,7 @@ import 'User.dart';
 
 part 'Purchase.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class Purchase extends Equatable {
   final User user;
   final FiscalNote fiscalNote;
