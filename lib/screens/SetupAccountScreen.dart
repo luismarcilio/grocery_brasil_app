@@ -95,8 +95,6 @@ class UserForm extends StatelessWidget {
                           log(_user.preferences.searchRadius.toDouble()) /
                               log(10),
                       onChangeEnd: (value) {
-                        _user.preferences.searchRadius =
-                            pow(10.0, value).round();
                         saveUser(context, _user);
                       },
                     ),
