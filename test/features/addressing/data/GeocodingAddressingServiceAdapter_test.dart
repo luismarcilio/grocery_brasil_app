@@ -1,12 +1,12 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:grocery_brasil_app/core/errors/exceptions.dart';
-import 'package:grocery_brasil_app/domain/Address.dart' as AppAddress;
-import 'package:grocery_brasil_app/domain/Location.dart' as AppLocation;
+import 'package:grocery_brasil_app/domain/Address.dart';
+import 'package:grocery_brasil_app/domain/Location.dart';
 import 'package:grocery_brasil_app/features/addressing/data/AddressingServiceAdapter.dart';
 import 'package:grocery_brasil_app/features/addressing/data/GeocodingAddressingServiceAdapter.dart';
 import 'package:mockito/mockito.dart';
 
-import 'package:geocoding/geocoding.dart';
+import 'package:geocoding/geocoding.dart' show GeocodingPlatform, Placemark;
 
 class MockGeocodingPlatform extends Mock implements GeocodingPlatform {}
 
@@ -23,7 +23,7 @@ main() {
   group('GeocodingAddressingServiceAdapter', () {
     test('should bring the address when ', () async {
       //setup
-      final location = AppLocation.Location(lat: 10.0, lon: 10.0);
+      final location = Location(lat: 10.0, lon: 10.0);
       final serviceReturns = List.of(
         [
           Placemark(
@@ -41,16 +41,17 @@ main() {
               subThoroughfare: 'Not used')
         ],
       );
-      final expected = AppAddress.Address(
-          rawAddress: serviceReturns[0].name,
+      final expected = Address(
+          rawAddress:
+              '${serviceReturns[0].street} ${serviceReturns[0].name}, ${serviceReturns[0].subLocality}, CEP: ${serviceReturns[0].postalCode}, ${serviceReturns[0].subAdministrativeArea}, ${serviceReturns[0].administrativeArea}, ${serviceReturns[0].country}',
           street: serviceReturns[0].street,
-          number: serviceReturns[0].thoroughfare,
+          number: serviceReturns[0].name,
           complement: '',
           poCode: serviceReturns[0].postalCode,
           county: serviceReturns[0].subLocality,
-          country: AppAddress.Country(name: serviceReturns[0].country),
-          state: AppAddress.State(name: serviceReturns[0].administrativeArea),
-          city: AppAddress.City(name: serviceReturns[0].locality),
+          country: Country(name: serviceReturns[0].country),
+          state: State(name: serviceReturns[0].administrativeArea),
+          city: City(name: serviceReturns[0].subAdministrativeArea),
           location: location);
 
       when(mockGeocodingPlatform.placemarkFromCoordinates(
@@ -67,7 +68,7 @@ main() {
 
     test('should throw not found if no placemark is returned ', () async {
       //setup
-      final location = AppLocation.Location(lat: 10.0, lon: 10.0);
+      final location = Location(lat: 10.0, lon: 10.0);
       final serviceReturns = List<Placemark>.empty();
       final expected = AddressingException(
           messageId: MessageIds.NOT_FOUND,
@@ -85,7 +86,7 @@ main() {
 
     test('should throw exception when some error occurs', () {
 //setup
-      final location = AppLocation.Location(lat: 10.0, lon: 10.0);
+      final location = Location(lat: 10.0, lon: 10.0);
 
       final expected = AddressingException(
           messageId: MessageIds.UNEXPECTED, message: 'Exception: some error');

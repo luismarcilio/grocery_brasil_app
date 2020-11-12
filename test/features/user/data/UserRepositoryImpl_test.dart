@@ -4,6 +4,7 @@ import 'package:grocery_brasil_app/core/errors/exceptions.dart';
 import 'package:grocery_brasil_app/core/errors/failures.dart';
 import 'package:grocery_brasil_app/domain/Address.dart';
 import 'package:grocery_brasil_app/domain/User.dart';
+import 'package:grocery_brasil_app/domain/UserPreferences.dart';
 import 'package:grocery_brasil_app/features/addressing/data/AddressingDataSource.dart';
 import 'package:grocery_brasil_app/features/user/data/UserDataSource.dart';
 import 'package:grocery_brasil_app/features/user/data/UserRepositoryImpl.dart';
@@ -15,13 +16,17 @@ class MockUserDataSource extends Mock implements UserDataSource {}
 class MockAddressingDataSource extends Mock implements AddressingDataSource {}
 
 main() {
-  final MockUserDataSource mockUserDataSource = MockUserDataSource();
-  final MockAddressingDataSource mockAddressingDataSource =
-      MockAddressingDataSource();
+  MockUserDataSource mockUserDataSource;
+  MockAddressingDataSource mockAddressingDataSource;
+  UserRepository sut;
+  setUp(() {
+    mockUserDataSource = MockUserDataSource();
+    mockAddressingDataSource = MockAddressingDataSource();
 
-  final UserRepository sut = UserRepositoryImpl(
-      userDataSource: mockUserDataSource,
-      addressingDataSource: mockAddressingDataSource);
+    sut = UserRepositoryImpl(
+        userDataSource: mockUserDataSource,
+        addressingDataSource: mockAddressingDataSource);
+  });
   group('UserRepository', () {
     group('createUser', () {
       test('should create user ', () async {
@@ -30,9 +35,11 @@ main() {
         final expectedCurrentLocation =
             Address(rawAddress: 'someRawAddress', street: 'some Street');
         final expected = User(
-            userId: someUser.userId,
-            email: someUser.email,
-            address: expectedCurrentLocation);
+          userId: someUser.userId,
+          email: someUser.email,
+          address: expectedCurrentLocation,
+          preferences: UserPreferences(searchRadius: 30000),
+        );
         when(mockAddressingDataSource.getCurrentAddress())
             .thenAnswer((realInvocation) async => expectedCurrentLocation);
         when(mockUserDataSource.createUser(expected))

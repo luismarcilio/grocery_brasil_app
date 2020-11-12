@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:grocery_brasil_app/core/errors/exceptions.dart';
+import 'package:grocery_brasil_app/domain/UserPreferences.dart';
 import 'package:meta/meta.dart';
 
 import '../../../core/errors/failures.dart';
@@ -20,11 +21,13 @@ class UserRepositoryImpl extends UserRepository {
     try {
       final currentAddress = await addressingDataSource.getCurrentAddress();
       User newUser = User(
-          preferences: user.preferences,
+          preferences: UserPreferences(searchRadius: 30000),
           email: user.email,
           address: currentAddress,
           userId: user.userId,
           emailVerified: user.emailVerified);
+
+      print('newUser: $newUser');
       final userSaved = await userDataSource.createUser(newUser);
       return Right(userSaved);
     } catch (e) {
