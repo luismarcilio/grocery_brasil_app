@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
-import 'package:grocery_brasil_app/domain/FiscalNote.dart';
-import 'package:grocery_brasil_app/domain/PurchaseItem.dart';
+
+import '../../../domain/Company.dart';
+import '../../../domain/PurchaseItem.dart';
 
 class ProductPrices extends Equatable {
   final PurchaseItem item;

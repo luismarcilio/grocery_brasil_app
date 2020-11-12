@@ -2,7 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:meta/meta.dart';
 
 import '../../../core/errors/failures.dart';
-import '../../../domain/Address.dart';
+import '../../../domain/Location.dart';
 import 'ProductPrices.dart';
 
 abstract class ProductRepository {

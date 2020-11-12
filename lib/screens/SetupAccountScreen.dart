@@ -63,13 +63,13 @@ class UserForm extends StatelessWidget {
                             UserAddressScreen(_controller.text)),
                   );
                   _controller.text = newAddress.description;
-                  await _user.setAddressByRawAddress(newAddress.description);
+                  // await _user.setAddressByRawAddress(newAddress.description);
                   saveUser(context, _user);
                 }),
             TextRaisedButton(
               onLongPress: () {},
               onPressed: () async {
-                await _user.setAddressByCurrentPosition();
+                // await _user.setAddressByCurrentPosition();
                 saveUser(context, _user);
               },
               label: 'Usar Posição atual',

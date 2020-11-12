@@ -5,6 +5,7 @@ import 'package:grocery_brasil_app/core/errors/failures.dart';
 import 'package:grocery_brasil_app/core/usecases/usecase.dart';
 import 'package:grocery_brasil_app/domain/Address.dart';
 import 'package:grocery_brasil_app/domain/User.dart';
+import 'package:grocery_brasil_app/domain/UserPreferences.dart';
 import 'package:grocery_brasil_app/features/user/domain/CreateUserUseCase.dart';
 import 'package:grocery_brasil_app/features/user/domain/UserRepository.dart';
 import 'package:mockito/mockito.dart';

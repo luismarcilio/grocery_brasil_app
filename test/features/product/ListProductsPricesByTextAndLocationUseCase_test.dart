@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:grocery_brasil_app/domain/Address.dart';
+import 'package:grocery_brasil_app/domain/Location.dart';
 import 'package:grocery_brasil_app/features/product/domain/ListProductsPricesByTextAndLocationUseCase.dart';
 import 'package:grocery_brasil_app/features/product/domain/ProductPrices.dart';
 import 'package:grocery_brasil_app/features/product/domain/ProductRepository.dart';

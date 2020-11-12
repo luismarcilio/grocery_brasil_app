@@ -4,7 +4,7 @@ import 'package:meta/meta.dart';
 
 import '../../../core/errors/failures.dart';
 import '../../../core/usecases/usecase.dart';
-import '../../../domain/Address.dart';
+import '../../../domain/Location.dart';
 import 'ProductPrices.dart';
 import 'ProductRepository.dart';
 

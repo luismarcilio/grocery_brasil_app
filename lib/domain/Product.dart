@@ -1,7 +1,11 @@
 import 'package:equatable/equatable.dart';
+import 'package:json_annotation/json_annotation.dart';
 
 import 'Unity.dart';
 
+part 'Product.g.dart';
+
+@JsonSerializable()
 class Product extends Equatable {
   final String name;
   final String eanCode;
@@ -16,16 +20,6 @@ class Product extends Equatable {
       this.unity,
       this.normalized,
       this.thumbnail});
-  factory Product.fromJson(Map<String, dynamic> json) {
-    return Product(
-      name: json['name'],
-      eanCode: json['eanCode'],
-      ncmCode: json['ncmCode'],
-      normalized: json['normalized'],
-      thumbnail: json['thumbnail'],
-      unity: Unity.fromJson(json['unity']),
-    );
-  }
 
   @override
   String toString() {
@@ -37,6 +31,9 @@ class Product extends Equatable {
         'thumbnail: $thumbnail';
   }
 
+  factory Product.fromJson(Map<String, dynamic> json) =>
+      _$ProductFromJson(json);
+  Map<String, dynamic> toJson() => _$ProductToJson(this);
   @override
   List<Object> get props =>
       [name, eanCode, ncmCode, unity, normalized, thumbnail];

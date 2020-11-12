@@ -1,23 +1,12 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:json_annotation/json_annotation.dart';
 
-class Location extends Equatable {
-  final double lat;
-  final double lon;
+import 'Location.dart';
 
-  Location({@required this.lat, @required this.lon});
+part 'Address.g.dart';
 
-  @override
-  List<Object> get props => [lat, lon];
-
-  factory Location.fromJson(Map<String, dynamic> json) =>
-      Location(lat: json['lat'], lon: json['lon']);
-
-  factory Location.fromGoogleapisJson(Map<String, dynamic> json) =>
-      Location(lat: json['lat'], lon: json['lng']);
-  Map<String, dynamic> toJson() => {'lat': lat, 'lon': lon};
-}
-
+@JsonSerializable()
 class Address extends Equatable {
   final String rawAddress;
   final String street;
@@ -81,34 +70,9 @@ class Address extends Equatable {
     return address;
   }
 
-  Map<String, dynamic> toJson() {
-    return {
-      'rawAddress': this.rawAddress,
-      'street': this.street,
-      'number': this.number,
-      'complement': this.complement,
-      'poCode': this.poCode,
-      'county': this.county,
-      'country': this.country.toJson(),
-      'state': this.state.toJson(),
-      'city': this.city.toJson(),
-      'location': this.location.toJson()
-    };
-  }
-
-  factory Address.fromJson(Map<String, dynamic> json) {
-    return Address(
-        rawAddress: json['rawAddress'],
-        street: json['street'],
-        state: State.fromJson(json['state']),
-        poCode: json['poCode'],
-        location: Location.fromJson(json['location']),
-        number: json['number'],
-        county: json['county'],
-        country: Country.fromJson(json['country']),
-        complement: json['complement'],
-        city: City.fromJson(json['city']));
-  }
+  factory Address.fromJson(Map<String, dynamic> json) =>
+      _$AddressFromJson(json);
+  Map<String, dynamic> toJson() => _$AddressToJson(this);
 
   @override
   String toString() {

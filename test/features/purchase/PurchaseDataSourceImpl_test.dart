@@ -2,9 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:grocery_brasil_app/core/errors/exceptions.dart';
 import 'package:grocery_brasil_app/domain/Address.dart';
+import 'package:grocery_brasil_app/domain/Company.dart';
 import 'package:grocery_brasil_app/domain/FiscalNote.dart';
+import 'package:grocery_brasil_app/domain/Location.dart';
 import 'package:grocery_brasil_app/domain/Purchase.dart';
-import 'package:grocery_brasil_app/domain/PurchaseItem.dart';
 import 'package:grocery_brasil_app/features/common/data/PurchaseDataSource.dart';
 import 'package:mockito/mockito.dart';
 
@@ -108,7 +109,6 @@ main() {
       final purchaseId = 'purchaseId';
 
       final purchase = Purchase(
-        purchaseItemlist: List<PurchaseItem>.empty(),
         totalAmount: 10.0,
         fiscalNote: FiscalNote(
           date: DateTime(2020, 01, 01),
@@ -127,7 +127,7 @@ main() {
         'totalAmount': 10.0,
         'purchaseItemList': [],
         'fiscalNote': Map<String, dynamic>.from({
-          'date': Timestamp.fromDate(DateTime(2020, 01, 01)),
+          'date': '2020-01-01 00:00:00.000',
           'company': Map<String, dynamic>.from({
             'name': 'companyName',
             'address': Map<String, dynamic>.from({

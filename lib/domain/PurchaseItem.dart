@@ -1,8 +1,12 @@
 import 'package:equatable/equatable.dart';
+import 'package:json_annotation/json_annotation.dart';
 
 import 'Product.dart';
 import 'Unity.dart';
 
+part 'PurchaseItem.g.dart';
+
+@JsonSerializable()
 class PurchaseItem extends Equatable {
   final Product product;
   final Unity unity;
@@ -10,16 +14,14 @@ class PurchaseItem extends Equatable {
   final double units;
   final double totalValue;
 
+  @JsonSerializable()
   PurchaseItem(
       {this.product, this.unity, this.unityValue, this.units, this.totalValue});
 
   @override
   List<Object> get props => [product, unity, unityValue, units, totalValue];
 
-  factory PurchaseItem.fromJson(Map<String, dynamic> json) => PurchaseItem(
-      product: Product.fromJson(json['product']),
-      unity: Unity.fromJson(json['unity']),
-      unityValue: json['unityValue'].toDouble(),
-      units: json['units'].toDouble(),
-      totalValue: json['totalValue'].toDouble());
+  factory PurchaseItem.fromJson(Map<String, dynamic> json) =>
+      _$PurchaseItemFromJson(json);
+  Map<String, dynamic> toJson() => _$PurchaseItemToJson(this);
 }

@@ -1,10 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
+import 'package:json_annotation/json_annotation.dart';
 
+import 'Company.dart';
 import 'FiscalNote.dart';
 import 'PurchaseItem.dart';
 import 'User.dart';
 
+part 'Purchase.g.dart';
+
+@JsonSerializable()
 class Purchase extends Equatable {
   final User user;
   final FiscalNote fiscalNote;
@@ -27,24 +32,14 @@ class Purchase extends Equatable {
         totalAmount: resume.data()['totalAmount']);
   }
 
-  factory Purchase.fromJson(Map<String, dynamic> json) {
-    final Purchase purchase = Purchase(
-      totalAmount: json['totalAmount'],
-      fiscalNote: FiscalNote.fromJson(json['fiscalNote']),
-      purchaseItemlist: json['purchaseItemList']
-          .map<PurchaseItem>(
-            (item) => PurchaseItem.fromJson(item),
-          )
-          .toList(),
-    );
-    return purchase;
-  }
-
   factory Purchase.fromSnapshot(DocumentSnapshot doc) {
     final Purchase purchase = Purchase.fromJson(doc.data());
     return purchase;
   }
 
+  factory Purchase.fromJson(Map<String, dynamic> json) =>
+      _$PurchaseFromJson(json);
+  Map<String, dynamic> toJson() => _$PurchaseToJson(this);
   @override
   String toString() {
     return 'Purchase{user: $user, fiscalNote: $fiscalNote, totalAmount: $totalAmount, purchaseItemlist: $purchaseItemlist}';

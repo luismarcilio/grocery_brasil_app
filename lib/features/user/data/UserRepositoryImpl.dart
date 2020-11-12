@@ -19,8 +19,13 @@ class UserRepositoryImpl extends UserRepository {
   Future<Either<UserFailure, User>> createUser(User user) async {
     try {
       final currentAddress = await addressingDataSource.getCurrentAddress();
-      user.address = currentAddress;
-      final userSaved = await userDataSource.createUser(user);
+      User newUser = User(
+          preferences: user.preferences,
+          email: user.email,
+          address: currentAddress,
+          userId: user.userId,
+          emailVerified: user.emailVerified);
+      final userSaved = await userDataSource.createUser(newUser);
       return Right(userSaved);
     } catch (e) {
       if (e is UserException) {

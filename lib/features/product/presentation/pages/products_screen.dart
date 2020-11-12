@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 import '../../../../domain/Address.dart';
-import '../../../../domain/FiscalNote.dart';
+import '../../../../domain/Company.dart';
 import '../../../../domain/Product.dart';
 import '../../../../domain/Unity.dart';
 
