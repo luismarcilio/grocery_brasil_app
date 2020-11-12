@@ -71,3 +71,8 @@ class UserException extends ApplicatonException {
   UserException({@required messageId, message})
       : super(messageId: messageId, message: message);
 }
+
+class AddressingException extends ApplicatonException {
+  AddressingException({@required messageId, message})
+      : super(messageId: messageId, message: message);
+}
