@@ -41,10 +41,16 @@ class Login extends StatelessWidget {
                   content: Text(state.failure.message),
                 ),
               );
+            } else if (state is CreateUserFailure) {
+              Scaffold.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(state.failure.message),
+                ),
+              );
             }
           },
           builder: (context, state) {
-            if (state is LoginRunning) {
+            if (state is LoginRunning || state is UserCreating) {
               return Loading();
             }
             //state is LogoutDone or LoginInitial
