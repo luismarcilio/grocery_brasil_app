@@ -5,6 +5,7 @@ import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:grocery_brasil_app/core/usecases/asyncUseCase.dart'
     as asyncUseCase;
+import 'package:grocery_brasil_app/features/user/domain/CreateUserUseCase.dart';
 import 'package:meta/meta.dart';
 
 import '../../../../core/errors/failures.dart';
@@ -26,13 +27,15 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final AuthenticateWithGoogle authenticateWithGoogle;
   final Logout logout;
   final AsyncLogin asyncLogin;
+  final CreateUserUseCase createUser;
 
   LoginBloc(
       {@required this.authenticateWithEmailAndPassword,
       @required this.authenticateWithFacebook,
       @required this.authenticateWithGoogle,
       @required this.logout,
-      @required this.asyncLogin})
+      @required this.asyncLogin,
+      @required this.createUser})
       : super(LoginInitial()) {
     mapAsyncStateChanges(asyncLogin(asyncUseCase.NoParams()));
   }
@@ -62,7 +65,16 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       yield* _mapLogout(event);
     } else if (event is AsyncLoginEvent) {
       yield* _mapAsyncEvent(event);
+    } else if (event is CreateUserEvent) {
+      yield* _mapCreateIserEvent(event);
     }
+  }
+
+  Stream<LoginState> _mapCreateIserEvent(CreateUserEvent event) async* {
+    yield UserCreating();
+    final status = await createUser(event.user);
+    yield status.fold(
+        (failure) => CreateUserFailure(failure), (user) => UserCreated(user));
   }
 
   Stream<LoginState> _mapLoginWithUsernameAndPassword(

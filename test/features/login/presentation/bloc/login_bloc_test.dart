@@ -11,6 +11,7 @@ import 'package:grocery_brasil_app/features/login/domain/usecases/AuthenticateWi
 import 'package:grocery_brasil_app/features/login/domain/usecases/AuthenticateWithGoogle.dart';
 import 'package:grocery_brasil_app/features/login/domain/usecases/Logout.dart';
 import 'package:grocery_brasil_app/features/login/presentation/bloc/login_bloc.dart';
+import 'package:grocery_brasil_app/features/user/domain/CreateUserUseCase.dart';
 import 'package:mockito/mockito.dart';
 
 class MockAuthenticateWithEmailAndPassword extends Mock
@@ -26,6 +27,8 @@ class MockLogout extends Mock implements Logout {}
 
 class MockAsyncLogin extends Mock implements AsyncLogin {}
 
+class MockCreateUserUseCase extends Mock implements CreateUserUseCase {}
+
 void main() {
   LoginBloc loginBloc;
 
@@ -34,6 +37,7 @@ void main() {
   MockAuthenticateWithGoogle mockAuthenticateWithGoogle;
   MockLogout mockLogout;
   MockAsyncLogin mockAsyncLogin;
+  MockCreateUserUseCase mockCreateUserUseCase;
   setUp(() {
     mockAuthenticateWithEmailAndPassword =
         MockAuthenticateWithEmailAndPassword();
@@ -41,6 +45,7 @@ void main() {
     mockAuthenticateWithGoogle = MockAuthenticateWithGoogle();
     mockLogout = MockLogout();
     mockAsyncLogin = MockAsyncLogin();
+    mockCreateUserUseCase = MockCreateUserUseCase();
     when(mockAsyncLogin(any)).thenAnswer(
         (realInvocation) => Stream<Either<AsyncLoginFailure, User>>.empty());
     loginBloc = LoginBloc(
@@ -48,6 +53,7 @@ void main() {
         authenticateWithFacebook: mockAuthenticateWithFacebook,
         authenticateWithGoogle: mockAuthenticateWithGoogle,
         logout: mockLogout,
+        createUser: mockCreateUserUseCase,
         asyncLogin: mockAsyncLogin);
   });
 
@@ -73,6 +79,7 @@ void main() {
               authenticateWithFacebook: mockAuthenticateWithFacebook,
               authenticateWithGoogle: mockAuthenticateWithGoogle,
               logout: mockLogout,
+              createUser: mockCreateUserUseCase,
               asyncLogin: mockAsyncLogin),
           act: (bloc) {},
           expect: [LoginRunning(), LoginDone(expectedUser)]);
@@ -97,6 +104,7 @@ void main() {
               authenticateWithFacebook: mockAuthenticateWithFacebook,
               authenticateWithGoogle: mockAuthenticateWithGoogle,
               logout: mockLogout,
+              createUser: mockCreateUserUseCase,
               asyncLogin: mockAsyncLogin),
           act: (bloc) {},
           expect: [
@@ -205,6 +213,35 @@ void main() {
           build: () => loginBloc,
           act: (bloc) => bloc.add(LogoutEvent()),
           expect: [LoginRunning(), LogoutDone()]);
+    });
+  });
+
+  group('create user', () {
+    group('should create user', () {
+      final user = User(email: 'test@email.com', userId: '1');
+      setUp(() {
+        when(mockCreateUserUseCase.call(user))
+            .thenAnswer((realInvocation) async => Right(user));
+      });
+
+      blocTest('should create user',
+          build: () => loginBloc,
+          act: (bloc) => bloc.add(CreateUserEvent(user: user)),
+          expect: [UserCreating(), UserCreated(user)]);
+    });
+
+    group('should return error if fails', () {
+      final user = User(email: 'test@email.com', userId: '1');
+      final expected =
+          UserFailure(messageId: MessageIds.UNEXPECTED, message: 'some error');
+      setUp(() {
+        when(mockCreateUserUseCase.call(user))
+            .thenAnswer((realInvocation) async => Left(expected));
+      });
+      blocTest('should fail creating user',
+          build: () => loginBloc,
+          act: (bloc) => bloc.add(CreateUserEvent(user: user)),
+          expect: [UserCreating(), CreateUserFailure(expected)]);
     });
   });
 }

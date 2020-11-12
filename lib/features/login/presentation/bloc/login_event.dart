@@ -29,3 +29,12 @@ class AsyncLoginEvent extends LoginEvent {
   final Either<AsyncLoginFailure, User> event;
   AsyncLoginEvent(this.event);
 }
+
+class CreateUserEvent extends LoginEvent {
+  final User user;
+
+  CreateUserEvent({@required this.user});
+
+  @override
+  List<Object> get props => [user];
+}

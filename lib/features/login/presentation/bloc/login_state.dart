@@ -28,3 +28,21 @@ class LoginError extends LoginState {
 }
 
 class LogoutDone extends LoginState {}
+
+class UserCreating extends LoginState {}
+
+class UserCreated extends LoginState {
+  final User user;
+
+  UserCreated(this.user);
+  @override
+  List<Object> get props => [user];
+}
+
+class CreateUserFailure extends LoginState {
+  final UserFailure failure;
+
+  CreateUserFailure(this.failure);
+  @override
+  List<Object> get props => [failure];
+}
