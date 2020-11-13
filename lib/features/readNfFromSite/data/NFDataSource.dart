@@ -37,7 +37,7 @@ class NFDataSourceImpl extends NFDataSource {
         host: backendFunctionsConfiguration.host,
         port: backendFunctionsConfiguration.port,
         path:
-            '${backendFunctionsConfiguration.path}/parseAndSaveNf/${nfHtmlFromSite.uf.toLowerCase()}');
+            '${backendFunctionsConfiguration.path}/parseAndSaveNf/${nfHtmlFromSite.uf.toUpperCase()}');
     print("uri: ${uri.toString()}");
 
     final Map httpHeaders = Map<String, String>.from({
