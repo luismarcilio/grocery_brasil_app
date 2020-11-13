@@ -28,7 +28,7 @@ main() {
         accessKey: "accessKey",
         initialUrl: "initialUrl",
         javascriptFunctions: "javascriptFunctions",
-        state: "state");
+        uf: "state");
     when(mockGetDetailsfromUrlUseCase(
             GetDetailsfromUrlUseCase.Params(url: url)))
         .thenAnswer((realInvocation) async => Right(nFProcessData));

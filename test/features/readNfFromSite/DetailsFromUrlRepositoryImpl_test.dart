@@ -44,7 +44,7 @@ main() {
           accessKey: 'accessKey',
           initialUrl: 'http://test',
           javascriptFunctions: 'functions',
-          state: 'RJ');
+          uf: 'RJ');
 
       when(mockDetailsFromUrlDataSource(url: 'url'))
           .thenAnswer((realInvocation) async => expected);

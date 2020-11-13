@@ -41,12 +41,12 @@ void main() {
       //setup
 
       const String expectedString =
-          '{"accessKey": "accessKeyTeste", "initialUrl":"initialUrlTeste", "state":"stateTeste", "javascriptFunctions":"functionsTeste"}';
+          '{"accessKey": "accessKeyTeste", "initialUrl":"initialUrlTeste", "uf":"stateTeste", "javascriptFunctions":"functionsTeste"}';
       const NFProcessData expected = NFProcessData(
           accessKey: 'accessKeyTeste',
           initialUrl: 'initialUrlTeste',
           javascriptFunctions: 'functionsTeste',
-          state: 'stateTeste');
+          uf: 'stateTeste');
       when(mockFunctionsDetailsDataSource.getBackendFunctionsConfiguration())
           .thenAnswer((realInvocation) async => BackendFunctionsConfiguration(
               host: 'hostTest',

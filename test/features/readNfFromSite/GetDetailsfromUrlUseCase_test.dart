@@ -24,7 +24,7 @@ main() {
           accessKey: "accessKey",
           initialUrl: "initialUrl",
           javascriptFunctions: "javascriptFunctions",
-          state: "MG");
+          uf: "MG");
 
       when(mockDetailsFromUrlRepository(url: url))
           .thenAnswer((realInvocation) async => Right(nFProcessData));

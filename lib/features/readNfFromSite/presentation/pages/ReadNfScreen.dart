@@ -81,7 +81,7 @@ class NfWebView extends StatelessWidget {
         _webViewController.loadUrl(nFProcessData.javascriptFunctions);
       },
       javascriptChannels: Set<JavascriptChannel>.from(
-          {SaveNf(state: nFProcessData.state, context: context)}),
+          {SaveNf(state: nFProcessData.uf, context: context)}),
       onWebViewCreated: (WebViewController webViewController) {
         _webViewController = webViewController;
       },
