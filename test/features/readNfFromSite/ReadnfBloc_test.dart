@@ -1,5 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:grocery_brasil_app/core/errors/exceptions.dart';
+import 'package:grocery_brasil_app/core/errors/failures.dart';
 import 'package:grocery_brasil_app/features/readNfFromSite/domain/GetDetailsfromUrlUseCase.dart'
     as GetDetailsfromUrlUseCase;
 import 'package:grocery_brasil_app/features/readNfFromSite/domain/SaveNfUseCase.dart'
@@ -42,15 +44,35 @@ main() {
   });
 
   group('SaveNfEvent', () {
-    final nfHtmlFromSite = NfHtmlFromSite(html: "html", uf: "MG");
-    when(mockSaveNfUseCase(
-            SaveNfUseCase.Params(nfHtmlFromSite: nfHtmlFromSite)))
-        .thenAnswer((realInvocation) async => Right(nfHtmlFromSite));
-    blocTest('SaveNfEvent',
-        build: () => ReadnfBloc(
-            getDetailsfromUrlUseCase: mockGetDetailsfromUrlUseCase,
-            saveNfUseCase: mockSaveNfUseCase),
-        act: (bloc) => bloc.add(SaveNfEvent(nfHtmlFromSite: nfHtmlFromSite)),
-        expect: [SaveNfDoing(), SaveNfDone()]);
+    group('Happy path', () {
+      final nfHtmlFromSite = NfHtmlFromSite(html: "html", uf: "MG");
+      when(mockSaveNfUseCase(
+              SaveNfUseCase.Params(nfHtmlFromSite: nfHtmlFromSite)))
+          .thenAnswer((realInvocation) async => Right(nfHtmlFromSite));
+      blocTest('SaveNfEvent',
+          build: () => ReadnfBloc(
+              getDetailsfromUrlUseCase: mockGetDetailsfromUrlUseCase,
+              saveNfUseCase: mockSaveNfUseCase),
+          act: (bloc) => bloc.add(SaveNfEvent(nfHtmlFromSite: nfHtmlFromSite)),
+          expect: [SaveNfDoing(), SaveNfDone()]);
+    });
+
+    group('KO path', () {
+      final nfHtmlFromSite = NfHtmlFromSite(html: "html", uf: "RJ");
+      final purchaseFailure = PurchaseFailure(
+          messageId: MessageIds.UNEXPECTED, message: 'some error');
+      when(mockSaveNfUseCase(
+              SaveNfUseCase.Params(nfHtmlFromSite: nfHtmlFromSite)))
+          .thenAnswer((realInvocation) async => Left(purchaseFailure));
+      blocTest('SaveNfEventError',
+          build: () => ReadnfBloc(
+              getDetailsfromUrlUseCase: mockGetDetailsfromUrlUseCase,
+              saveNfUseCase: mockSaveNfUseCase),
+          act: (bloc) => bloc.add(SaveNfEvent(nfHtmlFromSite: nfHtmlFromSite)),
+          expect: [
+            SaveNfDoing(),
+            SaveNfError(purchaseFailure: purchaseFailure)
+          ]);
+    });
   });
 }
