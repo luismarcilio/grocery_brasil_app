@@ -36,7 +36,7 @@ class UserForm extends StatelessWidget {
   UserForm(this._user);
 
   static void saveUser(BuildContext context, User user) {
-    final userCubit = context.bloc<UserCubit>();
+    final userCubit = context.read<UserCubit>();
     userCubit.updateUser(user);
   }
 
@@ -142,7 +142,7 @@ class _UserDetailsFormState extends State<UserDetailsForm> {
       },
       builder: (context, state) {
         if (state is UserInitial) {
-          final userCubit = context.bloc<UserCubit>();
+          final userCubit = context.read<UserCubit>();
           userCubit.getUser(_userId);
           return userInitial();
         } else if (state is UserLoading) {
