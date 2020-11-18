@@ -14,13 +14,13 @@ class Purchase extends Equatable {
   final User user;
   final FiscalNote fiscalNote;
   final double totalAmount;
-  final List<PurchaseItem> purchaseItemlist;
+  final List<PurchaseItem> purchaseItemList;
 
   Purchase(
-      {this.user, this.fiscalNote, this.totalAmount, this.purchaseItemlist});
+      {this.user, this.fiscalNote, this.totalAmount, this.purchaseItemList});
 
   @override
-  List<Object> get props => [user, fiscalNote, totalAmount, purchaseItemlist];
+  List<Object> get props => [user, fiscalNote, totalAmount, purchaseItemList];
 
   factory Purchase.fromResumeSnapshot(DocumentSnapshot resume) {
     print('resume.data: ${resume.data()["date"]}');
@@ -42,6 +42,6 @@ class Purchase extends Equatable {
   Map<String, dynamic> toJson() => _$PurchaseToJson(this);
   @override
   String toString() {
-    return 'Purchase{user: $user, fiscalNote: $fiscalNote, totalAmount: $totalAmount, purchaseItemlist: $purchaseItemlist}';
+    return 'Purchase{user: $user, fiscalNote: $fiscalNote, totalAmount: $totalAmount, purchaseItemList: $purchaseItemList}';
   }
 }

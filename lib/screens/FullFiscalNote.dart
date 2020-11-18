@@ -76,7 +76,7 @@ class BuildPurchaseScreen extends StatelessWidget {
                 onTap: null,
                 onLongPress: null)),
         body: ListView(
-          children: _purchase.purchaseItemlist
+          children: _purchase.purchaseItemList
               .map<Widget>((purchaseItem) => NFScreensWidgets.newnfItemCard(
                   context: context,
                   onLongPress: null,
