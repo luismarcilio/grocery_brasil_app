@@ -6,6 +6,7 @@ import 'package:grocery_brasil_app/domain/Company.dart';
 import 'package:grocery_brasil_app/domain/FiscalNote.dart';
 import 'package:grocery_brasil_app/domain/Location.dart';
 import 'package:grocery_brasil_app/domain/Purchase.dart';
+import 'package:grocery_brasil_app/domain/PurchaseItem.dart';
 import 'package:grocery_brasil_app/features/common/data/PurchaseDataSource.dart';
 import 'package:mockito/mockito.dart';
 
@@ -110,6 +111,7 @@ main() {
 
       final purchase = Purchase(
         totalAmount: 10.0,
+        purchaseItemList: List<PurchaseItem>.empty(),
         fiscalNote: FiscalNote(
           date: DateTime(2020, 01, 01),
           company: Company(
@@ -125,7 +127,7 @@ main() {
       );
       final databaseDoc = Map<String, dynamic>.from({
         'totalAmount': 10.0,
-        'purchaseItemList': [],
+        'purchaseItemList': List<PurchaseItem>.empty(),
         'fiscalNote': Map<String, dynamic>.from({
           'date': '2020-01-01 00:00:00.000',
           'company': Map<String, dynamic>.from({
