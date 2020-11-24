@@ -70,4 +70,27 @@ class UserRepositoryImpl extends UserRepository {
       );
     }
   }
+
+  @override
+  Future<Either<UserFailure, User>> updateUser(User user) async {
+    try {
+      final updatedUser = await userDataSource.updateUser(user);
+      return Right(updatedUser);
+    } catch (e) {
+      if (e is UserException) {
+        return Left(
+          UserFailure(
+            messageId: e.messageId,
+            message: e.message,
+          ),
+        );
+      }
+      return Left(
+        UserFailure(
+          messageId: MessageIds.UNEXPECTED,
+          message: e.toString(),
+        ),
+      );
+    }
+  }
 }

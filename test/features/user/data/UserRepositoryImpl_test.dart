@@ -99,5 +99,35 @@ main() {
         expect(actual, Left(expected));
       });
     });
+
+    group('updateUser', () {
+      test('should update user ', () async {
+        //setup
+        final someUser = User(userId: 'someUserId', email: 'someEmail');
+        final expected = User(userId: 'someUserId', email: 'someEmail');
+        when(mockUserDataSource.updateUser(someUser))
+            .thenAnswer((realInvocation) async => expected);
+
+        //act
+        final actual = await sut.updateUser(someUser);
+        //assert
+        expect(actual, Right(expected));
+        verify(mockUserDataSource.updateUser(someUser));
+        verifyNoMoreInteractions(mockUserDataSource);
+      });
+      test('should return UserFailure when some exception occurs', () async {
+        //setup
+        final someUser = User(userId: 'someUserId', email: 'someEmail');
+        final expected = UserFailure(
+            messageId: MessageIds.UNEXPECTED,
+            message: 'Exception: Some error happened');
+        when(mockUserDataSource.updateUser(someUser))
+            .thenThrow(Exception('Some error happened'));
+        //act
+        final actual = await sut.updateUser(someUser);
+        //assert
+        expect(actual, Left(expected));
+      });
+    });
   });
 }
