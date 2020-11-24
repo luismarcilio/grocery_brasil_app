@@ -51,7 +51,6 @@ class FirbaseUserDataSource extends UserDataSource {
 
   @override
   Future<User> updateUser(User user) {
-    // TODO: implement updateUser
-    throw UnimplementedError();
+    return createUser(user);
   }
 }

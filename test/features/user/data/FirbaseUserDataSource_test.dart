@@ -15,14 +15,19 @@ class MockDocumentReference extends Mock implements DocumentReference {}
 class MockDocumentSnapshot extends Mock implements DocumentSnapshot {}
 
 main() {
-  MockFirebaseFirestore mockFirebaseFirestore = MockFirebaseFirestore();
-  MockCollectionReference collection = MockCollectionReference();
-  MockDocumentReference document = MockDocumentReference();
-  MockDocumentSnapshot docSnapshot = MockDocumentSnapshot();
-
-  final UserDataSource sut =
-      FirbaseUserDataSource(firebaseFirestore: mockFirebaseFirestore);
+  MockFirebaseFirestore mockFirebaseFirestore;
+  MockCollectionReference collection;
+  MockDocumentReference document;
+  MockDocumentSnapshot docSnapshot;
+  UserDataSource sut;
   group('FirbaseUserDataSource', () {
+    setUp(() {
+      mockFirebaseFirestore = MockFirebaseFirestore();
+      collection = MockCollectionReference();
+      document = MockDocumentReference();
+      docSnapshot = MockDocumentSnapshot();
+      sut = FirbaseUserDataSource(firebaseFirestore: mockFirebaseFirestore);
+    });
     group('createUser', () {
       test('should create user  ', () async {
         //setup
@@ -35,9 +40,9 @@ main() {
             .thenAnswer((realInvocation) => Future.value());
 
         //act
-        final expected = await sut.createUser(someUser);
+        final actual = await sut.createUser(someUser);
         //assert
-        expect(expected, someUser);
+        expect(actual, someUser);
         verify(mockFirebaseFirestore.collection('USUARIOS'));
         verifyNoMoreInteractions(mockFirebaseFirestore);
         verify(collection.doc(someUser.userId));
@@ -119,6 +124,38 @@ main() {
         //assert
         expect(() async => await sut.getUserByUserId('someUserId'),
             throwsA(expected));
+      });
+    });
+
+    group('updateUser', () {
+      test('should update user ', () async {
+        //setup
+        final someUser = User(userId: 'someUserId', email: 'someEmail');
+        when(mockFirebaseFirestore.collection('USUARIOS'))
+            .thenReturn(collection);
+        when(collection.doc(someUser.userId)).thenReturn(document);
+        when(document.set(someUser.toJson()))
+            .thenAnswer((realInvocation) => Future.value());
+
+        //act
+        final actual = await sut.updateUser(someUser);
+
+        //assert
+        expect(actual, someUser);
+        // verify(sut.createUser(someUser));
+      });
+
+      test('should throw UserExcepion when some error occurs', () async {
+        //setup
+        final someUser = User(userId: 'someUserId', email: 'someEmail');
+        final expected = UserException(
+            messageId: MessageIds.UNEXPECTED, message: 'Exception: some error');
+
+        when(mockFirebaseFirestore.collection('USUARIOS'))
+            .thenThrow(Exception('some error'));
+        //act
+        //assert
+        expect(() async => await sut.updateUser(someUser), throwsA(expected));
       });
     });
   });
