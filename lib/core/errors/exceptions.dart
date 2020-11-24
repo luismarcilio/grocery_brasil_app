@@ -76,3 +76,8 @@ class AddressingException extends ApplicatonException {
   AddressingException({@required messageId, message})
       : super(messageId: messageId, message: message);
 }
+
+class SecretsException extends ApplicatonException {
+  SecretsException({@required messageId, message})
+      : super(messageId: messageId, message: message);
+}
