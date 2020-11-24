@@ -7,3 +7,7 @@ abstract class UserRepository {
   Future<Either<UserFailure, User>> getUserByUserId(String userId);
   Future<Either<UserFailure, User>> createUser(User user);
 }
+
+abstract class UserRepositoryUpdate {
+  Future<Either<UserFailure, User>> updateUser(User user);
+}
