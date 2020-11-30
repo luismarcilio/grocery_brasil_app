@@ -11,6 +11,5 @@ class ProductPrices extends Equatable {
   ProductPrices({this.item, this.company, this.unityValue});
 
   @override
-  // TODO: implement props
   List<Object> get props => [item, company, unityValue];
 }
