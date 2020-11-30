@@ -16,6 +16,22 @@ main() {
       mockSecretDataSource = MockSecretDataSource();
       sut = SecretsServiceImpl(secretDataSource: mockSecretDataSource);
     });
+    test('should return secret from cache when available', () async {
+      //setup
+      final expected = 'SOME_SECRET';
+      final secretName = 'SOME_SECRET_NAME';
+      when(mockSecretDataSource.getSecret(secretName))
+          .thenAnswer((realInvocation) async => expected);
+
+      //act
+      await sut.getSecret(secretName);
+      final actual = await sut.getSecret(secretName);
+
+      //assert
+      expect(actual, expected);
+      expect(verify(mockSecretDataSource.getSecret(secretName)).callCount, 1);
+      verifyNoMoreInteractions(mockSecretDataSource);
+    });
     test('should return the secret', () async {
       //setup
       final expected = 'SOME_SECRET';
