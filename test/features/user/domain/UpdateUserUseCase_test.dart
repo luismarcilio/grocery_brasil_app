@@ -7,7 +7,7 @@ import 'package:grocery_brasil_app/features/user/domain/UpdateUserUseCase.dart';
 import 'package:grocery_brasil_app/features/user/domain/UserRepository.dart';
 import 'package:mockito/mockito.dart';
 
-class MockUserRepository extends Mock implements UserRepositoryUpdate {}
+class MockUserRepository extends Mock implements UserRepository {}
 
 main() {
   MockUserRepository mockUserRepository;

@@ -7,7 +7,7 @@ import '../../../domain/User.dart';
 import 'UserRepository.dart';
 
 class UpdateUserUseCase extends UseCase<User, User> {
-  final UserRepositoryUpdate userRepository;
+  final UserRepository userRepository;
 
   UpdateUserUseCase(this.userRepository);
 
