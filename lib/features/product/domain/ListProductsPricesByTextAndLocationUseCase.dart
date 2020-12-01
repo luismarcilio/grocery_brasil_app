@@ -6,18 +6,17 @@ import '../../../core/errors/failures.dart';
 import '../../../core/usecases/usecase.dart';
 import '../../../domain/Location.dart';
 import 'ProductPrices.dart';
-import 'ProductRepository.dart';
+import 'ProductService.dart';
 
 class ListProductsPricesByTextAndLocationUseCase
     extends UseCase<Stream<ProductPrices>, Params> {
-  final ProductRepository productRepository;
+  final ProductService productService;
 
-  ListProductsPricesByTextAndLocationUseCase(
-      {@required this.productRepository});
+  ListProductsPricesByTextAndLocationUseCase({@required this.productService});
 
   @override
   Future<Either<ProductFailure, Stream<ProductPrices>>> call(params) {
-    return productRepository.listProductsPricesByTextAndLocationUseCase(
+    return productService.listProductsPricesByTextAndLocationUseCase(
         location: params.location, text: params.text);
   }
 }

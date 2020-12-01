@@ -3,21 +3,21 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:grocery_brasil_app/domain/Location.dart';
 import 'package:grocery_brasil_app/features/product/domain/ListProductsPricesByTextAndLocationUseCase.dart';
 import 'package:grocery_brasil_app/features/product/domain/ProductPrices.dart';
-import 'package:grocery_brasil_app/features/product/domain/ProductRepository.dart';
+import 'package:grocery_brasil_app/features/product/domain/ProductService.dart';
 import 'package:mockito/mockito.dart';
 
-class MockProductRepository extends Mock implements ProductRepository {}
+class MockProductService extends Mock implements ProductService {}
 
 main() {
-  MockProductRepository mockProductRepository;
+  MockProductService mockProductService;
   ListProductsPricesByTextAndLocationUseCase
       listProductsPricesByTextAndLocationUseCase;
 
   setUp(() {
-    mockProductRepository = MockProductRepository();
+    mockProductService = MockProductService();
     listProductsPricesByTextAndLocationUseCase =
         ListProductsPricesByTextAndLocationUseCase(
-            productRepository: mockProductRepository);
+            productService: mockProductService);
   });
 
   group('ListProductsPricesByTextAndLocationUseCase', () {
@@ -25,7 +25,7 @@ main() {
       //setup
       final Stream<ProductPrices> streamOfProductPrices =
           Stream<ProductPrices>.fromIterable([ProductPrices()]);
-      when(mockProductRepository.listProductsPricesByTextAndLocationUseCase(
+      when(mockProductService.listProductsPricesByTextAndLocationUseCase(
               location: Location(lat: 0.0, lon: 0.0), text: "PRODUTO"))
           .thenAnswer((realInvocation) async => Right(streamOfProductPrices));
       //act
