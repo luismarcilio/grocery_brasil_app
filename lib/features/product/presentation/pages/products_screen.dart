@@ -1,17 +1,28 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../domain/Address.dart';
-import '../../../../domain/Company.dart';
-import '../../../../domain/Product.dart';
-import '../../../../domain/Unity.dart';
+import '../../../../injection_container.dart';
+import '../../../../screens/common/loading.dart';
+import '../../domain/ProductSearchModel.dart';
+import '../bloc/products_bloc.dart';
 
 class ProductsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (_) => sl<ProductsBloc>(),
+      child: BuildProductsScreen(),
+    );
+  }
+}
+
+class BuildProductsScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
     return Column(
-      children: [SearchTextForm(), Expanded(child: ResultsTable())],
+      children: [SearchTextForm(), Expanded(child: BuildResultsTable())],
     );
   }
 }
@@ -38,7 +49,9 @@ class SearchTextForm extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: TextFormField(
-        onChanged: (text) => debouncer.run(() => print(text)),
+        onChanged: (text) => debouncer.run(() =>
+            BlocProvider.of<ProductsBloc>(context)
+                .add(SearchProductsByText(text))),
         decoration: InputDecoration(
             alignLabelWithHint: true,
             border: OutlineInputBorder(),
@@ -50,149 +63,64 @@ class SearchTextForm extends StatelessWidget {
   }
 }
 
-class ResultsTable extends StatelessWidget {
+// class ResultsTable extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return BlocProvider(
+//       create: (_) => sl<ProductsBloc>(),
+//       child: BuildResultsTable(),
+//     );
+//   }
+// }
+
+class BuildResultsTable extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    List<Company> listCompany = List<Company>.from([
-      Company(
-        name: 'supermercado1',
-        address: Address(
-          rawAddress: '',
-          street: 'Avenida da Saudade',
-          number: '1110',
-          county: 'Santa Marta',
-          city: City(name: 'Uberaba'),
-        ),
-      ),
-      Company(
-        name: 'supermercado2',
-        address: Address(
-          rawAddress: '',
-          street: 'Rua Novo Horizonte',
-          number: '823',
-          county: 'Mercês',
-          city: City(name: 'Uberaba'),
-        ),
-      ),
-      Company(
-        name: 'supermercado3',
-        address: Address(
-          rawAddress: '',
-          street: 'Rua dos Bobos',
-          number: '0',
-          county: 'Santa Maria',
-          city: City(name: 'Uberaba'),
-        ),
-      ),
-    ]);
-    final product = Product(
-        name: "Carne de vaca",
-        thumbnail:
-            'https://storage.googleapis.com/grocery-brasil-app-thumbnails/7896036090244',
-        unity: Unity(name: 'UN'));
+    return BlocConsumer<ProductsBloc, ProductsState>(
+        listener: (context, state) {
+      if (state is ProductError) {
+        Scaffold.of(context).showSnackBar(
+          SnackBar(
+            content: Text(state.failure.toString()),
+          ),
+        );
+      }
+    }, builder: (context, state) {
+      if (state is ProductsSearching) {
+        return Loading();
+      } else if (state is ProductsTextAvailable) {
+        return BuildProductsTable(products: state.products);
+      }
+      return Container();
+    });
+  }
+}
+
+class BuildProductsTable extends StatelessWidget {
+  final List<ProductSearchModel> products;
+
+  const BuildProductsTable({Key key, this.products}) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
     return ListView(
-      children: List<Widget>.of([
-        ProductCard(
-          company: listCompany[0],
-          product: product,
-          purchaseDate: DateTime.now(),
-          unityValue: 10.0,
-        ),
-        ProductCard(
-          company: listCompany[1],
-          product: product,
-          purchaseDate: DateTime.now(),
-          unityValue: 11.0,
-        ),
-        ProductCard(
-          company: listCompany[2],
-          product: product,
-          purchaseDate: DateTime.now(),
-          unityValue: 12.0,
-        ),
-        ProductCard(
-          company: listCompany[0],
-          product: product,
-          purchaseDate: DateTime.now(),
-          unityValue: 10.0,
-        ),
-        ProductCard(
-          company: listCompany[1],
-          product: product,
-          purchaseDate: DateTime.now(),
-          unityValue: 11.0,
-        ),
-        ProductCard(
-          company: listCompany[2],
-          product: product,
-          purchaseDate: DateTime.now(),
-          unityValue: 12.0,
-        ),
-        ProductCard(
-          company: listCompany[0],
-          product: product,
-          purchaseDate: DateTime.now(),
-          unityValue: 10.0,
-        ),
-        ProductCard(
-          company: listCompany[1],
-          product: product,
-          purchaseDate: DateTime.now(),
-          unityValue: 11.0,
-        ),
-        ProductCard(
-          company: listCompany[2],
-          product: product,
-          purchaseDate: DateTime.now(),
-          unityValue: 12.0,
-        ),
-        ProductCard(
-          company: listCompany[0],
-          product: product,
-          purchaseDate: DateTime.now(),
-          unityValue: 10.0,
-        ),
-        ProductCard(
-          company: listCompany[1],
-          product: product,
-          purchaseDate: DateTime.now(),
-          unityValue: 11.0,
-        ),
-        ProductCard(
-          company: listCompany[2],
-          product: product,
-          purchaseDate: DateTime.now(),
-          unityValue: 12.0,
-        ),
-      ]),
-    );
+        children: List<Widget>.of(
+            products.map((product) => ProductCard(product: product))).toList());
   }
 }
 
 class ProductCard extends StatelessWidget {
-  final Product product;
-  final DateTime purchaseDate;
-  final double unityValue;
-  final Company company;
+  final ProductSearchModel product;
   final Function onTap;
   final Function onLongPress;
 
-  const ProductCard(
-      {Key key,
-      this.onTap,
-      this.onLongPress,
-      @required this.product,
-      @required this.purchaseDate,
-      @required this.unityValue,
-      @required this.company})
+  const ProductCard({Key key, this.product, this.onTap, this.onLongPress})
       : super(key: key);
-
   @override
   Widget build(BuildContext context) {
+    print("product: $product");
     return Card(
       child: Row(
         children: [
-          MoreItemsMenu(),
           Expanded(
             child: Column(
               children: [
@@ -201,15 +129,17 @@ class ProductCard extends StatelessWidget {
                       ? Icon(Icons.shopping_cart)
                       : Image.network(product.thumbnail),
                   title: new Text(product.name),
-                  trailing: new Text("R\$ ${unityValue.toString()}"),
-                  subtitle: new Text("${product.unity.name} "),
+                  trailing: new Text("R\$ 15,12"),
+                  subtitle:
+                      new Text(product.unity != null ? product.unity.name : ''),
                   onTap: onTap,
                   onLongPress: onLongPress,
                 ),
                 ListTile(
-                    title: new Text(company.name),
-                    subtitle: new Text(
-                        "${company.address.street}, ${company.address.number}, ${company.address.county}, ${company.address.city.name}"))
+                  title: new Text('ZEBU CARNES SUPERMERCADOS LTDA'),
+                  subtitle: new Text(
+                      "Avenida da Saudade, 1110, Santa Marta, Uberaba"),
+                ),
               ],
             ),
           ),
