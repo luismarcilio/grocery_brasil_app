@@ -16,12 +16,12 @@ class ProductServiceImpl implements ProductService {
       {@required this.textSearchRepository, @required this.productRepository});
 
   @override
-  Future<Either<ProductFailure, Stream<ProductSearchModel>>> listProductsByText(
+  Future<Either<ProductFailure, List<ProductSearchModel>>> listProductsByText(
       {String text}) async {
     try {
-      final streamOfProducts =
+      final listOfProducts =
           await textSearchRepository.listProductsByText(text);
-      return Right(streamOfProducts);
+      return Right(listOfProducts);
     } catch (e) {
       if (e is ProductException) {
         return Left(ProductFailure(messageId: e.messageId, message: e.message));

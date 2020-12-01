@@ -32,7 +32,7 @@ main() {
       test('should bring a list of product prices ', () async {
         //setup
         final textToSearch = 'leite';
-        final listOfProducts = [
+        final expected = [
           ProductSearchModel(
               eanCode: '34109823',
               name: 'Leite italac',
@@ -62,15 +62,12 @@ main() {
               thumbnail: 'http://something',
               unity: Unity(name: 'LT')),
         ];
-        final expected = Stream.fromIterable(listOfProducts);
         when(mockTextSearchRepository.listProductsByText(textToSearch))
             .thenAnswer((realInvocation) async => expected);
         //act
         final actual = await sut.listProductsByText(text: textToSearch);
         //assert
-        var streamOfProducts;
-        actual.fold((l) => null, (r) => streamOfProducts = r);
-        await expectLater(streamOfProducts, emitsInOrder(listOfProducts));
+        await expect(actual, Right(expected));
       });
       test('should return ProductFailure if it fails ', () async {
         //setup

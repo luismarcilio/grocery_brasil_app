@@ -5,6 +5,6 @@ import '../../../core/errors/failures.dart';
 import 'ProductSearchModel.dart';
 
 abstract class ProductService {
-  Future<Either<ProductFailure, Stream<ProductSearchModel>>> listProductsByText(
+  Future<Either<ProductFailure, List<ProductSearchModel>>> listProductsByText(
       {@required String text});
 }

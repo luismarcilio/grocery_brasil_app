@@ -8,13 +8,13 @@ import 'ProductSearchModel.dart';
 import 'ProductService.dart';
 
 class ListProductsByTextUseCase
-    extends UseCase<Stream<ProductSearchModel>, Params> {
+    extends UseCase<List<ProductSearchModel>, Params> {
   final ProductService productService;
 
   ListProductsByTextUseCase({@required this.productService});
 
   @override
-  Future<Either<ProductFailure, Stream<ProductSearchModel>>> call(params) {
+  Future<Either<ProductFailure, List<ProductSearchModel>>> call(params) {
     return productService.listProductsByText(text: params.text);
   }
 }
