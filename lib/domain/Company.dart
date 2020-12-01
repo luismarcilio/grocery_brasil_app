@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -21,7 +23,5 @@ class Company extends Equatable {
   Map<String, dynamic> toJson() => _$CompanyToJson(this);
 
   @override
-  String toString() {
-    return 'Company{name: $name, taxIdentification: $taxIdentification, address: $address}';
-  }
+  String toString() => jsonEncode(this.toJson());
 }

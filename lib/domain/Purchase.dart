@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -40,8 +42,7 @@ class Purchase extends Equatable {
   factory Purchase.fromJson(Map<String, dynamic> json) =>
       _$PurchaseFromJson(json);
   Map<String, dynamic> toJson() => _$PurchaseToJson(this);
+
   @override
-  String toString() {
-    return 'Purchase{user: $user, fiscalNote: $fiscalNote, totalAmount: $totalAmount, purchaseItemList: $purchaseItemList}';
-  }
+  String toString() => jsonEncode(this.toJson());
 }

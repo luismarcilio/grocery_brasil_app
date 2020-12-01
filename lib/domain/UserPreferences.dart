@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -14,4 +16,7 @@ class UserPreferences extends Equatable {
 
   @override
   List<Object> get props => [searchRadius];
+
+  @override
+  String toString() => jsonEncode(this.toJson());
 }

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -16,9 +18,7 @@ class FiscalNote extends Equatable {
   final Company company;
 
   @override
-  String toString() {
-    return 'FiscalNote{accessKey: $accessKey, number: $number, series: $series, date: $date, company: $company}';
-  }
+  String toString() => jsonEncode(this.toJson());
 
   FiscalNote(
       {this.accessKey, this.number, this.series, this.date, this.company});

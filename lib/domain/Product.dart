@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -22,14 +24,7 @@ class Product extends Equatable {
       this.thumbnail});
 
   @override
-  String toString() {
-    return 'name:$name, '
-        'eanCode: $eanCode, '
-        'ncmCode: $ncmCode, '
-        'unity: ${unity.toString()}, '
-        'normalized: $normalized, '
-        'thumbnail: $thumbnail';
-  }
+  String toString() => jsonEncode(this.toJson());
 
   factory Product.fromJson(Map<String, dynamic> json) =>
       _$ProductFromJson(json);

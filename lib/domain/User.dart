@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:meta/meta.dart';
@@ -30,7 +32,5 @@ class User extends Equatable {
       [email, userId, emailVerified, address, preferences];
 
   @override
-  String toString() {
-    return 'user: {email:$email, userId:$userId, emailVerified:$emailVerified, address:$address, preferences:$preferences }';
-  }
+  String toString() => jsonEncode(this.toJson());
 }

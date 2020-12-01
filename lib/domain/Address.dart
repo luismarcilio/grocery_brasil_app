@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -75,18 +77,7 @@ class Address extends Equatable {
   Map<String, dynamic> toJson() => _$AddressToJson(this);
 
   @override
-  String toString() {
-    return 'address: { rawAddress: $rawAddress, '
-        'street: $street, '
-        'number: $number, '
-        'complement: $complement, '
-        'poCode: $poCode, '
-        'county: $county, '
-        'country: $country, '
-        'state: $state, '
-        'city: $city, '
-        'location: $location, ';
-  }
+  String toString() => jsonEncode(this.toJson());
 
   @override
   List<Object> get props => [
@@ -114,9 +105,7 @@ class City extends Equatable {
   Map<String, dynamic> toJson() => _$CityToJson(this);
 
   @override
-  String toString() {
-    return 'city: { name: $name}';
-  }
+  String toString() => jsonEncode(this.toJson());
 
   @override
   List<Object> get props => [name];
@@ -131,9 +120,7 @@ class State extends Equatable {
       State(name: json['long_name'], acronym: json['short_name']);
 
   @override
-  String toString() {
-    return 'state: { name: $name, acronym: $acronym}';
-  }
+  String toString() => jsonEncode(this.toJson());
 
   factory State.fromJson(Map<String, dynamic> json) => _$StateFromJson(json);
   Map<String, dynamic> toJson() => _$StateToJson(this);
@@ -150,9 +137,7 @@ class Country extends Equatable {
       Country(name: json['long_name']);
 
   @override
-  String toString() {
-    return 'country: { name: $name}';
-  }
+  String toString() => jsonEncode(this.toJson());
 
   factory Country.fromJson(Map<String, dynamic> json) =>
       _$CountryFromJson(json);

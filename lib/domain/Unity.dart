@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -13,9 +15,7 @@ class Unity extends Equatable {
   Map<String, dynamic> toJson() => _$UnityToJson(this);
 
   @override
-  String toString() {
-    return 'name:$name';
-  }
+  String toString() => jsonEncode(this.toJson());
 
   @override
   List<Object> get props => [name];
