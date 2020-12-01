@@ -11,3 +11,5 @@ class UpdateUser extends UserEvent {
   final User user;
   UpdateUser({@required this.user});
 }
+
+class GetUser extends UserEvent {}
