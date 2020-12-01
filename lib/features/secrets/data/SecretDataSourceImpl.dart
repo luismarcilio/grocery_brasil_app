@@ -55,7 +55,7 @@ class SecretDataSourceImpl implements SecretDataSource {
 
       print("response.body: ${response.body}");
       final body = jsonDecode(response.body);
-      return body['secret'];
+      return body['secretValue'];
     } catch (e) {
       if (e is SecretsException) {
         throw e;

@@ -46,7 +46,7 @@ main() {
           scheme: 'https', host: 'someHost', port: 8080, path: 'somePath');
       final jwt = 'someJWT';
       final secretPath = '/secret/$secretName';
-      final expectedBody = jsonEncode(Map.from({'secret': secretValue}));
+      final expectedBody = jsonEncode(Map.from({'secretValue': secretValue}));
       final expectedResponse = http.Response(expectedBody, 200);
       final Uri uri = Uri(
           scheme: backendConfiguration.scheme,
@@ -86,7 +86,7 @@ main() {
           scheme: 'https', host: 'someHost', port: 8080, path: 'somePath');
       final jwt = 'someJWT';
       final secretPath = '/secret/$secretName';
-      final expectedBody = jsonEncode(Map.from({'secret': secretValue}));
+      final expectedBody = jsonEncode(Map.from({'secretValue': secretValue}));
       final expectedResponse = http.Response(expectedBody, 404);
       final Uri uri = Uri(
           scheme: backendConfiguration.scheme,
