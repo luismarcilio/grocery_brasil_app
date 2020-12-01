@@ -109,4 +109,20 @@ class AuthenticationRepositoryImpl extends AuthenticationRepository {
       return Right(user);
     });
   }
+
+  @override
+  Future<Either<Failure, String>> getUserId() {
+    try {
+      final userId = this.authenticationDataSource.getUserId();
+      return Future.value(Right(userId));
+    } on AuthenticationException catch (authenticationException) {
+      return Future.value(
+        Left(
+          AuthenticationFailure(
+              messageId: authenticationException.messageId,
+              message: authenticationException.formattedMessage),
+        ),
+      );
+    }
+  }
 }
