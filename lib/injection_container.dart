@@ -1,10 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get_it/get_it.dart';
-import 'package:grocery_brasil_app/features/secrets/data/SecretDataSource.dart';
-import 'package:grocery_brasil_app/features/secrets/data/SecretDataSourceImpl.dart';
-import 'package:grocery_brasil_app/features/secrets/data/SecretsServiceImpl.dart';
-import 'package:grocery_brasil_app/features/secrets/domain/SecretsService.dart';
 import 'package:http/http.dart' as http;
 
 import 'features/addressing/data/AddressingDataSource.dart';
@@ -50,11 +47,18 @@ import 'features/scanQrCode/data/QRCodeScannerImpl.dart';
 import 'features/scanQrCode/domain/QRCodeRepository.dart';
 import 'features/scanQrCode/domain/ScanQrCodeUseCase.dart';
 import 'features/scanQrCode/presentation/bloc/qrcode_bloc.dart';
+import 'features/secrets/data/SecretDataSource.dart';
+import 'features/secrets/data/SecretDataSourceImpl.dart';
+import 'features/secrets/data/SecretsServiceImpl.dart';
+import 'features/secrets/domain/SecretsService.dart';
 import 'features/user/data/FirbaseUserDataSource.dart';
 import 'features/user/data/UserDataSource.dart';
 import 'features/user/data/UserRepositoryImpl.dart';
 import 'features/user/domain/CreateUserUseCase.dart';
+import 'features/user/domain/GetUserUseCase.dart';
+import 'features/user/domain/UpdateUserUseCase.dart';
 import 'features/user/domain/UserRepository.dart';
+import 'features/user/presentation/bloc/user_bloc.dart';
 
 final sl = GetIt.instance;
 
@@ -75,7 +79,8 @@ void init() {
       () => ReadnfBloc(getDetailsfromUrlUseCase: sl(), saveNfUseCase: sl()));
   sl.registerFactory(() =>
       PurchaseBloc(listPurchasesUseCase: sl(), getFullPurchaseUseCase: sl()));
-
+  sl.registerFactory(
+      () => UserBloc(updateUserUseCase: sl(), getUserUseCase: sl()));
   //UseCases
   sl.registerLazySingleton(() => AuthenticateWithEmailAndPassword(sl()));
   sl.registerLazySingleton(() => AuthenticateWithFacebook(sl()));
@@ -89,6 +94,9 @@ void init() {
   sl.registerLazySingleton(() => ListPurchasesUseCase(repository: sl()));
   sl.registerLazySingleton(() => GetFullPurchaseUseCase(repository: sl()));
   sl.registerLazySingleton(() => CreateUserUseCase(sl()));
+  sl.registerLazySingleton(() => UpdateUserUseCase(sl()));
+  sl.registerLazySingleton(() =>
+      GetUserUseCase(userRepository: sl(), authenticationRepository: sl()));
 
 //Services
   sl.registerLazySingleton<SecretsService>(
@@ -107,6 +115,7 @@ void init() {
       nfDataSource: sl()));
   sl.registerLazySingleton<UserRepository>(() =>
       UserRepositoryImpl(userDataSource: sl(), addressingDataSource: sl()));
+
 //Datasources
   sl.registerLazySingleton<UserDataSource>(
       () => FirbaseUserDataSource(firebaseFirestore: sl()));
@@ -165,6 +174,7 @@ void init() {
 
   sl.registerLazySingleton<FirebaseFirestore>(() => FirebaseFirestore.instance);
   sl.registerLazySingleton(() => http.Client());
+  sl.registerLazySingleton(() => GeolocatorPlatform.instance);
 }
 
 void initFeatures() {}
