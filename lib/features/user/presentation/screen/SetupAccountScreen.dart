@@ -125,9 +125,7 @@ class BuildUserDetailsForm extends StatelessWidget {
                       ),
                     ),
                     UserSlider(
-                      initialValue:
-                          log(user.preferences.searchRadius.toDouble()) /
-                              log(10.0),
+                      initialValue: user.preferences.searchRadius,
                       onChangeEnd: (double value) {
                         final newUser = User(
                             email: user.email,
@@ -149,5 +147,7 @@ class BuildUserDetailsForm extends StatelessWidget {
     );
   }
 
-  void saveUser(BuildContext context, User newUser) {}
+  void saveUser(BuildContext context, User newUser) {
+    BlocProvider.of<UserBloc>(context).add(UpdateUser(user: newUser));
+  }
 }

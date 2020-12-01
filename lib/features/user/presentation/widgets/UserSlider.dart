@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 class UserSlider extends StatefulWidget {
   final Function onChangeEnd;
-  final double initialValue;
+  final int initialValue;
   UserSlider({this.onChangeEnd, this.initialValue});
 
   @override
@@ -12,7 +12,7 @@ class UserSlider extends StatefulWidget {
 }
 
 class _UserSliderState extends State<UserSlider> {
-  final double initialValue;
+  final int initialValue;
   double currentValue;
   final Function onChangeEnd;
   _UserSliderState(this.onChangeEnd, this.initialValue);
@@ -25,14 +25,14 @@ class _UserSliderState extends State<UserSlider> {
 
   @override
   Widget build(BuildContext context) {
-    currentValue ??= initialValue;
+    currentValue ??= log(initialValue) / log(10);
     return Slider(
       min: 2.0,
       max: 6.0,
       label: getLabel(),
       divisions: 100,
       value: currentValue,
-      onChangeEnd: onChangeEnd,
+      onChangeEnd: (value) => onChangeEnd(pow(10, value)),
       onChanged: (_newValue) {
         setState(() {
           currentValue = _newValue;
