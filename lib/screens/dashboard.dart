@@ -6,7 +6,7 @@ import '../features/purchase/presentation/pages/ResumePurchaseList.dart';
 import '../features/readNfFromSite/presentation/pages/ReadNfScreen.dart';
 import '../features/scanQrCode/domain/QRCode.dart';
 import '../features/scanQrCode/presentation/pages/qrcodeScreen.dart';
-import 'SetupAccountScreen.dart';
+import '../features/user/presentation/screen/SetupAccountScreen.dart';
 
 class Dashboard extends StatefulWidget {
   static const route = '/dashboard';
