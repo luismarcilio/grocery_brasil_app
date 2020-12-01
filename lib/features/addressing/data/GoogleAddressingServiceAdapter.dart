@@ -32,7 +32,7 @@ class GoogleAddressingServiceAdapter implements AddressingServiceAdapter {
           scheme: 'https',
           host: 'maps.googleapis.com',
           port: 443,
-          path: 'maps/api/place/autocomplete/json',
+          path: 'maps/api/geocode/json',
           queryParameters: {
             'place_id': placeId,
             'key': apiKey,
@@ -144,30 +144,43 @@ class GoogleAddressingServiceAdapter implements AddressingServiceAdapter {
   }
 
   Address _parseGoogleAddress(Map<String, dynamic> googleResponse) {
+    final emptyLongName = () => Map<String, dynamic>.from({'long_name': ''});
+    final emptyShortName = () => Map<String, dynamic>.from({'short_name': ''});
     final List<dynamic> addressComponents =
         googleResponse['address_components'];
     final address = Address(
       rawAddress: googleResponse['formatted_address'],
       street: addressComponents.firstWhere(
-          (element) => element['types'].contains('route'))['long_name'],
+          (element) => element['types'].contains('route'),
+          orElse: emptyLongName)['long_name'],
       number: addressComponents.firstWhere(
-          (element) => element['types'].contains('street_number'))['long_name'],
+          (element) => element['types'].contains('street_number'),
+          orElse: emptyLongName)['long_name'],
       complement: '',
       poCode: addressComponents.firstWhere(
-          (element) => element['types'].contains('postal_code'))['long_name'],
+          (element) => element['types'].contains('postal_code'),
+          orElse: emptyLongName)['long_name'],
       country: Country(
           name: addressComponents.firstWhere(
-              (element) => element['types'].contains('country'))['long_name']),
+              (element) => element['types'].contains('country'),
+              orElse: emptyLongName)['long_name']),
       state: State(
-          acronym: addressComponents.firstWhere((element) => element['types']
-              .contains('administrative_area_level_1'))['short_name'],
-          name: addressComponents.firstWhere((element) => element['types']
-              .contains('administrative_area_level_1'))['long_name']),
+          acronym: addressComponents.firstWhere(
+              (element) =>
+                  element['types'].contains('administrative_area_level_1'),
+              orElse: emptyShortName)['short_name'],
+          name: addressComponents.firstWhere(
+              (element) =>
+                  element['types'].contains('administrative_area_level_1'),
+              orElse: emptyLongName)['long_name']),
       city: City(
-          name: addressComponents.firstWhere((element) => element['types']
-              .contains('administrative_area_level_2'))['long_name']),
-      county: addressComponents.firstWhere((element) =>
-          element['types'].contains('sublocality_level_1'))['long_name'],
+          name: addressComponents.firstWhere(
+              (element) =>
+                  element['types'].contains('administrative_area_level_2'),
+              orElse: emptyLongName)['long_name']),
+      county: addressComponents.firstWhere(
+          (element) => element['types'].contains('sublocality_level_1'),
+          orElse: emptyLongName)['long_name'],
       location: Location(
           lat: googleResponse['geometry']['location']['lat'],
           lon: googleResponse['geometry']['location']['lng']),

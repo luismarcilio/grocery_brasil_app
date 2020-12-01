@@ -332,3 +332,70 @@ const autocompleteResponse = '''
     "status": "OK"
 }
 ''';
+
+const placeIdResponse = '''
+{
+   "results" : [
+      {
+         "address_components" : [
+            {
+               "long_name" : "Avenida Epitácio Pessoa",
+               "short_name" : "Av. Epitácio Pessoa",
+               "types" : [ "route" ]
+            },
+            {
+               "long_name" : "Lagoa",
+               "short_name" : "Lagoa",
+               "types" : [ "political", "sublocality", "sublocality_level_1" ]
+            },
+            {
+               "long_name" : "Rio de Janeiro",
+               "short_name" : "Rio de Janeiro",
+               "types" : [ "administrative_area_level_2", "political" ]
+            },
+            {
+               "long_name" : "Rio de Janeiro",
+               "short_name" : "RJ",
+               "types" : [ "administrative_area_level_1", "political" ]
+            },
+            {
+               "long_name" : "Brasil",
+               "short_name" : "BR",
+               "types" : [ "country", "political" ]
+            }
+         ],
+         "formatted_address" : "Av. Epitácio Pessoa - Lagoa, Rio de Janeiro - RJ, Brasil",
+         "geometry" : {
+            "bounds" : {
+               "northeast" : {
+                  "lat" : -22.96253699999997,
+                  "lng" : -43.1976014
+               },
+               "southwest" : {
+                  "lat" : -22.98053360000003,
+                  "lng" : -43.2137415
+               }
+            },
+            "location" : {
+               "lat" : -22.9708637,
+               "lng" : -43.2069645
+            },
+            "location_type" : "GEOMETRIC_CENTER",
+            "viewport" : {
+               "northeast" : {
+                  "lat" : -22.96253699999997,
+                  "lng" : -43.1976014
+               },
+               "southwest" : {
+                  "lat" : -22.98053360000003,
+                  "lng" : -43.2137415
+               }
+            }
+         },
+         "place_id" : "Ej1BdmVuaWRhIEVwaXTDoWNpbyBQZXNzb2EgLSBMYWdvYSwgUmlvIGRlIEphbmVpcm8gLSBSSiwgQnJhc2lsIi4qLAoUChIJea0-7gzVmwARSm9e9tHu6NESFAoSCRW9wd901ZsAEY3RX0W2bpnb",
+         "types" : [ "route" ]
+      }
+   ],
+   "status" : "OK"
+}
+''';

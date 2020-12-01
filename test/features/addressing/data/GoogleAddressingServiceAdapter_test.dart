@@ -44,25 +44,25 @@ main() {
     test('should retrieve address when passed a place id', () async {
       //setup
       final aPlaceId = 'placeId';
-      final serviceReturns = http.Response(fixtures.googleReturnAddress, 200);
+      final serviceReturns = http.Response(fixtures.placeIdResponse, 200);
       final expected = Address(
           rawAddress:
-              "Av. Epitácio Pessoa, 2566 - Ipanema, Rio de Janeiro - RJ, 22471-003, Brasil",
+              "Av. Epitácio Pessoa - Lagoa, Rio de Janeiro - RJ, Brasil",
           street: "Avenida Epitácio Pessoa",
-          number: "2566",
+          number: "",
           complement: '',
-          poCode: "22471-003",
-          county: "Ipanema",
+          poCode: "",
+          county: "Lagoa",
           country: Country(name: "Brasil"),
           state: State(name: "Rio de Janeiro", acronym: "RJ"),
           city: City(name: "Rio de Janeiro"),
-          location: Location(lat: -22.9749636, lon: -43.1984787));
+          location: Location(lat: -22.9708637, lon: -43.2069645));
 
       final expectedUri = Uri(
           scheme: 'https',
           host: 'maps.googleapis.com',
           port: 443,
-          path: 'maps/api/place/autocomplete/json',
+          path: 'maps/api/geocode/json',
           queryParameters: {
             'place_id': aPlaceId,
             'key': 'theGeolocationApiKey',
@@ -93,7 +93,7 @@ main() {
           scheme: 'https',
           host: 'maps.googleapis.com',
           port: 443,
-          path: 'maps/api/place/autocomplete/json',
+          path: 'maps/api/geocode/json',
           queryParameters: {
             'place_id': aPlaceId,
             'key': 'theGeolocationApiKey',
@@ -122,7 +122,7 @@ main() {
           scheme: 'https',
           host: 'maps.googleapis.com',
           port: 443,
-          path: 'maps/api/place/autocomplete/json',
+          path: 'maps/api/geocode/json',
           queryParameters: {
             'place_id': aPlaceId,
             'key': 'theGeolocationApiKey',
