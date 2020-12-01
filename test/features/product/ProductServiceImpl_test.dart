@@ -67,7 +67,7 @@ main() {
         //act
         final actual = await sut.listProductsByText(text: textToSearch);
         //assert
-        await expect(actual, Right(expected));
+        expect(actual, Right(expected));
       });
       test('should return ProductFailure if it fails ', () async {
         //setup
