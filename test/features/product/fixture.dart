@@ -1,4 +1,9 @@
+import 'package:grocery_brasil_app/domain/Address.dart';
+import 'package:grocery_brasil_app/domain/Company.dart';
+import 'package:grocery_brasil_app/domain/Location.dart';
+import 'package:grocery_brasil_app/domain/Product.dart';
 import 'package:grocery_brasil_app/domain/Unity.dart';
+import 'package:grocery_brasil_app/features/product/domain/ProductPrices.dart';
 import 'package:grocery_brasil_app/features/product/domain/ProductSearchModel.dart';
 
 const returnFromElasticSearch = '''
@@ -135,3 +140,30 @@ const failFromElasticSearch = '''
 }
 
 ''';
+
+final oneProductPrice = ProductPrices(
+    product: Product(
+        name: 'DETERGENTE LÍQUIDO CLEAR YPÊ FRASCO 500ML',
+        eanCode: "7896098900253",
+        ncmCode: '34022000',
+        unity: Unity(name: 'UN'),
+        normalized: true,
+        thumbnail:
+            'https://storage.googleapis.com/grocery-brasil-app-thumbnails/7896098900253'),
+    company: Company(
+        name: 'ZEBU CARNES SUPERMERCADOS LTDA',
+        taxIdentification: '03.214.362/0003-35',
+        address: Address(
+            rawAddress:
+                'Av. da Saudade, 1110 - Santa Marta, Uberaba - MG, 38061-000, Brasil',
+            street: 'Avenida da Saudade',
+            number: '1110',
+            complement: '',
+            poCode: '38061-000',
+            county: 'Santa Marta',
+            country: Country(name: 'Brasil'),
+            state: State(acronym: 'MG', name: 'Minas Gerais'),
+            city: City(name: 'Uberaba'),
+            location: Location(lon: -47.9562274, lat: -19.7433014))),
+    unityValue: 15.0,
+    purchaseDate: DateTime.now());
