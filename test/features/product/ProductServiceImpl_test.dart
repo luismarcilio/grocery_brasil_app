@@ -2,6 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:grocery_brasil_app/core/errors/exceptions.dart';
 import 'package:grocery_brasil_app/core/errors/failures.dart';
+import 'package:grocery_brasil_app/domain/Location.dart';
 import 'package:grocery_brasil_app/domain/Unity.dart';
 import 'package:grocery_brasil_app/features/product/domain/ProductRepository.dart';
 import 'package:grocery_brasil_app/features/product/domain/ProductSearchModel.dart';
@@ -100,8 +101,10 @@ main() {
             .thenAnswer((realInvocation) async => Right(someUser));
         when(mockProductRepository
                 .listProductPricesByIdByDistanceOrderByUnitPrice(
-                    location: someUser.address.location,
-                    distance: someUser.preferences.searchRadius,
+                    topLeft: Location(
+                        lat: -22.337196547938802, lon: -43.886949829808195),
+                    bottomRight: Location(
+                        lat: -23.60898916679005, lon: -42.50546386664078),
                     productId: productId,
                     listSize: 1))
             .thenAnswer((realInvocation) async => [expected]);

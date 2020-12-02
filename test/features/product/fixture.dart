@@ -171,7 +171,7 @@ final oneProductPrice = ProductPrices(
     purchaseDate: DateTime.now());
 
 final oneUser = User(
-    preferences: UserPreferences(searchRadius: 30000),
+    preferences: UserPreferences(searchRadius: 100000),
     email: 'someEmail',
     address: Address(
         rawAddress:
