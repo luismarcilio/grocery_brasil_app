@@ -1,28 +1,17 @@
-import 'package:grocery_brasil_app/core/errors/exceptions.dart';
-import 'package:grocery_brasil_app/core/errors/failures.dart';
 import 'package:dartz/dartz.dart';
-import 'package:grocery_brasil_app/core/usecases/usecase.dart';
-import 'package:grocery_brasil_app/domain/User.dart';
-import 'package:grocery_brasil_app/features/user/domain/UserRepository.dart';
+
+import '../../../core/errors/failures.dart';
+import '../../../core/usecases/usecase.dart';
+import '../../../domain/User.dart';
+import 'UserService.dart';
 
 class CreateUserUseCase extends UseCase<User, User> {
-  final UserRepository userRepository;
+  final UserService userService;
 
-  CreateUserUseCase(this.userRepository);
+  CreateUserUseCase(this.userService);
 
   @override
   Future<Either<UserFailure, User>> call(User user) async {
-    try {
-      final userInRepository =
-          await this.userRepository.getUserByUserId(user.userId);
-      if (userInRepository.isRight()) {
-        return userInRepository;
-      }
-      final userCreated = await this.userRepository.createUser(user);
-      return userCreated;
-    } catch (e) {
-      return Left(
-          UserFailure(messageId: MessageIds.UNEXPECTED, message: e.toString()));
-    }
+    return userService.createUser(user);
   }
 }

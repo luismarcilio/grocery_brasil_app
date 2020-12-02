@@ -68,6 +68,8 @@ import 'features/user/domain/CreateUserUseCase.dart';
 import 'features/user/domain/GetUserUseCase.dart';
 import 'features/user/domain/UpdateUserUseCase.dart';
 import 'features/user/domain/UserRepository.dart';
+import 'features/user/domain/UserService.dart';
+import 'features/user/domain/UserServiceImpl.dart';
 import 'features/user/presentation/bloc/user_bloc.dart';
 
 final sl = GetIt.instance;
@@ -106,8 +108,7 @@ void init() {
   sl.registerLazySingleton(() => GetFullPurchaseUseCase(repository: sl()));
   sl.registerLazySingleton(() => CreateUserUseCase(sl()));
   sl.registerLazySingleton(() => UpdateUserUseCase(sl()));
-  sl.registerLazySingleton(() =>
-      GetUserUseCase(userRepository: sl(), authenticationRepository: sl()));
+  sl.registerLazySingleton(() => GetUserUseCase(userService: sl()));
   sl.registerLazySingleton(
       () => ListProductsByTextUseCase(productService: sl()));
 //Services
@@ -115,6 +116,8 @@ void init() {
       () => SecretsServiceImpl(secretDataSource: sl()));
   sl.registerLazySingleton<ProductService>(() =>
       ProductServiceImpl(textSearchRepository: sl(), productRepository: sl()));
+  sl.registerLazySingleton<UserService>(() =>
+      UserServiceImpl(userRepository: sl(), authenticationRepository: sl()));
   //Repository
   sl.registerLazySingleton<AuthenticationRepository>(
       () => AuthenticationRepositoryImpl(authenticationDataSource: sl()));
