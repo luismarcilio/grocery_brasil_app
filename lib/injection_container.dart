@@ -133,7 +133,8 @@ void init() {
       UserRepositoryImpl(userDataSource: sl(), addressingDataSource: sl()));
   sl.registerLazySingleton<TextSearchRepository>(
       () => TextSearchRepositoryImpl(textSearchDataSource: sl()));
-  sl.registerLazySingleton<ProductRepository>(() => ProductRepositoryImpl());
+  sl.registerLazySingleton<ProductRepository>(
+      () => ProductRepositoryImpl(productDataSource: sl()));
 //Datasources
   sl.registerLazySingleton<UserDataSource>(
       () => FirbaseUserDataSource(firebaseFirestore: sl()));

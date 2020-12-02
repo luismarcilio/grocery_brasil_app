@@ -1,23 +1,25 @@
-import 'package:dartz/dartz.dart';
+import 'package:meta/meta.dart';
 
-import '../../../core/errors/failures.dart';
 import '../../../domain/Location.dart';
 import '../domain/ProductPrices.dart';
 import '../domain/ProductRepository.dart';
+import 'ProductDataSource.dart';
 
 class ProductRepositoryImpl implements ProductRepository {
-  @override
-  Future<Either<ProductFailure, Stream<ProductPrices>>>
-      listProductsPricesByTextAndLocationUseCase(
-          {Location location, String text}) {
-    // TODO: implement listProductsPricesByTextAndLocationUseCase
-    throw UnimplementedError();
-  }
+  final ProductDataSource productDataSource;
+
+  ProductRepositoryImpl({@required this.productDataSource});
 
   @override
   Future<List<ProductPrices>> listProductPricesByIdByDistanceOrderByUnitPrice(
-      {Location location, int distance, String productId, int listSize}) {
-    // TODO: implement listProductPricesByIdByDistanceOrderByUnitPrice
-    throw UnimplementedError();
+      {Location topLeft,
+      Location bottomRight,
+      String productId,
+      int listSize}) {
+    return productDataSource.listProductPricesByIdByDistanceOrderByUnitPrice(
+        topLeft: topLeft,
+        bottomRight: bottomRight,
+        productId: productId,
+        listSize: listSize);
   }
 }
