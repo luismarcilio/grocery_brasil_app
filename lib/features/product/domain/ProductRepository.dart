@@ -9,4 +9,9 @@ abstract class ProductRepository {
   Future<Either<ProductFailure, Stream<ProductPrices>>>
       listProductsPricesByTextAndLocationUseCase(
           {@required Location location, @required String text});
+  Future<List<ProductPrices>> listProductPricesByIdByDistanceOrderByUnitPrice(
+      {@required Location location,
+      @required int distance,
+      @required String productId,
+      @required int listSize});
 }

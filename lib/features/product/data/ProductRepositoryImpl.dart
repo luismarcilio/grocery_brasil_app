@@ -1,8 +1,9 @@
-import 'package:grocery_brasil_app/features/product/domain/ProductPrices.dart';
-import 'package:grocery_brasil_app/domain/Location.dart';
-import 'package:grocery_brasil_app/core/errors/failures.dart';
 import 'package:dartz/dartz.dart';
-import 'package:grocery_brasil_app/features/product/domain/ProductRepository.dart';
+
+import '../../../core/errors/failures.dart';
+import '../../../domain/Location.dart';
+import '../domain/ProductPrices.dart';
+import '../domain/ProductRepository.dart';
 
 class ProductRepositoryImpl implements ProductRepository {
   @override
@@ -10,6 +11,13 @@ class ProductRepositoryImpl implements ProductRepository {
       listProductsPricesByTextAndLocationUseCase(
           {Location location, String text}) {
     // TODO: implement listProductsPricesByTextAndLocationUseCase
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<List<ProductPrices>> listProductPricesByIdByDistanceOrderByUnitPrice(
+      {Location location, int distance, String productId, int listSize}) {
+    // TODO: implement listProductPricesByIdByDistanceOrderByUnitPrice
     throw UnimplementedError();
   }
 }

@@ -8,24 +8,31 @@ import 'package:grocery_brasil_app/features/product/domain/ProductSearchModel.da
 import 'package:grocery_brasil_app/features/product/domain/ProductService.dart';
 import 'package:grocery_brasil_app/features/product/domain/ProductServiceImpl.dart';
 import 'package:grocery_brasil_app/features/product/domain/TextSearchRepository.dart';
+import 'package:grocery_brasil_app/features/user/domain/UserService.dart';
 import 'package:mockito/mockito.dart';
+import 'fixture.dart' as fixture;
 
 class MockTextSearchRepository extends Mock implements TextSearchRepository {}
 
 class MockProductRepository extends Mock implements ProductRepository {}
 
+class MockUserService extends Mock implements UserService {}
+
 main() {
   MockTextSearchRepository mockTextSearchRepository;
   MockProductRepository mockProductRepository;
+  MockUserService mockUserService;
   ProductService sut;
 
   group('ProductServiceImpl', () {
     setUp(() {
       mockTextSearchRepository = MockTextSearchRepository();
       mockProductRepository = MockProductRepository();
+      mockUserService = MockUserService();
       sut = ProductServiceImpl(
           productRepository: mockProductRepository,
-          textSearchRepository: mockTextSearchRepository);
+          textSearchRepository: mockTextSearchRepository,
+          userService: mockUserService);
     });
 
     group('listProductsByText', () {
@@ -78,6 +85,41 @@ main() {
             .thenThrow(Exception('some error'));
         //act
         final actual = await sut.listProductsByText(text: textToSearch);
+        //assert
+        expect(actual, Left(expected));
+      });
+    });
+
+    group('getMinPriceProductByUserByProductIdUseCase', () {
+      test('should retrieve the productPrice object  ', () async {
+        //setup
+        final productId = 'SomeProduct';
+        final expected = fixture.oneProductPrice;
+        final someUser = fixture.oneUser;
+        when(mockUserService.getUser())
+            .thenAnswer((realInvocation) async => Right(someUser));
+        when(mockProductRepository
+                .listProductPricesByIdByDistanceOrderByUnitPrice(
+                    location: someUser.address.location,
+                    distance: someUser.preferences.searchRadius,
+                    productId: productId,
+                    listSize: 1))
+            .thenAnswer((realInvocation) async => [expected]);
+        //act
+        final actual = await sut.getMinPriceProductByUserByProductIdUseCase(
+            productId: productId);
+        //assert
+        expect(actual, Right(expected));
+      });
+      test('should return ProductFailure on error  ', () async {
+        //setup
+        final productId = fixture.oneProductPrice.product.eanCode;
+        final expected = ProductFailure(
+            messageId: MessageIds.UNEXPECTED, message: 'Exception: some error');
+        when(mockUserService.getUser()).thenThrow(Exception('some error'));
+        //act
+        final actual = await sut.getMinPriceProductByUserByProductIdUseCase(
+            productId: productId);
         //assert
         expect(actual, Left(expected));
       });

@@ -114,8 +114,8 @@ void init() {
 //Services
   sl.registerLazySingleton<SecretsService>(
       () => SecretsServiceImpl(secretDataSource: sl()));
-  sl.registerLazySingleton<ProductService>(() =>
-      ProductServiceImpl(textSearchRepository: sl(), productRepository: sl()));
+  sl.registerLazySingleton<ProductService>(() => ProductServiceImpl(
+      textSearchRepository: sl(), productRepository: sl(), userService: sl()));
   sl.registerLazySingleton<UserService>(() =>
       UserServiceImpl(userRepository: sl(), authenticationRepository: sl()));
   //Repository

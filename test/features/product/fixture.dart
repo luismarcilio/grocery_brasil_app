@@ -3,6 +3,8 @@ import 'package:grocery_brasil_app/domain/Company.dart';
 import 'package:grocery_brasil_app/domain/Location.dart';
 import 'package:grocery_brasil_app/domain/Product.dart';
 import 'package:grocery_brasil_app/domain/Unity.dart';
+import 'package:grocery_brasil_app/domain/User.dart';
+import 'package:grocery_brasil_app/domain/UserPreferences.dart';
 import 'package:grocery_brasil_app/features/product/domain/ProductPrices.dart';
 import 'package:grocery_brasil_app/features/product/domain/ProductSearchModel.dart';
 
@@ -167,3 +169,21 @@ final oneProductPrice = ProductPrices(
             location: Location(lon: -47.9562274, lat: -19.7433014))),
     unityValue: 15.0,
     purchaseDate: DateTime.now());
+
+final oneUser = User(
+    preferences: UserPreferences(searchRadius: 30000),
+    email: 'someEmail',
+    address: Address(
+        rawAddress:
+            'Av. Epitácio Pessoa, 2566 - Lagoa, Rio de Janeiro - RJ, 22471-003, Brasil',
+        street: 'Epitácio Pessoa',
+        number: '2566',
+        complement: '',
+        poCode: '22471-003',
+        county: 'Lagoa',
+        country: Country(name: 'Brasil'),
+        state: State(acronym: 'RJ', name: 'Rio de Janeiro'),
+        city: City(name: 'RJ'),
+        location: Location(lon: -43.199457, lat: -22.9745891)),
+    userId: 'wMXsa4sYvUPBZAi1UFqMxNsLjI02',
+    emailVerified: true);
