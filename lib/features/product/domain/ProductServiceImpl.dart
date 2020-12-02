@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:grocery_brasil_app/features/product/domain/ProductPrices.dart';
 import 'package:meta/meta.dart';
 
 import '../../../core/errors/exceptions.dart';
@@ -29,5 +30,12 @@ class ProductServiceImpl implements ProductService {
       return Left(ProductFailure(
           messageId: MessageIds.UNEXPECTED, message: e.toString()));
     }
+  }
+
+  @override
+  Future<Either<ProductFailure, ProductPrices>>
+      getMinPriceProductByUserByProductIdUseCase({String productId}) {
+    // TODO: implement getMinPriceProductByUserByProductIdUseCase
+    throw UnimplementedError();
   }
 }
