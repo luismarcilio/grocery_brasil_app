@@ -170,6 +170,33 @@ final oneProductPrice = ProductPrices(
     unityValue: 15.0,
     purchaseDate: DateTime.now());
 
+final otherProductPrice = ProductPrices(
+    product: Product(
+        name: 'DETERGENTE LÍQUIDO CLEAR YPÊ FRASCO 500ML',
+        eanCode: "7896098900253",
+        ncmCode: '34022000',
+        unity: Unity(name: 'UN'),
+        normalized: true,
+        thumbnail:
+            'https://storage.googleapis.com/grocery-brasil-app-thumbnails/7896098900253'),
+    company: Company(
+        name: 'LS GUARATO LTDA',
+        taxIdentification: '19.867.464/0001-28',
+        address: Address(
+            rawAddress:
+                'R. Novo Horizonte, 948 - Irmaos Soares, Uberaba - MG, 38060-480, Brasil',
+            street: 'Rua Novo Horizonte',
+            number: '948',
+            complement: '',
+            poCode: '38060-480',
+            county: 'Irmaos Soares',
+            country: Country(name: 'Brasil'),
+            state: State(acronym: 'MG', name: 'Minas Gerais'),
+            city: City(name: 'Uberaba'),
+            location: Location(lon: -47.9478899, lat: -19.7490176))),
+    unityValue: 15.0,
+    purchaseDate: DateTime.now());
+
 final oneUser = User(
     preferences: UserPreferences(searchRadius: 100000),
     email: 'someEmail',
