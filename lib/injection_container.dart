@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dart_geohash/dart_geohash.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get_it/get_it.dart';
@@ -8,6 +9,8 @@ import 'features/addressing/data/AddressingDataSource.dart';
 import 'features/addressing/data/AddressingDataSourceImpl.dart';
 import 'features/addressing/data/AddressingServiceAdapter.dart';
 import 'features/addressing/data/GPSServiceAdapter.dart';
+import 'features/addressing/data/GeohashServiceAdapter.dart';
+import 'features/addressing/data/GeohashServiceAdapterImpl.dart';
 import 'features/addressing/data/GeolocatorGPSServiceAdapter.dart';
 import 'features/addressing/data/GoogleAddressingServiceAdapter.dart';
 import 'features/apisDetails/data/FunctionsDetailsDataSource.dart';
@@ -115,7 +118,11 @@ void init() {
   sl.registerLazySingleton<SecretsService>(
       () => SecretsServiceImpl(secretDataSource: sl()));
   sl.registerLazySingleton<ProductService>(() => ProductServiceImpl(
-      textSearchRepository: sl(), productRepository: sl(), userService: sl()));
+      textSearchRepository: sl(),
+      productRepository: sl(),
+      userService: sl(),
+      gPSServiceAdapter: sl(),
+      geohashServiceAdapter: sl()));
   sl.registerLazySingleton<UserService>(() =>
       UserServiceImpl(userRepository: sl(), authenticationRepository: sl()));
   //Repository
@@ -190,12 +197,14 @@ void init() {
           gPSServiceAdapter: sl(),
           httpClient: sl(),
           secretsService: sl()));
-
+  sl.registerLazySingleton<GeohashServiceAdapter>(
+      () => GeohashServiceAdapterImpl(geoHasher: sl()));
   //External
 
   sl.registerLazySingleton<FirebaseFirestore>(() => FirebaseFirestore.instance);
   sl.registerLazySingleton(() => http.Client());
   sl.registerLazySingleton(() => GeolocatorPlatform.instance);
+  sl.registerLazySingleton(() => GeoHasher());
 }
 
 void initFeatures() {}

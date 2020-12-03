@@ -1,10 +1,12 @@
 import 'package:dartz/dartz.dart';
-import 'package:grocery_brasil_app/domain/Location.dart';
 import 'package:meta/meta.dart';
-import 'dart:math';
+
 import '../../../core/errors/exceptions.dart';
 import '../../../core/errors/failures.dart';
+import '../../../domain/Location.dart';
 import '../../../domain/User.dart';
+import '../../addressing/data/GPSServiceAdapter.dart';
+import '../../addressing/data/GeohashServiceAdapter.dart';
 import '../../user/domain/UserService.dart';
 import 'ProductPrices.dart';
 import 'ProductRepository.dart';
@@ -16,11 +18,15 @@ class ProductServiceImpl implements ProductService {
   final TextSearchRepository textSearchRepository;
   final ProductRepository productRepository;
   final UserService userService;
+  final GeohashServiceAdapter geohashServiceAdapter;
+  final GPSServiceAdapter gPSServiceAdapter;
 
   ProductServiceImpl(
       {@required this.textSearchRepository,
       @required this.productRepository,
-      @required this.userService});
+      @required this.userService,
+      @required this.geohashServiceAdapter,
+      @required this.gPSServiceAdapter});
 
   @override
   Future<Either<ProductFailure, List<ProductSearchModel>>> listProductsByText(
@@ -52,22 +58,37 @@ class ProductServiceImpl implements ProductService {
       User user;
       result.fold((l) => null, (r) => user = r);
 
-      final coordinatePoints = _calculateLocationPoints(
+      final coordinatePoints = gPSServiceAdapter.calculateTopLeftBottomRight(
           center: user.address.location,
           distance: user.preferences.searchRadius);
+      final topLeftGeohash = geohashServiceAdapter.encode(
+          coordinatePoints[0].lat, coordinatePoints[0].lon);
+      final topRightGeohash = geohashServiceAdapter.encode(
+          coordinatePoints[0].lat, coordinatePoints[1].lon);
+      final bottomLeftGeohash = geohashServiceAdapter.encode(
+          coordinatePoints[1].lat, coordinatePoints[0].lon);
+      final bottomRightGeohash = geohashServiceAdapter.encode(
+          coordinatePoints[1].lat, coordinatePoints[1].lon);
+      final commonGeohash = geohashServiceAdapter.findCommonGeohash(
+          topLeft: topLeftGeohash,
+          topRight: topRightGeohash,
+          bottomLeft: bottomLeftGeohash,
+          bottomRight: bottomRightGeohash);
+      Stream<List<ProductPrices>> productPrices =
+          productRepository.listProductPricesByIdByGeohashOrderByUnitPrice(
+              geohash: commonGeohash, productId: productId);
 
-      List<ProductPrices> listProductPrices = await productRepository
-          .listProductPricesByIdByDistanceOrderByUnitPrice(
-              topLeft: coordinatePoints[0],
-              bottomRight: coordinatePoints[1],
-              productId: productId,
-              listSize: 1);
-      if (listProductPrices.length == 0) {
-        return Left(ProductFailure(
+      final bestProductPrice = await productPrices
+          .expand((element) => element)
+          .firstWhere(
+              (element) => _isInSearchRadius(element, user.address.location,
+                  user.preferences.searchRadius), orElse: () {
+        throw ProductException(
             messageId: MessageIds.NOT_FOUND,
-            message: 'Product not found: [$productId]'));
-      }
-      return Right(listProductPrices[0]);
+            message:
+                "Product $productId not found within ${user.preferences.searchRadius} meters");
+      });
+      return Right(bestProductPrice);
     } catch (e) {
       if (e is ProductException) {
         return (Left(
@@ -78,35 +99,10 @@ class ProductServiceImpl implements ProductService {
     }
   }
 
-  List<Location> _calculateLocationPoints({Location center, int distance}) {
-    //bearing (clockwise from north)
-    final double topLeftBrng = -45.0;
-    final double bottomRightBrng = 135.0;
-    final topLeft = _calculateCoordinates(
-        center: center, distance: distance, bearing: topLeftBrng);
-    final bottomRight = _calculateCoordinates(
-        center: center, distance: distance, bearing: bottomRightBrng);
-    return [topLeft, bottomRight];
-  }
-
-  Location _calculateCoordinates(
-      {Location center, int distance, double bearing}) {
-    //source: https://www.movable-type.co.uk/scripts/latlong.html
-    // Formula:	φ2 = asin( sin φ1 ⋅ cos δ + cos φ1 ⋅ sin δ ⋅ cos θ )
-    // λ2 = λ1 + atan2( sin θ ⋅ sin δ ⋅ cos φ1, cos δ − sin φ1 ⋅ sin φ2 )
-    // where	φ is latitude, λ is longitude, θ is the bearing (clockwise from north), δ is the angular distance d/R;
-    // d being the distance travelled, R the earth’s radius
-
-    final double R = 6371.0e3;
-    final double phi1 = center.lat / 180 * pi;
-    final double lambda1 = center.lon / 180 * pi;
-    final double tetha = bearing / 180 * pi;
-    final double delta = distance / R;
-    final double phi2 =
-        asin(sin(phi1) * cos(delta) + cos(phi1) * sin(delta) * cos(tetha));
-    final double lambda2 = lambda1 +
-        atan2(sin(tetha) * sin(delta) * cos(phi1),
-            cos(delta) - sin(phi1) * sin(phi2));
-    return Location(lat: 180 * phi2 / pi, lon: 180 * lambda2 / pi);
+  bool _isInSearchRadius(
+      ProductPrices element, Location location, int searchRadius) {
+    final distance = gPSServiceAdapter.distanceBetween(
+        start: location, end: element.company.address.location);
+    return distance <= searchRadius;
   }
 }

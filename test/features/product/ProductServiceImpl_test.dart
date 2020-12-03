@@ -4,6 +4,8 @@ import 'package:grocery_brasil_app/core/errors/exceptions.dart';
 import 'package:grocery_brasil_app/core/errors/failures.dart';
 import 'package:grocery_brasil_app/domain/Location.dart';
 import 'package:grocery_brasil_app/domain/Unity.dart';
+import 'package:grocery_brasil_app/features/addressing/data/GPSServiceAdapter.dart';
+import 'package:grocery_brasil_app/features/addressing/data/GeohashServiceAdapter.dart';
 import 'package:grocery_brasil_app/features/product/domain/ProductRepository.dart';
 import 'package:grocery_brasil_app/features/product/domain/ProductSearchModel.dart';
 import 'package:grocery_brasil_app/features/product/domain/ProductService.dart';
@@ -19,10 +21,16 @@ class MockProductRepository extends Mock implements ProductRepository {}
 
 class MockUserService extends Mock implements UserService {}
 
+class MockGPSServiceAdapter extends Mock implements GPSServiceAdapter {}
+
+class MockGeohashServiceAdapter extends Mock implements GeohashServiceAdapter {}
+
 main() {
   MockTextSearchRepository mockTextSearchRepository;
   MockProductRepository mockProductRepository;
   MockUserService mockUserService;
+  MockGPSServiceAdapter mockGPSServiceAdapter;
+  MockGeohashServiceAdapter mockGeohashServiceAdapter;
   ProductService sut;
 
   group('ProductServiceImpl', () {
@@ -30,10 +38,14 @@ main() {
       mockTextSearchRepository = MockTextSearchRepository();
       mockProductRepository = MockProductRepository();
       mockUserService = MockUserService();
+      mockGPSServiceAdapter = MockGPSServiceAdapter();
+      mockGeohashServiceAdapter = MockGeohashServiceAdapter();
       sut = ProductServiceImpl(
           productRepository: mockProductRepository,
           textSearchRepository: mockTextSearchRepository,
-          userService: mockUserService);
+          userService: mockUserService,
+          geohashServiceAdapter: mockGeohashServiceAdapter,
+          gPSServiceAdapter: mockGPSServiceAdapter);
     });
 
     group('listProductsByText', () {
@@ -99,21 +111,146 @@ main() {
         final someUser = fixture.oneUser;
         when(mockUserService.getUser())
             .thenAnswer((realInvocation) async => Right(someUser));
+
+        when(mockGPSServiceAdapter.calculateTopLeftBottomRight(
+                center: someUser.address.location,
+                distance: someUser.preferences.searchRadius))
+            .thenReturn([Location(lat: 1, lon: -1), Location(lat: -1, lon: 1)]);
+        when(mockGeohashServiceAdapter.encode(1, -1)).thenReturn('hashtplft');
+        when(mockGeohashServiceAdapter.encode(1, 1)).thenReturn('hashtprgt');
+        when(mockGeohashServiceAdapter.encode(-1, -1)).thenReturn('hashbtlft');
+        when(mockGeohashServiceAdapter.encode(-1, 1)).thenReturn('hashbtrgt');
+        when(mockGeohashServiceAdapter.encode(
+                someUser.address.location.lat, someUser.address.location.lon))
+            .thenReturn('hashuser9');
+        when(mockGeohashServiceAdapter.findCommonGeohash(
+                topLeft: 'hashtplft',
+                topRight: 'hashtprgt',
+                bottomLeft: 'hashbtlft',
+                bottomRight: 'hashbtrgt'))
+            .thenReturn('hash');
         when(mockProductRepository
-                .listProductPricesByIdByDistanceOrderByUnitPrice(
-                    topLeft: Location(
-                        lat: -22.337196547938802, lon: -43.886949829808195),
-                    bottomRight: Location(
-                        lat: -23.60898916679005, lon: -42.50546386664078),
-                    productId: productId,
-                    listSize: 1))
-            .thenAnswer((realInvocation) async => [expected]);
+                .listProductPricesByIdByGeohashOrderByUnitPrice(
+                    geohash: 'hash', productId: productId))
+            .thenAnswer((realInvocation) => Stream.fromIterable([
+                  [fixture.oneProductPrice],
+                  [fixture.otherProductPrice]
+                ]));
+        when(mockGPSServiceAdapter.distanceBetween(
+                start: someUser.address.location,
+                end: fixture.oneProductPrice.company.address.location))
+            .thenReturn(someUser.preferences.searchRadius.toDouble());
+        when(mockGPSServiceAdapter.distanceBetween(
+                start: someUser.address.location,
+                end: fixture.otherProductPrice.company.address.location))
+            .thenReturn(someUser.preferences.searchRadius.toDouble());
         //act
         final actual = await sut.getMinPriceProductByUserByProductIdUseCase(
             productId: productId);
         //assert
         expect(actual, Right(expected));
       });
+
+      test('should remove products not in distance range  ', () async {
+        //setup
+        final productId = 'SomeProduct';
+        final expected = fixture.otherProductPrice;
+        final someUser = fixture.oneUser;
+        when(mockUserService.getUser())
+            .thenAnswer((realInvocation) async => Right(someUser));
+
+        when(mockGPSServiceAdapter.calculateTopLeftBottomRight(
+                center: someUser.address.location,
+                distance: someUser.preferences.searchRadius))
+            .thenReturn([Location(lat: 1, lon: -1), Location(lat: -1, lon: 1)]);
+        when(mockGeohashServiceAdapter.encode(1, -1)).thenReturn('hashtplft');
+        when(mockGeohashServiceAdapter.encode(1, 1)).thenReturn('hashtprgt');
+        when(mockGeohashServiceAdapter.encode(-1, -1)).thenReturn('hashbtlft');
+        when(mockGeohashServiceAdapter.encode(-1, 1)).thenReturn('hashbtrgt');
+        when(mockGeohashServiceAdapter.encode(
+                someUser.address.location.lat, someUser.address.location.lon))
+            .thenReturn('hashuser9');
+        when(mockGeohashServiceAdapter.findCommonGeohash(
+                topLeft: 'hashtplft',
+                topRight: 'hashtprgt',
+                bottomLeft: 'hashbtlft',
+                bottomRight: 'hashbtrgt'))
+            .thenReturn('hash');
+        when(mockProductRepository
+                .listProductPricesByIdByGeohashOrderByUnitPrice(
+                    geohash: 'hash', productId: productId))
+            .thenAnswer((realInvocation) => Stream.fromIterable([
+                  [fixture.oneProductPrice],
+                  [fixture.otherProductPrice]
+                ]));
+        when(mockGPSServiceAdapter.distanceBetween(
+                start: someUser.address.location,
+                end: fixture.oneProductPrice.company.address.location))
+            .thenReturn(someUser.preferences.searchRadius.toDouble() + 1);
+        when(mockGPSServiceAdapter.distanceBetween(
+                start: someUser.address.location,
+                end: fixture.otherProductPrice.company.address.location))
+            .thenReturn(someUser.preferences.searchRadius.toDouble());
+        //act
+        final actual = await sut.getMinPriceProductByUserByProductIdUseCase(
+            productId: productId);
+        //assert
+        expect(actual, Right(expected));
+      });
+
+      test(
+          'should return Failure(not found) when no products are in distance range',
+          () async {
+        //setup
+        final productId = 'SomeProduct';
+        final expected = ProductFailure(
+            messageId: MessageIds.NOT_FOUND,
+            message:
+                "Product $productId not found within ${fixture.oneUser.preferences.searchRadius} meters");
+
+        final someUser = fixture.oneUser;
+        when(mockUserService.getUser())
+            .thenAnswer((realInvocation) async => Right(someUser));
+
+        when(mockGPSServiceAdapter.calculateTopLeftBottomRight(
+                center: someUser.address.location,
+                distance: someUser.preferences.searchRadius))
+            .thenReturn([Location(lat: 1, lon: -1), Location(lat: -1, lon: 1)]);
+        when(mockGeohashServiceAdapter.encode(1, -1)).thenReturn('hashtplft');
+        when(mockGeohashServiceAdapter.encode(1, 1)).thenReturn('hashtprgt');
+        when(mockGeohashServiceAdapter.encode(-1, -1)).thenReturn('hashbtlft');
+        when(mockGeohashServiceAdapter.encode(-1, 1)).thenReturn('hashbtrgt');
+        when(mockGeohashServiceAdapter.encode(
+                someUser.address.location.lat, someUser.address.location.lon))
+            .thenReturn('hashuser9');
+        when(mockGeohashServiceAdapter.findCommonGeohash(
+                topLeft: 'hashtplft',
+                topRight: 'hashtprgt',
+                bottomLeft: 'hashbtlft',
+                bottomRight: 'hashbtrgt'))
+            .thenReturn('hash');
+        when(mockProductRepository
+                .listProductPricesByIdByGeohashOrderByUnitPrice(
+                    geohash: 'hash', productId: productId))
+            .thenAnswer((realInvocation) => Stream.fromIterable([
+                  [fixture.oneProductPrice],
+                  [fixture.otherProductPrice]
+                ]));
+        when(mockGPSServiceAdapter.distanceBetween(
+                start: someUser.address.location,
+                end: fixture.oneProductPrice.company.address.location))
+            .thenReturn(someUser.preferences.searchRadius.toDouble() + 1);
+        when(mockGPSServiceAdapter.distanceBetween(
+                start: someUser.address.location,
+                end: fixture.otherProductPrice.company.address.location))
+            .thenReturn(someUser.preferences.searchRadius.toDouble() + 1);
+        //act
+        final actual = await sut.getMinPriceProductByUserByProductIdUseCase(
+            productId: productId);
+        //assert
+        expect(actual, Left(expected));
+      });
+
       test('should return ProductFailure on error  ', () async {
         //setup
         final productId = fixture.oneProductPrice.product.eanCode;
