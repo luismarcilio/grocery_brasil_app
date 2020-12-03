@@ -36,6 +36,7 @@ dependencies:
   dartz: ^0.9.1
   sprintf: ^5.0.0
   get_it: ^5.0.1
+  dart_geohash: ^1.0.2
 
 dev_dependencies:
   build_runner:
