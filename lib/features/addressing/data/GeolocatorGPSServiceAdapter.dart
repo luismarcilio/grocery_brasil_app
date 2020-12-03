@@ -1,11 +1,10 @@
 import 'package:geolocator/geolocator.dart';
+import 'package:grocery_brasil_app/core/config.dart';
 import 'package:grocery_brasil_app/core/errors/exceptions.dart';
 import 'package:meta/meta.dart';
 
 import '../../../domain/Location.dart';
 import 'GPSServiceAdapter.dart';
-
-const geoserviceTimeout = Duration(seconds: 5);
 
 class GeolocatorGPSServiceAdapter implements GPSServiceAdapter {
   final GeolocatorPlatform geolocatorPlatform;
@@ -30,7 +29,7 @@ class GeolocatorGPSServiceAdapter implements GPSServiceAdapter {
         default:
       }
       final position = await geolocatorPlatform.getCurrentPosition(
-          desiredAccuracy: LocationAccuracy.high, timeLimit: geoserviceTimeout);
+          desiredAccuracy: LocationAccuracy.high, timeLimit: gpsTimeout);
       return Location(lat: position.latitude, lon: position.longitude);
     } catch (e) {
       if (e is AddressingException) {

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:meta/meta.dart';
 
+import '../../../core/config.dart';
 import '../../../core/errors/exceptions.dart';
 import '../../secrets/domain/SecretsService.dart';
 import '../domain/ProductSearchModel.dart';
@@ -32,7 +33,7 @@ class TextSearchDataSourceImpl implements TextSearchDataSource {
       final queryString = jsonEncode(query);
       final response = await httpClient
           .post(url, headers: headers, body: queryString)
-          .timeout(Duration(seconds: 5));
+          .timeout(elasticSearchTimeout);
       if (response.statusCode != 200) {
         String reason = response.reasonPhrase;
         try {

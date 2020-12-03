@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:meta/meta.dart';
 
+import '../../../core/config.dart';
 import '../../../core/errors/exceptions.dart';
 import '../../../domain/Address.dart';
 import '../../../domain/Location.dart';
@@ -39,7 +40,7 @@ class GoogleAddressingServiceAdapter implements AddressingServiceAdapter {
             'language': 'pt-BR'
           });
       final response =
-          await httpClient.get(uri.toString()).timeout(Duration(seconds: 5));
+          await httpClient.get(uri.toString()).timeout(googleApiTimeout);
       if (response.statusCode != 200) {
         throw AddressingException(
             messageId: MessageIds.UNEXPECTED,
@@ -80,7 +81,7 @@ class GoogleAddressingServiceAdapter implements AddressingServiceAdapter {
             'result_type': 'street_address'
           });
       final response =
-          await httpClient.get(uri.toString()).timeout(Duration(seconds: 5));
+          await httpClient.get(uri.toString()).timeout(googleApiTimeout);
       if (response.statusCode != 200) {
         throw AddressingException(
             messageId: MessageIds.UNEXPECTED,
@@ -125,7 +126,7 @@ class GoogleAddressingServiceAdapter implements AddressingServiceAdapter {
           });
 
       final httpResponse =
-          await httpClient.get(uri.toString()).timeout(Duration(seconds: 5));
+          await httpClient.get(uri.toString()).timeout(googleApiTimeout);
       if (httpResponse.statusCode != 200) {
         throw AddressingException(
             messageId: MessageIds.UNEXPECTED,

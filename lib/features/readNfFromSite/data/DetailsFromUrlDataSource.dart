@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:meta/meta.dart';
 
+import '../../../core/config.dart';
 import '../../../core/errors/exceptions.dart';
 import '../../apisDetails/data/FunctionsDetailsDataSource.dart';
 import '../../apisDetails/domain/BackendFunctionsConfiguration.dart';
@@ -48,7 +49,7 @@ class DetailsFromUrlDataSourceImpl extends DetailsFromUrlDataSource {
 
     final response = await httpClient
         .get(uri, headers: httpHeaders)
-        .timeout(Duration(seconds: 5));
+        .timeout(serverlessFunction);
 
     if (response.statusCode != 200) {
       throw NFReaderException(

@@ -1,10 +1,11 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:grocery_brasil_app/core/errors/exceptions.dart';
 import 'package:http/http.dart' as http;
 import 'package:meta/meta.dart';
 
+import '../../../core/config.dart';
+import '../../../core/errors/exceptions.dart';
 import '../../apisDetails/data/FunctionsDetailsDataSource.dart';
 import '../../apisDetails/domain/BackendFunctionsConfiguration.dart';
 import '../../login/data/datasources/AuthenticationDataSource.dart';
@@ -46,7 +47,7 @@ class NFDataSourceImpl extends NFDataSource {
     });
     final http.Response response = await httpClient
         .post(uri.toString(), body: jsonEncode(data), headers: httpHeaders)
-        .timeout(Duration(seconds: 5));
+        .timeout(serverlessFunction);
 
     if (response.statusCode != 200) {
       throw PurchaseException(
