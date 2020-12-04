@@ -58,25 +58,11 @@ class ProductServiceImpl implements ProductService {
       User user;
       result.fold((l) => null, (r) => user = r);
 
-      final coordinatePoints = gPSServiceAdapter.calculateTopLeftBottomRight(
-          center: user.address.location,
-          distance: user.preferences.searchRadius);
-      final topLeftGeohash = geohashServiceAdapter.encode(
-          coordinatePoints[0].lat, coordinatePoints[0].lon);
-      final topRightGeohash = geohashServiceAdapter.encode(
-          coordinatePoints[0].lat, coordinatePoints[1].lon);
-      final bottomLeftGeohash = geohashServiceAdapter.encode(
-          coordinatePoints[1].lat, coordinatePoints[0].lon);
-      final bottomRightGeohash = geohashServiceAdapter.encode(
-          coordinatePoints[1].lat, coordinatePoints[1].lon);
-      final commonGeohash = geohashServiceAdapter.findCommonGeohash(
-          topLeft: topLeftGeohash,
-          topRight: topRightGeohash,
-          bottomLeft: bottomLeftGeohash,
-          bottomRight: bottomRightGeohash);
+      final geohashList = geohashServiceAdapter.proximityGeohashes(
+          user.address.location, user.preferences.searchRadius.toDouble());
       Stream<List<ProductPrices>> productPrices =
           productRepository.listProductPricesByIdByGeohashOrderByUnitPrice(
-              geohash: commonGeohash, productId: productId);
+              geohashList: geohashList, productId: productId);
 
       final bestProductPrice = await productPrices
           .expand((element) => element)
@@ -101,8 +87,7 @@ class ProductServiceImpl implements ProductService {
 
   bool _isInSearchRadius(
       ProductPrices element, Location location, int searchRadius) {
-    final distance = gPSServiceAdapter.distanceBetween(
-        start: location, end: element.company.address.location);
-    return distance <= searchRadius;
+    return geohashServiceAdapter.inCircleCheck(
+        element.company.address.location, location, searchRadius.toDouble());
   }
 }
