@@ -625,6 +625,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.3.2+2"
+  proximity_hash:
+    dependency: "direct main"
+    description:
+      name: proximity_hash
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.2"
   pub_semver:
     dependency: transitive
     description:
