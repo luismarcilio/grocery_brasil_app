@@ -2,6 +2,9 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:grocery_brasil_app/features/product/domain/ProductPrices.dart';
+import 'package:grocery_brasil_app/features/product/presentation/bloc/product_prices_bloc.dart';
+import 'package:intl/intl.dart';
 
 import '../../../../injection_container.dart';
 import '../../../../screens/common/loading.dart';
@@ -63,16 +66,6 @@ class SearchTextForm extends StatelessWidget {
   }
 }
 
-// class ResultsTable extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return BlocProvider(
-//       create: (_) => sl<ProductsBloc>(),
-//       child: BuildResultsTable(),
-//     );
-//   }
-// }
-
 class BuildResultsTable extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -117,7 +110,6 @@ class ProductCard extends StatelessWidget {
       : super(key: key);
   @override
   Widget build(BuildContext context) {
-    print("product: $product");
     return Card(
       child: Row(
         children: [
@@ -129,17 +121,12 @@ class ProductCard extends StatelessWidget {
                       ? Icon(Icons.shopping_cart)
                       : Image.network(product.thumbnail),
                   title: new Text(product.name),
-                  trailing: new Text("R\$ 15,12"),
-                  subtitle:
+                  trailing:
                       new Text(product.unity != null ? product.unity.name : ''),
                   onTap: onTap,
                   onLongPress: onLongPress,
                 ),
-                ListTile(
-                  title: new Text('ZEBU CARNES SUPERMERCADOS LTDA'),
-                  subtitle: new Text(
-                      "Avenida da Saudade, 1110, Santa Marta, Uberaba"),
-                ),
+                MinimumPriceListTile(productId: product.productId),
               ],
             ),
           ),
@@ -147,6 +134,65 @@ class ProductCard extends StatelessWidget {
       ),
     );
   }
+}
+
+class MinimumPriceListTile extends StatelessWidget {
+  final String productId;
+
+  const MinimumPriceListTile({Key key, @required this.productId})
+      : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (_) => sl<ProductPricesBloc>(),
+      child: BuildMinimumPriceListTile(productId: productId),
+    );
+  }
+}
+
+class BuildMinimumPriceListTile extends StatelessWidget {
+  final String productId;
+
+  const BuildMinimumPriceListTile({Key key, @required this.productId})
+      : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return BlocConsumer<ProductPricesBloc, ProductPricesState>(
+        listener: (context, state) {
+      if (state is ProductPricesError) {
+        Scaffold.of(context).showSnackBar(
+          SnackBar(
+            content: Text(state.productFailure.toString()),
+          ),
+        );
+      }
+    }, builder: (context, state) {
+      if (state is ProductPricesSearching) {
+        return Container();
+      } else if (state is MininumProductPriceAvailable) {
+        print("productPrices: ${state.productPrices}");
+        return _minimumPricesWidget(state.productPrices);
+      } else if (state is ProductPricesInitial) {
+        BlocProvider.of<ProductPricesBloc>(context)
+            .add(GetMininumProductPriceAvailable(productId: productId));
+      }
+      return Container();
+    });
+  }
+
+  Widget _minimumPricesWidget(ProductPrices productPrices) => ListTile(
+        isThreeLine: false,
+        dense: true,
+        title: new Text(productPrices.company.name),
+        trailing: Column(
+          children: [
+            new Text("R\$ ${productPrices.unityValue}"),
+            new Text(DateFormat('d/M/y').format(productPrices.date))
+          ],
+        ),
+        subtitle: new Text(
+            '${productPrices.company.address.street},${productPrices.company.address.number} , ${productPrices.company.address.county}, ${productPrices.company.address.city.name}'),
+      );
 }
 
 class MoreItemsMenu extends StatelessWidget {
