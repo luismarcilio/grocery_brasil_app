@@ -11,8 +11,8 @@ class ProductRepositoryImpl implements ProductRepository {
 
   @override
   Stream<List<ProductPrices>> listProductPricesByIdByGeohashOrderByUnitPrice(
-      {String geohash, String productId}) {
-    // TODO: implement listProductPricesByIdByGeohashOrderByUnitPrice
-    throw UnimplementedError();
+      {List<String> geohashList, String productId}) {
+    return productDataSource.listProductPricesByIdByGeohashOrderByUnitPrice(
+        geohashList: geohashList, productId: productId);
   }
 }

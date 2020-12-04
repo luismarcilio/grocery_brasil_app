@@ -4,5 +4,5 @@ import 'ProductPrices.dart';
 
 abstract class ProductRepository {
   Stream<List<ProductPrices>> listProductPricesByIdByGeohashOrderByUnitPrice(
-      {@required String geohash, @required String productId});
+      {@required List<String> geohashList, @required String productId});
 }
