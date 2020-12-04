@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:meta/meta.dart';
 
-import '../../../domain/Location.dart';
 import '../domain/ProductPrices.dart';
 import 'ProductDataSource.dart';
 
@@ -11,15 +10,19 @@ class ProductDataSourceImpl implements ProductDataSource {
   ProductDataSourceImpl({@required this.firebaseFirestore});
 
   @override
-  Future<List<ProductPrices>> listProductPricesByIdByDistanceOrderByUnitPrice(
-      {Location topLeft,
-      Location bottomRight,
-      String productId,
-      int listSize}) async {
-    // final docRef =    await firebaseFirestore
-    //     .collection('PRODUTOS')
-    //     .doc(productId)
-    //     .collection('COMPRAS')
-    //     .where(field)
+  Stream<List<ProductPrices>> listProductPricesByIdByGeohashOrderByUnitPrice(
+      {List<String> geohashList, String productId}) {
+    final field = 'company.address.location.geohash.g${geohashList[0].length}';
+    final docs = firebaseFirestore
+        .collection('PRODUTOS')
+        .doc(productId)
+        .collection('COMPRAS')
+        .where(field, whereIn: geohashList)
+        .orderBy('unityValue')
+        .snapshots()
+        .asyncMap((snapshot) => snapshot.docs
+            .map((doc) => ProductPrices.fromJson(doc.data()))
+            .toList());
+    return docs;
   }
 }
