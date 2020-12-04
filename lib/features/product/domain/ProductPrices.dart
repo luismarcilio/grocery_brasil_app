@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
+import 'package:grocery_brasil_app/core/utils/Utils.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 import '../../../domain/Company.dart';
@@ -12,10 +13,10 @@ class ProductPrices extends Equatable {
   final Product product;
   final Company company;
   final double unityValue;
-  final DateTime purchaseDate;
+  @JsonKey(fromJson: dateTimeFromJsonOrTimestamp)
+  final DateTime date;
 
-  ProductPrices(
-      {this.product, this.company, this.unityValue, this.purchaseDate});
+  ProductPrices({this.product, this.company, this.unityValue, this.date});
 
   factory ProductPrices.fromJson(Map<String, dynamic> json) =>
       _$ProductPricesFromJson(json);
@@ -25,5 +26,5 @@ class ProductPrices extends Equatable {
   String toString() => jsonEncode(this.toJson());
 
   @override
-  List<Object> get props => [product, company, unityValue, purchaseDate];
+  List<Object> get props => [product, company, unityValue, date];
 }
