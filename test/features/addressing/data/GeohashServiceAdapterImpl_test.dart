@@ -1,5 +1,4 @@
 import 'package:dart_geohash/dart_geohash.dart';
-import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:grocery_brasil_app/features/addressing/data/GeohashServiceAdapter.dart';
 import 'package:grocery_brasil_app/features/addressing/data/GeohashServiceAdapterImpl.dart';
