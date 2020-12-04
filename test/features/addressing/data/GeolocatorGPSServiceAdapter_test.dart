@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:grocery_brasil_app/core/config.dart';
 import 'package:grocery_brasil_app/core/errors/exceptions.dart';
 import 'package:grocery_brasil_app/domain/Location.dart';
 import 'package:grocery_brasil_app/features/addressing/data/GPSServiceAdapter.dart';
@@ -27,8 +28,7 @@ main() {
           .thenAnswer((realInvocation) async => LocationPermission.whileInUse);
 
       when(mockGeolocatorPlatform.getCurrentPosition(
-              desiredAccuracy: LocationAccuracy.high,
-              timeLimit: Duration(seconds: 5)))
+              desiredAccuracy: LocationAccuracy.high, timeLimit: gpsTimeout))
           .thenAnswer((realInvocation) async =>
               Position(latitude: 10.0, longitude: 11.0));
 
@@ -39,8 +39,7 @@ main() {
       verify(mockGeolocatorPlatform.isLocationServiceEnabled());
       verify(mockGeolocatorPlatform.checkPermission());
       verify(mockGeolocatorPlatform.getCurrentPosition(
-          desiredAccuracy: LocationAccuracy.high,
-          timeLimit: Duration(seconds: 5)));
+          desiredAccuracy: LocationAccuracy.high, timeLimit: gpsTimeout));
 
       verifyNoMoreInteractions(mockGeolocatorPlatform);
     });
@@ -57,8 +56,7 @@ main() {
           .thenAnswer((realInvocation) async => LocationPermission.whileInUse);
 
       when(mockGeolocatorPlatform.getCurrentPosition(
-              desiredAccuracy: LocationAccuracy.high,
-              timeLimit: Duration(seconds: 5)))
+              desiredAccuracy: LocationAccuracy.high, timeLimit: gpsTimeout))
           .thenAnswer((realInvocation) async =>
               Position(latitude: 10.0, longitude: 11.0));
 
@@ -70,8 +68,7 @@ main() {
       verify(mockGeolocatorPlatform.checkPermission());
       verify(mockGeolocatorPlatform.requestPermission());
       verify(mockGeolocatorPlatform.getCurrentPosition(
-          desiredAccuracy: LocationAccuracy.high,
-          timeLimit: Duration(seconds: 5)));
+          desiredAccuracy: LocationAccuracy.high, timeLimit: gpsTimeout));
 
       verifyNoMoreInteractions(mockGeolocatorPlatform);
     });
