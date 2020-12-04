@@ -28,15 +28,19 @@ import 'features/login/domain/usecases/AuthenticateWithFacebook.dart';
 import 'features/login/domain/usecases/AuthenticateWithGoogle.dart';
 import 'features/login/domain/usecases/Logout.dart';
 import 'features/login/presentation/bloc/login_bloc.dart';
+import 'features/product/data/ProductDataSource.dart';
+import 'features/product/data/ProductDataSourceImpl.dart';
 import 'features/product/data/ProductRepositoryImpl.dart';
 import 'features/product/data/TextSearchDataSource.dart';
 import 'features/product/data/TextSearchDataSourceImpl.dart';
 import 'features/product/data/TextSearchRepositoryImpl.dart';
+import 'features/product/domain/GetMinPriceProductByUserByProductIdUseCase.dart';
 import 'features/product/domain/ListProductsByTextUseCase.dart';
 import 'features/product/domain/ProductRepository.dart';
 import 'features/product/domain/ProductService.dart';
 import 'features/product/domain/ProductServiceImpl.dart';
 import 'features/product/domain/TextSearchRepository.dart';
+import 'features/product/presentation/bloc/product_prices_bloc.dart';
 import 'features/product/presentation/bloc/products_bloc.dart';
 import 'features/purchase/domain/GetFullPurchaseUseCase.dart';
 import 'features/purchase/domain/ListPurchasesUseCase.dart';
@@ -97,6 +101,8 @@ void init() {
   sl.registerFactory(
       () => UserBloc(updateUserUseCase: sl(), getUserUseCase: sl()));
   sl.registerFactory(() => ProductsBloc(listProductsByTextUseCase: sl()));
+  sl.registerFactory(() =>
+      ProductPricesBloc(getMinPriceProductByUserByProductIdUseCase: sl()));
   //UseCases
   sl.registerLazySingleton(() => AuthenticateWithEmailAndPassword(sl()));
   sl.registerLazySingleton(() => AuthenticateWithFacebook(sl()));
@@ -114,6 +120,8 @@ void init() {
   sl.registerLazySingleton(() => GetUserUseCase(userService: sl()));
   sl.registerLazySingleton(
       () => ListProductsByTextUseCase(productService: sl()));
+  sl.registerLazySingleton(
+      () => GetMinPriceProductByUserByProductIdUseCase(productService: sl()));
 //Services
   sl.registerLazySingleton<SecretsService>(
       () => SecretsServiceImpl(secretDataSource: sl()));
@@ -187,6 +195,9 @@ void init() {
       httpClient: sl()));
   sl.registerLazySingleton<TextSearchDataSource>(
       () => TextSearchDataSourceImpl(httpClient: sl(), secretsService: sl()));
+
+  sl.registerLazySingleton<ProductDataSource>(
+      () => ProductDataSourceImpl(firebaseFirestore: sl()));
   //Adapter
 
   sl.registerLazySingleton<GPSServiceAdapter>(
