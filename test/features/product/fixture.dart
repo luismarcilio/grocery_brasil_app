@@ -84,6 +84,7 @@ const returnFromElasticSearch = '''
 
 final expected = [
   ProductSearchModel(
+      productId: '7898994095156',
       eanCode: '7898994095156',
       name: 'LEITE LACTUS INTEGRAL',
       ncmCode: '4012010',
@@ -92,6 +93,7 @@ final expected = [
           'https://storage.googleapis.com/grocery-brasil-app-thumbnails/7898994095156',
       unity: Unity(name: 'UN')),
   ProductSearchModel(
+      productId: '7896286604154',
       eanCode: '7896286604154',
       name: 'BISCOITO CORY PALITO CHOCOLATE AO LEITE',
       ncmCode: null,
@@ -100,6 +102,7 @@ final expected = [
           'https://storage.googleapis.com/grocery-brasil-app-thumbnails/7896286604154',
       unity: null),
   ProductSearchModel(
+      productId: '7622300991500',
       eanCode: '7622300991500',
       name: 'CHOCOLATE AO LEITE LACTA DIAMANTE NEGRO PACOTE 90G',
       ncmCode: null,
@@ -108,6 +111,7 @@ final expected = [
           'https://storage.googleapis.com/grocery-brasil-app-thumbnails/7622300991500',
       unity: null),
   ProductSearchModel(
+      productId: '7891025105244',
       eanCode: '7891025105244',
       name:
           'PACK SOBREMESA LÁCTEA CHOCOLATE AO LEITE DANETTE BANDEJA 720G 8 UNIDADES GRÁTIS 1 UNIDADE',

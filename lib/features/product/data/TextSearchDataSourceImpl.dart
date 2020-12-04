@@ -60,7 +60,7 @@ class TextSearchDataSourceImpl implements TextSearchDataSource {
   List<ProductSearchModel> _parse(Map<String, dynamic> elResponse) {
     List jsonList = elResponse['hits']['hits'];
     List<ProductSearchModel> products =
-        jsonList.map((e) => ProductSearchModel.fromJson(e['_source'])).toList();
+        jsonList.map((e) => ProductSearchModel.fromElasticSearch(e)).toList();
     return products;
   }
 }
