@@ -172,7 +172,7 @@ final oneProductPrice = ProductPrices(
             city: City(name: 'Uberaba'),
             location: Location(lon: -47.9562274, lat: -19.7433014))),
     unityValue: 15.0,
-    purchaseDate: DateTime.now());
+    date: DateTime.now());
 
 final otherProductPrice = ProductPrices(
     product: Product(
@@ -199,7 +199,7 @@ final otherProductPrice = ProductPrices(
             city: City(name: 'Uberaba'),
             location: Location(lon: -47.9478899, lat: -19.7490176))),
     unityValue: 15.0,
-    purchaseDate: DateTime.now());
+    date: DateTime.now());
 
 final oneUser = User(
     preferences: UserPreferences(searchRadius: 100000),
