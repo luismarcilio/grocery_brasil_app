@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../../../../domain/Purchase.dart';
 import '../../../../domain/PurchaseItem.dart';
@@ -9,6 +10,7 @@ class NFScreensWidgets {
       Purchase purchase,
       Function onTap,
       Function onLongPress}) {
+    print('date: ${purchase.fiscalNote}');
     return Hero(
       tag: purchase.fiscalNote.accessKey,
       child: new Card(
@@ -17,7 +19,8 @@ class NFScreensWidgets {
             leading: _moreItemsMenu(context),
             title: new Text(purchase.fiscalNote.company.name),
             trailing: new Text("R\$ ${purchase.totalAmount.toString()}"),
-            // subtitle: new Text(purchase.fiscalNote.date.toString()),
+            subtitle: new Text(
+                DateFormat('dd/MM/yyyy').format(purchase.fiscalNote.date)),
             onTap: onTap,
             onLongPress: onLongPress,
           ),
