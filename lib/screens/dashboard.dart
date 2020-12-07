@@ -1,5 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:grocery_brasil_app/core/usecases/usecase.dart';
+import 'package:grocery_brasil_app/features/login/domain/usecases/Logout.dart';
+import 'package:grocery_brasil_app/features/login/presentation/pages/login.dart';
 
 import '../features/product/presentation/pages/products_screen.dart';
 import '../features/purchase/presentation/pages/ResumePurchaseList.dart';
@@ -7,6 +10,7 @@ import '../features/readNfFromSite/presentation/pages/ReadNfScreen.dart';
 import '../features/scanQrCode/domain/QRCode.dart';
 import '../features/scanQrCode/presentation/pages/qrcodeScreen.dart';
 import '../features/user/presentation/screen/SetupAccountScreen.dart';
+import '../injection_container.dart';
 
 class Dashboard extends StatefulWidget {
   static const route = '/dashboard';
@@ -16,24 +20,34 @@ class Dashboard extends StatefulWidget {
 
 class _DashboardState extends State<Dashboard> {
   int selectedIndex = 0;
+  Logout logout = sl();
   Map<int, Widget> scaffoldBodyMap = {
     0: ResumePurchaseList(),
     1: ProductsScreen(),
     2: AccountSetupScreen()
   };
-
-  Widget logout() {
-    FirebaseAuth.instance.signOut();
-    return Container(
-      child: Text("logout"),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Suas Compras mais barato"),
+        title: Row(
+          children: [
+            Text("Suas Compras mais barato"),
+            Expanded(
+                child: Container(
+                    alignment: Alignment.centerRight,
+                    child: FlatButton(
+                        onPressed: () {
+                          logout(NoParams());
+                          Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(
+                              builder: (context) => Login(),
+                            ),
+                          );
+                        },
+                        child: Icon(Icons.logout))))
+          ],
+        ),
       ),
       body: scaffoldBodyMap[selectedIndex],
       floatingActionButton: FloatingActionButton.extended(
