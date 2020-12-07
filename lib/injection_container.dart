@@ -22,6 +22,8 @@ import 'features/login/data/datasources/FirebaseAuthenticationDataSourceImpl.dar
 import 'features/login/data/datasources/FirebaseOAuthProvider.dart';
 import 'features/login/data/repositories/AuthenticationRepositoryImpl.dart';
 import 'features/login/domain/repositories/AuthenticationRepository.dart';
+import 'features/login/domain/service/AuthenticationService.dart';
+import 'features/login/domain/service/AuthenticationServiceImpl.dart';
 import 'features/login/domain/usecases/AsyncLogin.dart';
 import 'features/login/domain/usecases/AuthenticateWithEmailAndPassword.dart';
 import 'features/login/domain/usecases/AuthenticateWithFacebook.dart';
@@ -104,11 +106,14 @@ void init() {
   sl.registerFactory(() =>
       ProductPricesBloc(getMinPriceProductByUserByProductIdUseCase: sl()));
   //UseCases
-  sl.registerLazySingleton(() => AuthenticateWithEmailAndPassword(sl()));
-  sl.registerLazySingleton(() => AuthenticateWithFacebook(sl()));
-  sl.registerLazySingleton(() => AuthenticateWithGoogle(sl()));
-  sl.registerLazySingleton(() => Logout(sl()));
-  sl.registerLazySingleton(() => AsyncLogin(sl()));
+  sl.registerLazySingleton(
+      () => AuthenticateWithEmailAndPassword(authenticationService: sl()));
+  sl.registerLazySingleton(
+      () => AuthenticateWithFacebook(authenticationService: sl()));
+  sl.registerLazySingleton(
+      () => AuthenticateWithGoogle(authenticationService: sl()));
+  sl.registerLazySingleton(() => Logout(authenticationService: sl()));
+  sl.registerLazySingleton(() => AsyncLogin(authenticationService: sl()));
   sl.registerLazySingleton(() => RegistrationUseCase(sl()));
   sl.registerLazySingleton(() => ScanQRCode(sl()));
   sl.registerLazySingleton(() => GetDetailsfromUrlUseCase(repository: sl()));
@@ -133,6 +138,11 @@ void init() {
       geohashServiceAdapter: sl()));
   sl.registerLazySingleton<UserService>(() =>
       UserServiceImpl(userRepository: sl(), authenticationRepository: sl()));
+  sl.registerLazySingleton<AuthenticationService>(() =>
+      AuthenticationServiceImpl(
+          authenticationRepository: sl(),
+          addressingDataSource: sl(),
+          userService: sl()));
   //Repository
   sl.registerLazySingleton<AuthenticationRepository>(
       () => AuthenticationRepositoryImpl(authenticationDataSource: sl()));

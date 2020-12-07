@@ -1,17 +1,18 @@
 import 'package:dartz/dartz.dart';
+import 'package:meta/meta.dart';
 
 import '../../../../core/errors/failures.dart';
 import '../../../../core/usecases/usecase.dart';
 import '../../../../domain/User.dart';
-import '../repositories/AuthenticationRepository.dart';
+import '../service/AuthenticationService.dart';
 
 class AuthenticateWithFacebook implements UseCase<User, NoParams> {
-  final AuthenticationRepository repository;
+  final AuthenticationService authenticationService;
 
-  AuthenticateWithFacebook(this.repository);
+  AuthenticateWithFacebook({@required this.authenticationService});
 
   @override
   Future<Either<Failure, User>> call(NoParams params) async {
-    return await repository.authenticateWithFacebook();
+    return await authenticationService.authenticateWithFacebook();
   }
 }

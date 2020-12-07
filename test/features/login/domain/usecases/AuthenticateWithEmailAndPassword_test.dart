@@ -1,20 +1,20 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:grocery_brasil_app/features/login/domain/repositories/AuthenticationRepository.dart';
+import 'package:grocery_brasil_app/features/login/domain/service/AuthenticationService.dart';
 import 'package:grocery_brasil_app/features/login/domain/usecases/AuthenticateWithEmailAndPassword.dart';
 import 'package:grocery_brasil_app/domain/User.dart';
 import 'package:mockito/mockito.dart';
 
-class MockAuthenticationRepository extends Mock
-    implements AuthenticationRepository {}
+class MockAuthenticationService extends Mock implements AuthenticationService {}
 
 void main() {
   AuthenticateWithEmailAndPassword usecase;
-  MockAuthenticationRepository repository;
+  MockAuthenticationService mockAuthenticationService;
 
   setUp(() {
-    repository = MockAuthenticationRepository();
-    usecase = AuthenticateWithEmailAndPassword(repository);
+    mockAuthenticationService = MockAuthenticationService();
+    usecase = AuthenticateWithEmailAndPassword(
+        authenticationService: mockAuthenticationService);
   });
 
   final User authenticatedUser = User(email: 'test@email.com', userId: '1');
@@ -23,11 +23,13 @@ void main() {
     final String email = 'test@email.com';
     final String password = 'test';
 
-    when(repository.authenticateWithEmailAndPassword(email, password))
+    when(mockAuthenticationService.authenticateWithEmailAndPassword(
+            email, password))
         .thenAnswer((realInvocation) async => Right(authenticatedUser));
     final result = await usecase(Params(email, password));
     expect(result, Right(authenticatedUser));
-    verify(repository.authenticateWithEmailAndPassword(email, password));
-    verifyNoMoreInteractions(repository);
+    verify(mockAuthenticationService.authenticateWithEmailAndPassword(
+        email, password));
+    verifyNoMoreInteractions(mockAuthenticationService);
   });
 }

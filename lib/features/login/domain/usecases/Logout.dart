@@ -1,16 +1,17 @@
 import 'package:dartz/dartz.dart';
+import 'package:flutter/widgets.dart';
 
 import '../../../../core/errors/failures.dart';
 import '../../../../core/usecases/usecase.dart';
-import '../repositories/AuthenticationRepository.dart';
+import '../service/AuthenticationService.dart';
 
 class Logout implements UseCase<bool, NoParams> {
-  final AuthenticationRepository repository;
+  final AuthenticationService authenticationService;
 
-  Logout(this.repository);
+  Logout({@required this.authenticationService});
 
   @override
   Future<Either<Failure, bool>> call(NoParams params) async {
-    return await repository.logout();
+    return await authenticationService.logout();
   }
 }

@@ -1,19 +1,20 @@
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
+import 'package:meta/meta.dart';
 
 import '../../../../core/errors/failures.dart';
 import '../../../../core/usecases/usecase.dart';
 import '../../../../domain/User.dart';
-import '../repositories/AuthenticationRepository.dart';
+import '../service/AuthenticationService.dart';
 
 class AuthenticateWithEmailAndPassword implements UseCase<User, Params> {
-  final AuthenticationRepository repository;
+  final AuthenticationService authenticationService;
 
-  AuthenticateWithEmailAndPassword(this.repository);
+  AuthenticateWithEmailAndPassword({@required this.authenticationService});
 
   @override
   Future<Either<Failure, User>> call(Params params) async {
-    return await repository.authenticateWithEmailAndPassword(
+    return await authenticationService.authenticateWithEmailAndPassword(
         params.email, params.password);
   }
 }
