@@ -29,7 +29,9 @@ class Purchase extends Equatable {
     return Purchase(
         fiscalNote: FiscalNote(
             company: Company.fromJson(resume.data()['company']),
-            date: resume.data()['date'].toDate(),
+            date: resume.data()['date'] != null
+                ? resume.data()['date'].toDate()
+                : null,
             accessKey: resume.id),
         totalAmount: resume.data()['totalAmount']);
   }
