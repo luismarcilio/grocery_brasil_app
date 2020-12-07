@@ -46,7 +46,7 @@ class UserDetailsForm extends StatelessWidget {
       } else if (state is UserReady) {
         return BuildUserDetailsForm(user: state.user);
       }
-      return Loading();
+      return Container();
     });
   }
 }
