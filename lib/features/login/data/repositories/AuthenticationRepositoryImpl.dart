@@ -14,7 +14,7 @@ class AuthenticationRepositoryImpl extends AuthenticationRepository {
   AuthenticationRepositoryImpl({@required this.authenticationDataSource});
 
   @override
-  Future<Either<Failure, User>> authenticateWithEmailAndPassword(
+  Future<Either<AuthenticationFailure, User>> authenticateWithEmailAndPassword(
       String email, String password) async {
     try {
       final User user = await this
@@ -33,7 +33,7 @@ class AuthenticationRepositoryImpl extends AuthenticationRepository {
   }
 
   @override
-  Future<Either<Failure, User>> authenticateWithFacebook() async {
+  Future<Either<AuthenticationFailure, User>> authenticateWithFacebook() async {
     try {
       final User user =
           await this.authenticationDataSource.authenticateWithFacebook();
@@ -48,7 +48,7 @@ class AuthenticationRepositoryImpl extends AuthenticationRepository {
   }
 
   @override
-  Future<Either<Failure, User>> authenticateWithGoogle() async {
+  Future<Either<AuthenticationFailure, User>> authenticateWithGoogle() async {
     try {
       final User user =
           await this.authenticationDataSource.authenticateWithGoogle();
@@ -63,7 +63,7 @@ class AuthenticationRepositoryImpl extends AuthenticationRepository {
   }
 
   @override
-  Future<Either<Failure, String>> getJWT() async {
+  Future<Either<AuthenticationFailure, String>> getJWT() async {
     try {
       return Right(await authenticationDataSource.getJWT());
     } on AuthenticationException catch (authenticationException) {
@@ -74,7 +74,7 @@ class AuthenticationRepositoryImpl extends AuthenticationRepository {
   }
 
   @override
-  Future<Either<Failure, bool>> logout() async {
+  Future<Either<AuthenticationFailure, bool>> logout() async {
     try {
       await this.authenticationDataSource.logout();
       return Right(true);
@@ -111,7 +111,7 @@ class AuthenticationRepositoryImpl extends AuthenticationRepository {
   }
 
   @override
-  Future<Either<Failure, String>> getUserId() {
+  Future<Either<AuthenticationFailure, String>> getUserId() {
     try {
       final userId = this.authenticationDataSource.getUserId();
       return Future.value(Right(userId));

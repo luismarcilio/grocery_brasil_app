@@ -5,12 +5,12 @@ import '../../../../domain/User.dart';
 import '../usecases/AsyncLogin.dart';
 
 abstract class AuthenticationRepository {
-  Future<Either<Failure, String>> getUserId();
-  Future<Either<Failure, User>> authenticateWithGoogle();
-  Future<Either<Failure, User>> authenticateWithFacebook();
-  Future<Either<Failure, User>> authenticateWithEmailAndPassword(
+  Future<Either<AuthenticationFailure, String>> getUserId();
+  Future<Either<AuthenticationFailure, User>> authenticateWithGoogle();
+  Future<Either<AuthenticationFailure, User>> authenticateWithFacebook();
+  Future<Either<AuthenticationFailure, User>> authenticateWithEmailAndPassword(
       String email, String password);
-  Future<Either<Failure, String>> getJWT();
-  Future<Either<Failure, bool>> logout();
+  Future<Either<AuthenticationFailure, String>> getJWT();
+  Future<Either<AuthenticationFailure, bool>> logout();
   Stream<Either<AsyncLoginFailure, User>> asyncAuthentication();
 }
