@@ -3,7 +3,7 @@ import 'package:flutter_typeahead/flutter_typeahead.dart';
 
 import '../../../../domain/Address.dart';
 import '../../../addressing/data/AddressingServiceAdapter.dart';
-import '../../../addressing/domain/Autocomplete.dart';
+import '../../../addressing/domain/Autocomplete.dart' as my;
 
 class UserAddressScreen extends StatelessWidget {
   final AddressingServiceAdapter addressingServiceAdapter;
@@ -19,7 +19,7 @@ class UserAddressScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     TextEditingController _controller =
         TextEditingController(text: initialAddress);
-    final TypeAheadField textField = TypeAheadField<Autocomplete>(
+    final TypeAheadField textField = TypeAheadField<my.Autocomplete>(
       textFieldConfiguration: TextFieldConfiguration(
           onEditingComplete: () {},
           controller: _controller,
@@ -38,7 +38,7 @@ class UserAddressScreen extends StatelessWidget {
           title: Text(suggestion.description),
         );
       },
-      onSuggestionSelected: (Autocomplete suggestion) async {
+      onSuggestionSelected: (my.Autocomplete suggestion) async {
         Address address = await addressingServiceAdapter
             .getAddressByPlaceId(suggestion.placeId);
         Navigator.pop(context, address);
