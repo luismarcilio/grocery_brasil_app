@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "301850316531-3ee4ej15hrhul1f42g3ist9q3tn806tr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.luismarcilio.grocery_brasil_app",
+            "certificate_hash": "2ee68e4a82e68862cf0d899c3a0e367dd5ef757f"
+          }
+        },
+        {
           "client_id": "301850316531-u3um5piovsb8nmdflq04f6jufaf6hieg.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
@@ -38,6 +46,13 @@
             {
               "client_id": "301850316531-u7b0rvjturs6megr6d85pls1j48p7aeo.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "301850316531-1o6krki3uglt13a4e264bdmlu884fdk2.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.luismarcilio.grocery-brasil-app"
+              }
             }
           ]
         }
