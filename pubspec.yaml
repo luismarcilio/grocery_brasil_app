@@ -22,14 +22,12 @@ dependencies:
   flutter_facebook_auth: ^0.2.3
   google_sign_in: ^4.5.1
   provider: ^4.3.2+1
-  webview_flutter: ^0.3.22+1
+  webview_flutter: ^2.0.2
   cloud_firestore: ^0.14.0+2
   intl: ^0.16.1
   barcode_scan: ^3.0.1
-  qr_flutter: ^3.1.0
   flutter_typeahead: ^1.8.8
   geolocator: ^6.0.0
-  flutter_native_admob: ^2.1.0+3
   flutter_bloc: ^6.1.0
   bloc: ^6.1.0
   equatable: ^1.2.5
