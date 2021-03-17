@@ -78,7 +78,8 @@ class NfWebView extends StatelessWidget {
       javascriptMode: JavascriptMode.unrestricted,
       gestureNavigationEnabled: true,
       onPageFinished: (String url) {
-        _webViewController.loadUrl(nFProcessData.javascriptFunctions);
+        _webViewController
+            .evaluateJavascript(nFProcessData.javascriptFunctions);
       },
       javascriptChannels: Set<JavascriptChannel>.from(
           {SaveNf(state: nFProcessData.uf, context: context)}),
@@ -100,7 +101,9 @@ class SaveNf implements JavascriptChannel {
   @override
   get onMessageReceived => (JavascriptMessage message) async {
         print("PrintHtml: ${message.message}");
-        if (message.message == 'undefined') {
+        if (message.message == null ||
+            message.message == 'undefined' ||
+            message.message == '(null)') {
           return;
         }
         BlocProvider.of<ReadnfBloc>(context).add(
