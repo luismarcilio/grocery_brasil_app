@@ -13,5 +13,5 @@ abstract class ProductService {
       getMinPriceProductByUserByProductIdUseCase({@required String productId});
 
   Future<Either<Failure, Stream<ProductPrices>>>
-      getPricesProductByUserByProductId({String productId}) {}
+      getPricesProductByUserByProductId({String productId});
 }

@@ -93,8 +93,39 @@ class ProductServiceImpl implements ProductService {
 
   @override
   Future<Either<Failure, Stream<ProductPrices>>>
-      getPricesProductByUserByProductId({String productId}) {
-    // TODO: implement getMinPriceProductByUserByProductId
-    throw UnimplementedError();
+      getPricesProductByUserByProductId({String productId}) async {
+    try {
+      final result = await userService.getUser();
+      if (result.isLeft()) {
+        UserFailure userFailure;
+        result.fold((l) => userFailure = l, (r) => null);
+        return Left(ProductFailure(
+            messageId: userFailure.messageId, message: userFailure.message));
+      }
+      User user;
+      result.fold((l) => null, (r) => user = r);
+
+      final geohashList = geohashServiceAdapter.proximityGeohashes(
+          user.address.location, user.preferences.searchRadius.toDouble());
+      Stream<List<ProductPrices>> productPrices =
+          productRepository.listProductPricesByIdByGeohashOrderByUnitPrice(
+              geohashList: geohashList, productId: productId);
+
+      return Right(
+        productPrices.asyncExpand((productPrices) async* {
+          yield* Stream.fromIterable(productPrices);
+        }).where(
+          (element) => _isInSearchRadius(
+              element, user.address.location, user.preferences.searchRadius),
+        ),
+      );
+    } catch (e) {
+      if (e is ProductException) {
+        return (Left(
+            ProductFailure(messageId: e.messageId, message: e.message)));
+      }
+      return (Left(ProductFailure(
+          messageId: MessageIds.UNEXPECTED, message: e.toString())));
+    }
   }
 }
