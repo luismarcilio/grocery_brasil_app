@@ -12,3 +12,9 @@ class GetMininumProductPriceAvailable extends ProductPricesEvent {
 
   GetMininumProductPriceAvailable({@required this.productId});
 }
+
+class GetProductPrices extends ProductPricesEvent {
+  final String productId;
+
+  GetProductPrices({@required this.productId});
+}
