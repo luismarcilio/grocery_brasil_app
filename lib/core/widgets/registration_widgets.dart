@@ -39,9 +39,9 @@ Widget passwordTextField(TextEditingController controller) {
       obscureText: true);
 }
 
-FlatButton getFlatButton(
+TextButton getTextButton(
     {IconData icon, String text, Color color, Function onPressed}) {
-  return FlatButton(
+  return TextButton(
     onPressed: onPressed,
     child: Container(
       decoration:

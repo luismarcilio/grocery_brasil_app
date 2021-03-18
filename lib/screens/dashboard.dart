@@ -36,7 +36,7 @@ class _DashboardState extends State<Dashboard> {
             Expanded(
                 child: Container(
                     alignment: Alignment.centerRight,
-                    child: FlatButton(
+                    child: TextButton(
                         onPressed: () {
                           logout(NoParams());
                           Navigator.of(context).pushReplacement(

@@ -75,7 +75,7 @@ class Login extends StatelessWidget {
               child: Divider(
             color: Colors.black,
           )),
-          getFlatButton(
+          getTextButton(
               color: Colors.grey,
               icon: FontAwesomeIcons.envelope,
               text: "Entre com email e password",
@@ -94,7 +94,7 @@ class Login extends StatelessWidget {
   }
 
   Widget _loginWithFacebook(BuildContext context) {
-    return getFlatButton(
+    return getTextButton(
       icon: FontAwesomeIcons.facebookSquare,
       text: "Entre com Facebook",
       color: Color(0xff263C68),
@@ -105,7 +105,7 @@ class Login extends StatelessWidget {
   }
 
   Widget _loginWithGoogle(BuildContext context) {
-    return getFlatButton(
+    return getTextButton(
       icon: FontAwesomeIcons.google,
       text: "Entre com Google",
       color: Color(0xffEA4335),
@@ -116,7 +116,7 @@ class Login extends StatelessWidget {
   }
 
   Widget _loginButton(BuildContext context) {
-    return getFlatButton(
+    return getTextButton(
       icon: FontAwesomeIcons.doorOpen,
       text: "Login",
       color: Color(0xff5BC0EB),
@@ -128,7 +128,7 @@ class Login extends StatelessWidget {
   }
 
   Widget _registerButton(BuildContext context) {
-    return getFlatButton(
+    return getTextButton(
         icon: Icons.add_box,
         text: "ou Registre-se",
         color: Colors.blue,

@@ -65,7 +65,7 @@ class RegisterScreen extends StatelessWidget {
   }
 
   Widget _registerButton(BuildContext context) {
-    return getFlatButton(
+    return getTextButton(
         icon: FontAwesomeIcons.registered,
         text: "Register",
         color: Color(0xff5BC0EB),
