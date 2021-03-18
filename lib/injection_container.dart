@@ -3,6 +3,7 @@ import 'package:dart_geohash/dart_geohash.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get_it/get_it.dart';
+import 'package:grocery_brasil_app/features/product/domain/GetPricesProductByUserByProductIdUseCase.dart';
 import 'package:http/http.dart' as http;
 
 import 'features/addressing/data/AddressingDataSource.dart';
@@ -103,8 +104,9 @@ void init() {
   sl.registerFactory(
       () => UserBloc(updateUserUseCase: sl(), getUserUseCase: sl()));
   sl.registerFactory(() => ProductsBloc(listProductsByTextUseCase: sl()));
-  sl.registerFactory(() =>
-      ProductPricesBloc(getMinPriceProductByUserByProductIdUseCase: sl()));
+  sl.registerFactory(() => ProductPricesBloc(
+      getMinPriceProductByUserByProductIdUseCase: sl(),
+      getPricesProductByUserByProductIdUseCase: sl()));
   //UseCases
   sl.registerLazySingleton(
       () => AuthenticateWithEmailAndPassword(authenticationService: sl()));
@@ -127,6 +129,8 @@ void init() {
       () => ListProductsByTextUseCase(productService: sl()));
   sl.registerLazySingleton(
       () => GetMinPriceProductByUserByProductIdUseCase(productService: sl()));
+  sl.registerLazySingleton(
+      () => GetPricesProductByUserByProductIdUseCase(productService: sl()));
 //Services
   sl.registerLazySingleton<SecretsService>(
       () => SecretsServiceImpl(secretDataSource: sl()));
