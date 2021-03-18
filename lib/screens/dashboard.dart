@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:grocery_brasil_app/core/usecases/usecase.dart';
 import 'package:grocery_brasil_app/features/login/domain/usecases/Logout.dart';
