@@ -36,13 +36,13 @@ class Login extends StatelessWidget {
                 ),
               );
             } else if (state is LoginError) {
-              Scaffold.of(context).showSnackBar(
+              ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text(state.failure.message),
                 ),
               );
             } else if (state is CreateUserFailure) {
-              Scaffold.of(context).showSnackBar(
+              ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text(state.failure.message),
                 ),

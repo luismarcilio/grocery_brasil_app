@@ -72,7 +72,7 @@ class BuildResultsTable extends StatelessWidget {
     return BlocConsumer<ProductsBloc, ProductsState>(
         listener: (context, state) {
       if (state is ProductError) {
-        Scaffold.of(context).showSnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(state.failure.toString()),
           ),
@@ -160,7 +160,7 @@ class BuildMinimumPriceListTile extends StatelessWidget {
     return BlocConsumer<ProductPricesBloc, ProductPricesState>(
         listener: (context, state) {
       if (state is ProductPricesError) {
-        Scaffold.of(context).showSnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(state.productFailure.toString()),
           ),

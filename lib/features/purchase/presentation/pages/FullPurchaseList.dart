@@ -32,7 +32,7 @@ class PurchaseFullFiscalNoteScreen extends StatelessWidget {
       listener: (context, state) {
         print("listener PurchaseState: $state");
         if (state is PurchaseError) {
-          Scaffold.of(context).showSnackBar(
+          ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text('Error'),
             ),

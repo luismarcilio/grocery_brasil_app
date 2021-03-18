@@ -32,7 +32,7 @@ class UserDetailsForm extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocConsumer<UserBloc, UserState>(listener: (context, state) {
       if (state is UserError) {
-        Scaffold.of(context).showSnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(state.failure.toString()),
           ),

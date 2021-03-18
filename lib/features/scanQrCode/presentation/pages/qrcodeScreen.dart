@@ -31,7 +31,7 @@ class QrCodeScreen extends StatelessWidget {
               message = state.failure?.message ?? 'Erro lendo QRCODE';
           }
 
-          Scaffold.of(context).showSnackBar(
+          ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(message),
             ),

@@ -19,7 +19,7 @@ class InitialiseFirebaseScreen extends StatelessWidget {
     return BlocConsumer<InitializeFirebaseBloc, InitializeFirebaseState>(
       listener: (context, state) {
         if (state is FirebaseError) {
-          Scaffold.of(context).showSnackBar(
+          ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(state.error),
             ),

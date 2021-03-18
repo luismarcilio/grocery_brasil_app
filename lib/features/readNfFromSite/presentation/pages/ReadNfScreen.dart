@@ -27,13 +27,13 @@ class ReadNfScreen extends StatelessWidget {
       child: BlocConsumer<ReadnfBloc, ReadnfState>(
         listener: (context, state) {
           if (state is GetDetailsFromUrlError) {
-            Scaffold.of(context).showSnackBar(
+            ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(state.failure.message),
               ),
             );
           } else if (state is SaveNfError) {
-            Scaffold.of(context).showSnackBar(
+            ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(state.purchaseFailure.message),
               ),

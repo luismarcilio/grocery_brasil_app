@@ -133,7 +133,7 @@ class _UserDetailsFormState extends State<UserDetailsForm> {
     return BlocConsumer<UserCubit, UserState>(
       listener: (context, state) {
         if (state is UserError) {
-          Scaffold.of(context).showSnackBar(
+          ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(state.message),
             ),

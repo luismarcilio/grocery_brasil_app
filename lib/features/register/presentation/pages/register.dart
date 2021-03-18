@@ -25,13 +25,13 @@ class RegisterScreen extends StatelessWidget {
       child: BlocConsumer<RegistrationBloc, RegistrationBlocState>(
         listener: (context, state) {
           if (state is RegistrationBlocFailed) {
-            Scaffold.of(context).showSnackBar(
+            ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(state.failure.message),
               ),
             );
           } else if (state is RegistrationBlocSucceeded) {
-            Scaffold.of(context).showSnackBar(
+            ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(
                     'Você se registrou com sucesso. Por favor verifique seu email'),

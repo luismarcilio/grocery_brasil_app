@@ -24,7 +24,7 @@ class PurchaseResumeScreen extends StatelessWidget {
     return BlocConsumer<PurchaseBloc, PurchaseState>(
       listener: (context, state) {
         if (state is PurchaseError) {
-          Scaffold.of(context).showSnackBar(
+          ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text('Error'),
             ),
