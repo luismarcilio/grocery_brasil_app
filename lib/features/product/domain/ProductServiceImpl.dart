@@ -90,4 +90,11 @@ class ProductServiceImpl implements ProductService {
     return geohashServiceAdapter.inCircleCheck(
         element.company.address.location, location, searchRadius.toDouble());
   }
+
+  @override
+  Future<Either<Failure, Stream<ProductPrices>>>
+      getPricesProductByUserByProductId({String productId}) {
+    // TODO: implement getMinPriceProductByUserByProductId
+    throw UnimplementedError();
+  }
 }
