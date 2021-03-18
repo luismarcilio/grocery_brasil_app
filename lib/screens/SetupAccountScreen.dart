@@ -66,7 +66,7 @@ class UserForm extends StatelessWidget {
                   // await _user.setAddressByRawAddress(newAddress.description);
                   saveUser(context, _user);
                 }),
-            TextRaisedButton(
+            TextElevatedButton(
               onLongPress: () {},
               onPressed: () async {
                 // await _user.setAddressByCurrentPosition();

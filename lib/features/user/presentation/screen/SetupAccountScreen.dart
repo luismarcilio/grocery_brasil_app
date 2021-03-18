@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/widgets/ApplicationFormField.dart';
-import '../../../../core/widgets/TextRaisedButton.dart';
+import '../../../../core/widgets/TextElevatedButton.dart';
 import '../../../../domain/Address.dart';
 import '../../../../domain/User.dart';
 import '../../../../domain/UserPreferences.dart';
@@ -89,7 +89,7 @@ class BuildUserDetailsForm extends StatelessWidget {
                       preferences: user.preferences);
                   saveUser(context, newUser);
                 }),
-            TextRaisedButton(
+            TextElevatedButton(
               onLongPress: () {},
               onPressed: () async {
                 final currentLocation =
