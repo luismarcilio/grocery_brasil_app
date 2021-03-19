@@ -2,14 +2,15 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:grocery_brasil_app/features/product/domain/ProductPrices.dart';
-import 'package:grocery_brasil_app/features/product/presentation/bloc/product_prices_bloc.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../injection_container.dart';
 import '../../../../screens/common/loading.dart';
+import '../../domain/ProductPrices.dart';
 import '../../domain/ProductSearchModel.dart';
+import '../bloc/product_prices_bloc.dart';
 import '../bloc/products_bloc.dart';
+import 'product_prices_screen.dart';
 
 class ProductsScreen extends StatelessWidget {
   @override
@@ -111,26 +112,37 @@ class ProductCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      child: Row(
-        children: [
-          Expanded(
-            child: Column(
-              children: [
-                ListTile(
-                  leading: product.thumbnail == null
-                      ? Icon(Icons.shopping_cart)
-                      : Image.network(product.thumbnail),
-                  title: new Text(product.name),
-                  trailing:
-                      new Text(product.unity != null ? product.unity.name : ''),
-                  onTap: onTap,
-                  onLongPress: onLongPress,
-                ),
-                MinimumPriceListTile(productId: product.productId),
-              ],
+      child: InkWell(
+        onTap: () => _loadListOfPrices(context, product),
+        child: Row(
+          children: [
+            Expanded(
+              child: Column(
+                children: [
+                  ListTile(
+                    leading: product.thumbnail == null
+                        ? Icon(Icons.shopping_cart)
+                        : Image.network(product.thumbnail),
+                    title: new Text(product.name),
+                    trailing: new Text(
+                        product.unity != null ? product.unity.name : ''),
+                    onTap: onTap,
+                    onLongPress: onLongPress,
+                  ),
+                  MinimumPriceListTile(productId: product.productId),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
+      ),
+    );
+  }
+
+  _loadListOfPrices(BuildContext context, ProductSearchModel product) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => ProductPricesScreen(product: product),
       ),
     );
   }
