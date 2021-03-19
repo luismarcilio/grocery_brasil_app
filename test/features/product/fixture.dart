@@ -201,8 +201,10 @@ final otherProductPrice = ProductPrices(
     unityValue: 15.0,
     date: DateTime.now());
 
-final listOfProductPrices =
-    Stream.fromIterable({oneProductPrice, otherProductPrice});
+final listOfProductPrices = Stream.fromIterable({
+  [oneProductPrice],
+  [otherProductPrice]
+});
 
 final oneUser = User(
     preferences: UserPreferences(searchRadius: 100000),

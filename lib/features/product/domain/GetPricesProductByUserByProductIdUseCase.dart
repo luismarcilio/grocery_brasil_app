@@ -7,12 +7,12 @@ import 'ProductPrices.dart';
 import 'ProductService.dart';
 
 class GetPricesProductByUserByProductIdUseCase
-    implements UseCase<Stream<ProductPrices>, String> {
+    implements UseCase<Stream<List<ProductPrices>>, String> {
   final ProductService productService;
 
   GetPricesProductByUserByProductIdUseCase({@required this.productService});
   @override
-  Future<Either<Failure, Stream<ProductPrices>>> call(String productId) {
+  Future<Either<Failure, Stream<List<ProductPrices>>>> call(String productId) {
     return productService.getPricesProductByUserByProductId(
         productId: productId);
   }

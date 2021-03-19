@@ -271,8 +271,51 @@ main() {
             (l) => null,
             (r) => expect(
                 r,
-                emitsInOrder(
-                    {fixture.oneProductPrice, fixture.otherProductPrice})));
+                emitsInOrder({
+                  [fixture.oneProductPrice],
+                  [fixture.otherProductPrice]
+                })));
+      });
+
+      test('should filter items out of distance range  ', () async {
+        //setup
+        final productId = fixture.oneProductPrice.product.eanCode;
+        final someUser = fixture.oneUser;
+        when(mockUserService.getUser())
+            .thenAnswer((realInvocation) async => Right(someUser));
+        when(mockGeohashServiceAdapter.proximityGeohashes(
+                someUser.address.location,
+                someUser.preferences.searchRadius.toDouble()))
+            .thenReturn(['geohash1', 'geohash2', 'geohash3']);
+        when(mockProductRepository
+                .listProductPricesByIdByGeohashOrderByUnitPrice(
+                    geohashList: ['geohash1', 'geohash2', 'geohash3'],
+                    productId: productId))
+            .thenAnswer((realInvocation) => Stream.fromIterable([
+                  [fixture.oneProductPrice, fixture.otherProductPrice]
+                ]));
+        when(mockGeohashServiceAdapter.inCircleCheck(
+                fixture.oneProductPrice.company.address.location,
+                someUser.address.location,
+                someUser.preferences.searchRadius.toDouble()))
+            .thenReturn(false);
+        when(mockGeohashServiceAdapter.inCircleCheck(
+                fixture.otherProductPrice.company.address.location,
+                someUser.address.location,
+                someUser.preferences.searchRadius.toDouble()))
+            .thenReturn(true);
+        //act
+        final actual =
+            await sut.getPricesProductByUserByProductId(productId: productId);
+        //assert
+        assert(actual.isRight(), true);
+        actual.fold(
+            (l) => null,
+            (r) => expect(
+                r,
+                emitsInOrder({
+                  [fixture.otherProductPrice]
+                })));
       });
     });
   });

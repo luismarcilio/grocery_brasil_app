@@ -21,11 +21,11 @@ main() {
       mockGetMinPriceProductByUserByProductIdUseCase;
   MockGetPricesProductByUserByProductIdUseCase
       mockGetPricesProductByUserByProductIdUseCase;
+  mockGetMinPriceProductByUserByProductIdUseCase =
+      new MockGetMinPriceProductByUserByProductIdUseCase();
+  mockGetPricesProductByUserByProductIdUseCase =
+      new MockGetPricesProductByUserByProductIdUseCase();
   group('GetMinPriceProduct', () {
-    mockGetMinPriceProductByUserByProductIdUseCase =
-        new MockGetMinPriceProductByUserByProductIdUseCase();
-    mockGetPricesProductByUserByProductIdUseCase =
-        new MockGetPricesProductByUserByProductIdUseCase();
     group('Should list the products', () {
       when(mockGetMinPriceProductByUserByProductIdUseCase('someId'))
           .thenAnswer((realInvocation) async => Right(fixture.oneProductPrice));
@@ -62,26 +62,26 @@ main() {
     });
   });
   group('GetProductPrices', () {
-    mockGetMinPriceProductByUserByProductIdUseCase =
-        new MockGetMinPriceProductByUserByProductIdUseCase();
-    mockGetPricesProductByUserByProductIdUseCase =
-        new MockGetPricesProductByUserByProductIdUseCase();
     group('Should list the products', () {
-      when(mockGetPricesProductByUserByProductIdUseCase('someId')).thenAnswer(
-          (realInvocation) async => Right(Stream.fromIterable(
-              {fixture.oneProductPrice, fixture.otherProductPrice})));
+      when(mockGetPricesProductByUserByProductIdUseCase('someElseId'))
+          .thenAnswer((realInvocation) async => Right(Stream.fromIterable({
+                [fixture.oneProductPrice],
+                [fixture.otherProductPrice]
+              })));
       blocTest('Should list the products',
           build: () => ProductPricesBloc(
               getMinPriceProductByUserByProductIdUseCase:
                   mockGetMinPriceProductByUserByProductIdUseCase,
               getPricesProductByUserByProductIdUseCase:
                   mockGetPricesProductByUserByProductIdUseCase),
-          act: (bloc) => bloc.add(GetProductPrices(productId: 'someId')),
+          act: (bloc) => bloc.add(GetProductPrices(productId: 'someElseId')),
           expect: [
             ProductPricesSearching(),
             ProductPricesAvailable(
-              productPrices: Stream.fromIterable(
-                  {fixture.oneProductPrice, fixture.otherProductPrice}),
+              productPrices: Stream.fromIterable({
+                [fixture.oneProductPrice],
+                [fixture.otherProductPrice]
+              }),
             ),
           ]);
     });

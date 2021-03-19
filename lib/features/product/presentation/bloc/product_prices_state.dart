@@ -24,7 +24,7 @@ class MininumProductPriceAvailable extends ProductPricesState {
 }
 
 class ProductPricesAvailable extends ProductPricesState {
-  final Stream<ProductPrices> productPrices;
+  final Stream<List<ProductPrices>> productPrices;
 
   ProductPricesAvailable({@required this.productPrices});
 }

@@ -11,7 +11,7 @@ class MockProductService extends Mock implements ProductService {}
 
 main() {
   MockProductService mockProductService;
-  UseCase<Stream<ProductPrices>, String> sut;
+  UseCase<Stream<List<ProductPrices>>, String> sut;
 
   group('GetPricesProductByUserByProductIdUseCase', () {
     setUp(() {
@@ -38,8 +38,10 @@ main() {
           (l) => null,
           (r) => expect(
               r,
-              emitsInOrder(
-                  {fixture.oneProductPrice, fixture.otherProductPrice})));
+              emitsInOrder({
+                [fixture.oneProductPrice],
+                [fixture.otherProductPrice]
+              })));
     });
   });
 }

@@ -92,7 +92,7 @@ class ProductServiceImpl implements ProductService {
   }
 
   @override
-  Future<Either<Failure, Stream<ProductPrices>>>
+  Future<Either<Failure, Stream<List<ProductPrices>>>>
       getPricesProductByUserByProductId({String productId}) async {
     try {
       final result = await userService.getUser();
@@ -107,18 +107,17 @@ class ProductServiceImpl implements ProductService {
 
       final geohashList = geohashServiceAdapter.proximityGeohashes(
           user.address.location, user.preferences.searchRadius.toDouble());
-      Stream<List<ProductPrices>> productPrices =
-          productRepository.listProductPricesByIdByGeohashOrderByUnitPrice(
-              geohashList: geohashList, productId: productId);
-
-      return Right(
-        productPrices.asyncExpand((productPrices) async* {
-          yield* Stream.fromIterable(productPrices);
-        }).where(
-          (element) => _isInSearchRadius(
-              element, user.address.location, user.preferences.searchRadius),
-        ),
-      );
+      Stream<List<ProductPrices>> productPrices = productRepository
+          .listProductPricesByIdByGeohashOrderByUnitPrice(
+              geohashList: geohashList, productId: productId)
+          .map((listOfProductPrices) {
+        listOfProductPrices = listOfProductPrices
+            .where((productPrice) => _isInSearchRadius(productPrice,
+                user.address.location, user.preferences.searchRadius))
+            .toList();
+        return listOfProductPrices;
+      });
+      return Right(productPrices);
     } catch (e) {
       if (e is ProductException) {
         return (Left(
