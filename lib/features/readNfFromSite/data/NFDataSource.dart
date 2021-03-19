@@ -39,14 +39,14 @@ class NFDataSourceImpl extends NFDataSource {
         port: backendFunctionsConfiguration.port,
         path:
             '${backendFunctionsConfiguration.path}/parseAndSaveNf/${nfHtmlFromSite.uf.toUpperCase()}');
-    print("uri: ${uri.toString()}");
+    print("uri: $uri");
 
     final Map httpHeaders = Map<String, String>.from({
       HttpHeaders.authorizationHeader: 'Bearer $jwt',
       "Content-Type": "application/json"
     });
     final http.Response response = await httpClient
-        .post(uri.toString(), body: jsonEncode(data), headers: httpHeaders)
+        .post(uri, body: jsonEncode(data), headers: httpHeaders)
         .timeout(serverlessFunction);
 
     if (response.statusCode != 200) {

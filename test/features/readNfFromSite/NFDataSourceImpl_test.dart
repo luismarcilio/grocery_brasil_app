@@ -55,8 +55,10 @@ void main() {
         HttpHeaders.authorizationHeader: 'Bearer JWT',
         "Content-Type": "application/json"
       });
-      when(mockHttp.post(anything,
-              body: '{"html":"html"}', headers: httpHeaders))
+      when(mockHttp.post(
+              Uri.parse("https://hosttest:666/pathTeste/parseAndSaveNf/MG"),
+              body: '{"html":"html"}',
+              headers: httpHeaders))
           .thenAnswer(
               (realInvocation) async => http.Response(expectedString, 200));
       //act
@@ -87,7 +89,10 @@ void main() {
         "Content-Type": "application/json"
       });
 
-      when(mockHttp.post(anything, body: anything, headers: httpHeaders))
+      when(mockHttp.post(
+              Uri.parse("https://hosttest:666/pathTeste/parseAndSaveNf/MG"),
+              body: anything,
+              headers: httpHeaders))
           .thenAnswer((realInvocation) async => http.Response('erro', 500));
       //act
       expect(

@@ -32,7 +32,7 @@ class TextSearchDataSourceImpl implements TextSearchDataSource {
       headers['Authorization'] = 'ApiKey $backEndKey';
       final queryString = jsonEncode(query);
       final response = await httpClient
-          .post(url, headers: headers, body: queryString)
+          .post(Uri.parse(url), headers: headers, body: queryString)
           .timeout(elasticSearchTimeout);
       if (response.statusCode != 200) {
         String reason = response.reasonPhrase;

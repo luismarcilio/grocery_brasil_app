@@ -84,7 +84,8 @@ void main() {
               createUser: mockCreateUserUseCase,
               asyncLogin: mockAsyncLogin),
           act: (bloc) {},
-          expect: [LoginRunning(), UserCreating(), LoginDone(expectedUser)]);
+          expect: () =>
+              [LoginRunning(), UserCreating(), LoginDone(expectedUser)]);
     });
 
     group('should error', () {
@@ -109,13 +110,13 @@ void main() {
               createUser: mockCreateUserUseCase,
               asyncLogin: mockAsyncLogin),
           act: (bloc) {},
-          expect: [
-            LoginRunning(),
-            LoginError(AuthenticationFailure(
-                messageId: MessageIds.UNEXPECTED,
-                message: asyncLoginFailure.message)),
-            LogoutDone()
-          ]);
+          expect: () => [
+                LoginRunning(),
+                LoginError(AuthenticationFailure(
+                    messageId: MessageIds.UNEXPECTED,
+                    message: asyncLoginFailure.message)),
+                LogoutDone()
+              ]);
     });
   });
 
@@ -134,7 +135,8 @@ void main() {
           build: () => loginBloc,
           act: (bloc) => bloc.add(LoginWithUsernameAndPasswordEvent(
               email: email, password: password)),
-          expect: [LoginRunning(), UserCreating(), LoginDone(expectedUser)]);
+          expect: () =>
+              [LoginRunning(), UserCreating(), LoginDone(expectedUser)]);
     });
     group('should fail when login fails', () {
       final expectedFail = AuthenticationFailure(
@@ -149,7 +151,7 @@ void main() {
           build: () => loginBloc,
           act: (bloc) => bloc.add(LoginWithUsernameAndPasswordEvent(
               email: email, password: password)),
-          expect: [LoginRunning(), LoginError(expectedFail)]);
+          expect: () => [LoginRunning(), LoginError(expectedFail)]);
     });
   });
 
@@ -165,7 +167,8 @@ void main() {
       blocTest('should authenticate with google',
           build: () => loginBloc,
           act: (bloc) => bloc.add(LoginWithGoogleEvent()),
-          expect: [LoginRunning(), UserCreating(), LoginDone(expectedUser)]);
+          expect: () =>
+              [LoginRunning(), UserCreating(), LoginDone(expectedUser)]);
     });
     group('should fail when login fails', () {
       final expectedFail = AuthenticationFailure(
@@ -178,7 +181,7 @@ void main() {
       blocTest('should fail when login fails',
           build: () => loginBloc,
           act: (bloc) => bloc.add(LoginWithGoogleEvent()),
-          expect: [LoginRunning(), LoginError(expectedFail)]);
+          expect: () => [LoginRunning(), LoginError(expectedFail)]);
     });
   });
 
@@ -194,7 +197,8 @@ void main() {
       blocTest('should authenticate with facebook',
           build: () => loginBloc,
           act: (bloc) => bloc.add(LoginWithFacebookEvent()),
-          expect: [LoginRunning(), UserCreating(), LoginDone(expectedUser)]);
+          expect: () =>
+              [LoginRunning(), UserCreating(), LoginDone(expectedUser)]);
     });
     group('should fail when login fails', () {
       final expectedFail = AuthenticationFailure(
@@ -207,7 +211,7 @@ void main() {
       blocTest('should fail when login fails',
           build: () => loginBloc,
           act: (bloc) => bloc.add(LoginWithFacebookEvent()),
-          expect: [LoginRunning(), LoginError(expectedFail)]);
+          expect: () => [LoginRunning(), LoginError(expectedFail)]);
     });
   });
 
@@ -220,7 +224,7 @@ void main() {
       blocTest('should logout',
           build: () => loginBloc,
           act: (bloc) => bloc.add(LogoutEvent()),
-          expect: [LoginRunning(), LogoutDone()]);
+          expect: () => [LoginRunning(), LogoutDone()]);
     });
   });
 
@@ -235,7 +239,7 @@ void main() {
       blocTest('should create user',
           build: () => loginBloc,
           act: (bloc) => bloc.add(CreateUserEvent(user: user)),
-          expect: [UserCreating(), LoginDone(user)]);
+          expect: () => [UserCreating(), LoginDone(user)]);
     });
 
     group('should return error if fails', () {
@@ -249,7 +253,7 @@ void main() {
       blocTest('should fail creating user',
           build: () => loginBloc,
           act: (bloc) => bloc.add(CreateUserEvent(user: user)),
-          expect: [UserCreating(), CreateUserFailure(expected)]);
+          expect: () => [UserCreating(), CreateUserFailure(expected)]);
     });
   });
 }

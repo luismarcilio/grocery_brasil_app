@@ -36,8 +36,8 @@ Future<List<Product>> getAutocompleteTips(String root) async {
       host: apiConfiguration.host,
       port: apiConfiguration.port,
       path: '${apiConfiguration.path}/autocomplete/$root');
-  print("uri: ${uri.toString()}");
-  final http.Response response = await http.get(uri.toString(), headers: {
+  print("uri: $uri");
+  final http.Response response = await http.get(uri, headers: {
     HttpHeaders.authorizationHeader: 'Bearer $jwt',
     "Content-Type": "application/json"
   });

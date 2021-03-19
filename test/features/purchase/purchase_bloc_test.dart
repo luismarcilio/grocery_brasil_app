@@ -36,10 +36,8 @@ main() {
               listPurchasesUseCase: mockListPurchasesUseCase,
               getFullPurchaseUseCase: mockGetFullPurchaseUseCase),
           act: (bloc) => bloc.add(ListResumeEvent()),
-          expect: [
-            PurchaseLoading(),
-            ResumeListed(purchaseStreamList: result)
-          ]);
+          expect: () =>
+              [PurchaseLoading(), ResumeListed(purchaseStreamList: result)]);
     });
 
     group('MockListPurchasesUseCase error path', () {
@@ -56,7 +54,8 @@ main() {
               listPurchasesUseCase: mockListPurchasesUseCase,
               getFullPurchaseUseCase: mockGetFullPurchaseUseCase),
           act: (bloc) => bloc.add(ListResumeEvent()),
-          expect: [PurchaseLoading(), PurchaseError(purchaseFailure: result)]);
+          expect: () =>
+              [PurchaseLoading(), PurchaseError(purchaseFailure: result)]);
     });
   });
 
@@ -75,7 +74,8 @@ main() {
               getFullPurchaseUseCase: mockGetFullPurchaseUseCase,
               listPurchasesUseCase: mockListPurchasesUseCase),
           act: (bloc) => bloc.add(GetPurchaseByIdEvent(purchaseId: purchaseId)),
-          expect: [PurchaseLoading(), PurchaseRetrieved(purchase: result)]);
+          expect: () =>
+              [PurchaseLoading(), PurchaseRetrieved(purchase: result)]);
     });
 
     group('Failure path', () {
@@ -93,7 +93,8 @@ main() {
               getFullPurchaseUseCase: mockGetFullPurchaseUseCase,
               listPurchasesUseCase: mockListPurchasesUseCase),
           act: (bloc) => bloc.add(GetPurchaseByIdEvent(purchaseId: purchaseId)),
-          expect: [PurchaseLoading(), PurchaseError(purchaseFailure: result)]);
+          expect: () =>
+              [PurchaseLoading(), PurchaseError(purchaseFailure: result)]);
     });
   });
 }

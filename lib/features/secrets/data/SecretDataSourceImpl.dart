@@ -40,7 +40,7 @@ class SecretDataSourceImpl implements SecretDataSource {
       });
 
       final http.Response response = await httpClient
-          .get(uri.toString(), headers: httpHeaders)
+          .get(uri, headers: httpHeaders)
           .timeout(serverlessFunction);
 
       if (response.statusCode == 404) {

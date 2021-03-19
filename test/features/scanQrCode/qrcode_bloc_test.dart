@@ -24,7 +24,7 @@ void main() {
     blocTest('should register when passed login and password',
         build: () => QrcodeBloc(scanQRCode: mockScanQRCode),
         act: (bloc) => bloc.add(ReadQRCode()),
-        expect: [QrcodeReading(), QrcodeReadDone(qrCode: expected)]);
+        expect: () => [QrcodeReading(), QrcodeReadDone(qrCode: expected)]);
   });
 
   group("should fail when a feilure occurs", () {
@@ -38,6 +38,6 @@ void main() {
     blocTest('should register when passed login and password',
         build: () => QrcodeBloc(scanQRCode: mockScanQRCode),
         act: (bloc) => bloc.add(ReadQRCode()),
-        expect: [QrcodeReading(), QrcodeReadError(failure: expected)]);
+        expect: () => [QrcodeReading(), QrcodeReadError(failure: expected)]);
   });
 }

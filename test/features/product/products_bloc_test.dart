@@ -23,10 +23,10 @@ main() {
           build: () => ProductsBloc(
               listProductsByTextUseCase: mockListProductsByTextUseCase),
           act: (bloc) => bloc.add(SearchProductsByText('leite')),
-          expect: [
-            ProductsSearching(),
-            ProductsTextAvailable(products: fixture.expected)
-          ]);
+          expect: () => [
+                ProductsSearching(),
+                ProductsTextAvailable(products: fixture.expected)
+              ]);
     });
     group('Should yield ProductError on failure', () {
       final failure = ProductFailure(
@@ -37,7 +37,7 @@ main() {
           build: () => ProductsBloc(
               listProductsByTextUseCase: mockListProductsByTextUseCase),
           act: (bloc) => bloc.add(SearchProductsByText('melão')),
-          expect: [ProductsSearching(), ProductError(failure)]);
+          expect: () => [ProductsSearching(), ProductError(failure)]);
     });
   });
 }

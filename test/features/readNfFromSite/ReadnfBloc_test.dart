@@ -37,10 +37,10 @@ main() {
             getDetailsfromUrlUseCase: mockGetDetailsfromUrlUseCase,
             saveNfUseCase: mockSaveNfUseCase),
         act: (bloc) => bloc.add(GetDetailsFromUrl(url: url)),
-        expect: [
-          GetDetailsFromUrlDoing(),
-          GetDetailsFromUrlDone(nFProcessData: nFProcessData)
-        ]);
+        expect: () => [
+              GetDetailsFromUrlDoing(),
+              GetDetailsFromUrlDone(nFProcessData: nFProcessData)
+            ]);
   });
 
   group('SaveNfEvent', () {
@@ -54,7 +54,7 @@ main() {
               getDetailsfromUrlUseCase: mockGetDetailsfromUrlUseCase,
               saveNfUseCase: mockSaveNfUseCase),
           act: (bloc) => bloc.add(SaveNfEvent(nfHtmlFromSite: nfHtmlFromSite)),
-          expect: [SaveNfDoing(), SaveNfDone()]);
+          expect: () => [SaveNfDoing(), SaveNfDone()]);
     });
 
     group('KO path', () {
@@ -69,10 +69,8 @@ main() {
               getDetailsfromUrlUseCase: mockGetDetailsfromUrlUseCase,
               saveNfUseCase: mockSaveNfUseCase),
           act: (bloc) => bloc.add(SaveNfEvent(nfHtmlFromSite: nfHtmlFromSite)),
-          expect: [
-            SaveNfDoing(),
-            SaveNfError(purchaseFailure: purchaseFailure)
-          ]);
+          expect: () =>
+              [SaveNfDoing(), SaveNfError(purchaseFailure: purchaseFailure)]);
     });
   });
 }

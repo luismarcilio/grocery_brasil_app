@@ -27,10 +27,10 @@ void main() {
         build: () => RegistrationBloc(registrationUseCase: mockRegister),
         act: (bloc) => bloc.add(RegisterWithEmailAndPasswordEvent(
             email: email, password: password)),
-        expect: [
-          RegistrationBlocRunning(),
-          RegistrationBlocSucceeded(user: expected)
-        ]);
+        expect: () => [
+              RegistrationBlocRunning(),
+              RegistrationBlocSucceeded(user: expected)
+            ]);
   });
 
   group("should fail when a feilure occurs", () {
@@ -47,9 +47,9 @@ void main() {
         build: () => RegistrationBloc(registrationUseCase: mockRegister),
         act: (bloc) => bloc.add(RegisterWithEmailAndPasswordEvent(
             email: email, password: password)),
-        expect: [
-          RegistrationBlocRunning(),
-          RegistrationBlocFailed(failure: expected)
-        ]);
+        expect: () => [
+              RegistrationBlocRunning(),
+              RegistrationBlocFailed(failure: expected)
+            ]);
   });
 }

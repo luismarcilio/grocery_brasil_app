@@ -41,7 +41,7 @@ class DetailsFromUrlDataSourceImpl extends DetailsFromUrlDataSource {
         path: functionPath,
         queryParameters: queryString);
 
-    print('uri: ${uri.toString()}');
+    print('uri: $uri');
     final Map httpHeaders = Map<String, String>.from({
       HttpHeaders.authorizationHeader: 'Bearer $jwt',
       "Content-Type": "application/json"

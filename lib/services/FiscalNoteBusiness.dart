@@ -22,9 +22,9 @@ Future<http.Response> saveNf(String html, String state) async {
       host: apiConfiguration.host,
       port: apiConfiguration.port,
       path: '${apiConfiguration.path}/parseAndSaveNf/${state.toLowerCase()}');
-  print("uri: ${uri.toString()}");
+  print("uri: $uri");
   final http.Response response =
-      await http.post(uri.toString(), body: jsonEncode(data), headers: {
+      await http.post(uri, body: jsonEncode(data), headers: {
     HttpHeaders.authorizationHeader: 'Bearer $jwt',
     "Content-Type": "application/json"
   });

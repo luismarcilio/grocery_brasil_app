@@ -37,10 +37,11 @@ main() {
                   mockGetPricesProductByUserByProductIdUseCase),
           act: (bloc) =>
               bloc.add(GetMininumProductPriceAvailable(productId: 'someId')),
-          expect: [
-            ProductPricesSearching(),
-            MininumProductPriceAvailable(productPrices: fixture.oneProductPrice)
-          ]);
+          expect: () => [
+                ProductPricesSearching(),
+                MininumProductPriceAvailable(
+                    productPrices: fixture.oneProductPrice)
+              ]);
     });
     group('Should yield ProductError on failure', () {
       final failure = ProductFailure(
@@ -55,10 +56,10 @@ main() {
                   mockGetPricesProductByUserByProductIdUseCase),
           act: (bloc) =>
               bloc.add(GetMininumProductPriceAvailable(productId: 'otherId')),
-          expect: [
-            ProductPricesSearching(),
-            ProductPricesError(productFailure: failure)
-          ]);
+          expect: () => [
+                ProductPricesSearching(),
+                ProductPricesError(productFailure: failure)
+              ]);
     });
   });
   group('GetProductPrices', () {
@@ -75,15 +76,15 @@ main() {
               getPricesProductByUserByProductIdUseCase:
                   mockGetPricesProductByUserByProductIdUseCase),
           act: (bloc) => bloc.add(GetProductPrices(productId: 'someElseId')),
-          expect: [
-            ProductPricesSearching(),
-            ProductPricesAvailable(
-              productPrices: Stream.fromIterable({
-                [fixture.oneProductPrice],
-                [fixture.otherProductPrice]
-              }),
-            ),
-          ]);
+          expect: () => [
+                ProductPricesSearching(),
+                ProductPricesAvailable(
+                  productPrices: Stream.fromIterable({
+                    [fixture.oneProductPrice],
+                    [fixture.otherProductPrice]
+                  }),
+                ),
+              ]);
     });
   });
 }

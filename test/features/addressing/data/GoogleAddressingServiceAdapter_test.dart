@@ -73,7 +73,7 @@ main() {
 
       when(mockSecretsService.getSecret('GEOLOCATION_API_KEY'))
           .thenAnswer((realInvocation) async => 'theGeolocationApiKey');
-      when(mockHttpClient.get(expectedUri.toString()))
+      when(mockHttpClient.get(expectedUri))
           .thenAnswer((realInvocation) async => serviceReturns);
       //act
       final actual = await sut.getAddressByPlaceId(aPlaceId);
@@ -104,7 +104,7 @@ main() {
 
       when(mockSecretsService.getSecret('GEOLOCATION_API_KEY'))
           .thenAnswer((realInvocation) async => 'theGeolocationApiKey');
-      when(mockHttpClient.get(expectedUri.toString()))
+      when(mockHttpClient.get(expectedUri))
           .thenAnswer((realInvocation) async => serviceReturns);
       //act
       //assert
@@ -133,7 +133,7 @@ main() {
 
       when(mockSecretsService.getSecret('GEOLOCATION_API_KEY'))
           .thenAnswer((realInvocation) async => 'theGeolocationApiKey');
-      when(mockHttpClient.get(expectedUri.toString()))
+      when(mockHttpClient.get(expectedUri))
           .thenAnswer((realInvocation) async => serviceReturns);
       //act
       //assert
@@ -208,7 +208,7 @@ main() {
       when(mockSecretsService.getSecret('GEOLOCATION_API_KEY'))
           .thenAnswer((realInvocation) async => 'theGeolocationApiKey');
       when(mockAuthenticationDataSource.getUserId()).thenReturn('someUserId');
-      when(mockHttpClient.get(expectedUri.toString()))
+      when(mockHttpClient.get(expectedUri))
           .thenAnswer((realInvocation) async => expectedHttpResponse);
       //act
       final actual = await sut.getAutocomplete(input);
@@ -244,7 +244,7 @@ main() {
       when(mockSecretsService.getSecret('GEOLOCATION_API_KEY'))
           .thenAnswer((realInvocation) async => 'theGeolocationApiKey');
       when(mockAuthenticationDataSource.getUserId()).thenReturn('someUserId');
-      when(mockHttpClient.get(expectedUri.toString()))
+      when(mockHttpClient.get(expectedUri))
           .thenAnswer((realInvocation) async => expectedHttpResponse);
 
       //act
@@ -283,7 +283,7 @@ main() {
       when(mockSecretsService.getSecret('GEOLOCATION_API_KEY'))
           .thenAnswer((realInvocation) async => 'theGeolocationApiKey');
       when(mockAuthenticationDataSource.getUserId()).thenReturn('someUserId');
-      when(mockHttpClient.get(expectedUri.toString()))
+      when(mockHttpClient.get(expectedUri))
           .thenAnswer((realInvocation) async => expectedHttpResponse);
 
       //act
@@ -321,7 +321,7 @@ main() {
       when(mockSecretsService.getSecret('GEOLOCATION_API_KEY'))
           .thenAnswer((realInvocation) async => 'theGeolocationApiKey');
       when(mockAuthenticationDataSource.getUserId()).thenReturn('someUserId');
-      when(mockHttpClient.get(expectedUri.toString()))
+      when(mockHttpClient.get(expectedUri))
           .thenAnswer((realInvocation) async => expectedHttpResponse);
 
       //act
@@ -373,7 +373,7 @@ main() {
           });
       when(mockSecretsService.getSecret('GEOLOCATION_API_KEY'))
           .thenAnswer((realInvocation) async => 'theGeolocationApiKey');
-      when(mockHttpClient.get(expectedUri.toString()))
+      when(mockHttpClient.get(expectedUri))
           .thenAnswer((realInvocation) async => serviceReturns);
       //act
       final actual = await sut.getAddressFromLocation(location);
@@ -403,7 +403,7 @@ main() {
           });
       when(mockSecretsService.getSecret('GEOLOCATION_API_KEY'))
           .thenAnswer((realInvocation) async => 'theGeolocationApiKey');
-      when(mockHttpClient.get(expectedUri.toString()))
+      when(mockHttpClient.get(expectedUri))
           .thenAnswer((realInvocation) async => serviceReturns);
       //act
       expect(() async => await sut.getAddressFromLocation(location),
@@ -430,7 +430,7 @@ main() {
           });
       when(mockSecretsService.getSecret('GEOLOCATION_API_KEY'))
           .thenAnswer((realInvocation) async => 'theGeolocationApiKey');
-      when(mockHttpClient.get(expectedUri.toString()))
+      when(mockHttpClient.get(expectedUri))
           .thenAnswer((realInvocation) async => serviceReturns);
       //act
       expect(() async => await sut.getAddressFromLocation(location),

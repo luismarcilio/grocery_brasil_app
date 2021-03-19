@@ -32,8 +32,8 @@ Future<String> _getGeoLocationApiKey() async {
       host: apiConfiguration.host,
       port: apiConfiguration.port,
       path: '${apiConfiguration.path}/geolocationApiKey');
-  print("uri: ${uri.toString()}");
-  final http.Response response = await http.get(uri.toString(), headers: {
+  print("uri: $uri");
+  final http.Response response = await http.get(uri, headers: {
     HttpHeaders.authorizationHeader: 'Bearer $jwt',
     "Content-Type": "application/json"
   });
@@ -45,8 +45,8 @@ Future<String> _getGeoLocationApiKey() async {
 }
 
 Future<Position> getPosition() async {
-  Position position =
-      await getCurrentPosition(desiredAccuracy: LocationAccuracy.best);
+  Position position = await Geolocator.getCurrentPosition(
+      desiredAccuracy: LocationAccuracy.best);
   return position;
 }
 
@@ -68,7 +68,7 @@ Future<List<GeolocationSuggestion>> getGeolocationAutocompleteSuggestion(
         'radius': '100000',
         'language': 'pt-BR'
       });
-  print("uri: ${uri.toString()}");
+  print("uri: $uri");
   final http.Response response =
       await http.get(uri, headers: {"Content-Type": "application/json"});
   if (response.statusCode != 200) {
@@ -101,7 +101,7 @@ Future<Map<String, dynamic>> getAddressByRawAddress(String address) async {
         'key': geolocationApiKey,
         'language': 'pt-BR'
       });
-  print("uri: ${uri.toString()}");
+  print("uri: $uri");
   final http.Response response =
       await http.get(uri, headers: {"Content-Type": "application/json"});
   if (response.statusCode != 200) {
@@ -129,7 +129,7 @@ Future<Map<String, dynamic>> getAddressByPosition(Position position) async {
         'key': geolocationApiKey,
         'language': 'pt-BR'
       });
-  print("uri: ${uri.toString()}");
+  print("uri: $uri");
   final http.Response response =
       await http.get(uri, headers: {"Content-Type": "application/json"});
   if (response.statusCode != 200) {
@@ -158,7 +158,7 @@ Future<Address> getPositionByPlaceId(String placeId) async {
         'key': geolocationApiKey,
         'language': 'pt-BR'
       });
-  print("uri: ${uri.toString()}");
+  print("uri: $uri");
   final http.Response response =
       await http.get(uri, headers: {"Content-Type": "application/json"});
   if (response.statusCode != 200) {

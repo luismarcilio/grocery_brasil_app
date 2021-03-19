@@ -61,8 +61,12 @@ void main() {
         "Content-Type": "application/json"
       });
 
-      when(mockHttp.get(anything, headers: httpHeaders)).thenAnswer(
-          (realInvocation) async => http.Response(expectedString, 200));
+      when(mockHttp.get(
+              Uri.parse(
+                  "https://hosttest:666/pathTeste/nfDataByInitialUrl?url=http%3A%2F%2Fteste"),
+              headers: httpHeaders))
+          .thenAnswer(
+              (realInvocation) async => http.Response(expectedString, 200));
       //act
       final actual = await detailsFromUrlDataSource(url: 'http://teste');
       //assert
@@ -88,7 +92,10 @@ void main() {
         "Content-Type": "application/json"
       });
 
-      when(mockHttp.get(anything, headers: httpHeaders))
+      when(mockHttp.get(
+              Uri.parse(
+                  "https://hosttest:666/pathTeste/nfDataByInitialUrl?url=http%3A%2F%2Fteste"),
+              headers: httpHeaders))
           .thenAnswer((realInvocation) async => http.Response('erro', 500));
       //act
       expect(() async => await detailsFromUrlDataSource(url: 'http://teste'),

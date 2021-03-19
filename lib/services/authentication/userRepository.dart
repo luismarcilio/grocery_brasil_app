@@ -69,10 +69,10 @@ class UserRepository extends ChangeNotifier {
     try {
       _status = Status.Authenticating;
       notifyListeners();
-      final LoginResult result = await FacebookAuth.instance.login();
+      final AccessToken result = await FacebookAuth.instance.login();
       print("result: $result");
       final FacebookAuthCredential facebookAuthCredential =
-          FacebookAuthProvider.credential(result.accessToken.token);
+          FacebookAuthProvider.credential(result.token);
       print("facebookAuthCredential: $facebookAuthCredential");
 
       final UserCredential userCredential =

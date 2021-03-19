@@ -64,7 +64,7 @@ main() {
       when(mockAuthenticationDataSource.getJWT())
           .thenAnswer((realInvocation) async => jwt);
 
-      when(mockHttpClient.get(uri.toString(), headers: httpHeaders))
+      when(mockHttpClient.get(uri, headers: httpHeaders))
           .thenAnswer((realInvocation) async => expectedResponse);
 
       //act
@@ -73,7 +73,7 @@ main() {
       expect(actual, secretValue);
       verify(mockFunctionsDetailsDataSource.getBackendFunctionsConfiguration());
       verify(mockAuthenticationDataSource.getJWT());
-      verify(mockHttpClient.get(uri.toString(), headers: httpHeaders));
+      verify(mockHttpClient.get(uri, headers: httpHeaders));
     });
 
     test('should return error NOT FOUND when status is 404', () {
@@ -102,7 +102,7 @@ main() {
           .thenAnswer((realInvocation) async => backendConfiguration);
       when(mockAuthenticationDataSource.getJWT())
           .thenAnswer((realInvocation) async => jwt);
-      when(mockHttpClient.get(uri.toString(), headers: httpHeaders))
+      when(mockHttpClient.get(uri, headers: httpHeaders))
           .thenAnswer((realInvocation) async => expectedResponse);
 
       //act

@@ -39,8 +39,7 @@ class GoogleAddressingServiceAdapter implements AddressingServiceAdapter {
             'key': apiKey,
             'language': 'pt-BR'
           });
-      final response =
-          await httpClient.get(uri.toString()).timeout(googleApiTimeout);
+      final response = await httpClient.get(uri).timeout(googleApiTimeout);
       if (response.statusCode != 200) {
         throw AddressingException(
             messageId: MessageIds.UNEXPECTED,
@@ -80,8 +79,7 @@ class GoogleAddressingServiceAdapter implements AddressingServiceAdapter {
             'location_type': 'ROOFTOP',
             'result_type': 'street_address'
           });
-      final response =
-          await httpClient.get(uri.toString()).timeout(googleApiTimeout);
+      final response = await httpClient.get(uri).timeout(googleApiTimeout);
       if (response.statusCode != 200) {
         throw AddressingException(
             messageId: MessageIds.UNEXPECTED,
@@ -125,8 +123,7 @@ class GoogleAddressingServiceAdapter implements AddressingServiceAdapter {
             'language': 'pt-BR'
           });
 
-      final httpResponse =
-          await httpClient.get(uri.toString()).timeout(googleApiTimeout);
+      final httpResponse = await httpClient.get(uri).timeout(googleApiTimeout);
       if (httpResponse.statusCode != 200) {
         throw AddressingException(
             messageId: MessageIds.UNEXPECTED,

@@ -81,7 +81,8 @@ void main() {
             actual,
             equals(Left(AuthenticationFailure(
                 messageId: MessageIds.UNEXPECTED,
-                message: 'AuthenticationException'))));
+                message:
+                    'AuthenticationException(MessageIds.UNEXPECTED, erro)'))));
       });
     });
 

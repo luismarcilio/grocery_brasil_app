@@ -34,7 +34,7 @@ main() {
               updateUserUseCase: mockUpdateUserUseCase,
               getUserUseCase: mockGetUserUseCase),
           act: (bloc) => bloc.add(UpdateUser(user: someUser)),
-          expect: [UserUpdating(), UserReady(user: someUser)]);
+          expect: () => [UserUpdating(), UserReady(user: someUser)]);
     });
 
     group('should return userError when it receives some failure', () {
@@ -50,7 +50,7 @@ main() {
               updateUserUseCase: mockUpdateUserUseCase,
               getUserUseCase: mockGetUserUseCase),
           act: (bloc) => bloc.add(UpdateUser(user: someUser)),
-          expect: [UserUpdating(), UserError(failure: failure)]);
+          expect: () => [UserUpdating(), UserError(failure: failure)]);
     });
 
     group('should get the user', () {
@@ -64,7 +64,7 @@ main() {
               updateUserUseCase: mockUpdateUserUseCase,
               getUserUseCase: mockGetUserUseCase),
           act: (bloc) => bloc.add(GetUser()),
-          expect: [UserUpdating(), UserReady(user: someUser)]);
+          expect: () => [UserUpdating(), UserReady(user: someUser)]);
     });
   });
 }

@@ -33,9 +33,9 @@ class FirebaseOAuthProviderImpl extends FirebaseOAuthProvider {
   }
 
   Future<AuthCredential> authCredentialFacebook() async {
-    final LoginResult result = await FacebookAuth.instance.login();
+    final AccessToken result = await FacebookAuth.instance.login();
     final FacebookAuthCredential facebookAuthCredential =
-        FacebookAuthProvider.credential(result.accessToken.token);
+        FacebookAuthProvider.credential(result.token);
     return facebookAuthCredential;
   }
 }

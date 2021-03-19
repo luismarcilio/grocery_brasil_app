@@ -42,7 +42,7 @@ main() {
             http.Response(fixture.returnFromElasticSearch, 200);
         when(mockSecretsService.getSecret('ELASTICSEARCH'))
             .thenAnswer((realInvocation) async => secret);
-        when(mockHttpClient.post(expectedUrl,
+        when(mockHttpClient.post(Uri.parse(expectedUrl),
                 headers: expectedHeaders, body: expectedQuery))
             .thenAnswer((realInvocation) async => expectedResponse);
 
@@ -70,7 +70,7 @@ main() {
             http.Response(fixture.failFromElasticSearch, 404);
         when(mockSecretsService.getSecret('ELASTICSEARCH'))
             .thenAnswer((realInvocation) async => secret);
-        when(mockHttpClient.post(expectedUrl,
+        when(mockHttpClient.post(Uri.parse(expectedUrl),
                 headers: expectedHeaders, body: expectedQuery))
             .thenAnswer((realInvocation) async => expectedResponse);
         //act
