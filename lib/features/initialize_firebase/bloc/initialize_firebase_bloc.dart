@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:flutter/foundation.dart';
 
 part 'initialize_firebase_event.dart';
 part 'initialize_firebase_state.dart';
@@ -24,6 +26,7 @@ class InitializeFirebaseBloc
     yield FirebaseInitializing();
     try {
       await Firebase.initializeApp();
+      FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
       yield FirebaseInitialized();
     } catch (error) {
       yield FirebaseError(error.toString());
