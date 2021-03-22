@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dart_geohash/dart_geohash.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get_it/get_it.dart';
-import 'package:grocery_brasil_app/features/product/domain/GetPricesProductByUserByProductIdUseCase.dart';
 import 'package:http/http.dart' as http;
 
 import 'features/addressing/data/AddressingDataSource.dart';
@@ -18,6 +18,11 @@ import 'features/apisDetails/data/FunctionsDetailsDataSource.dart';
 import 'features/common/data/PurchaseDataSource.dart';
 import 'features/common/data/PurchaseRepositoryImpl.dart';
 import 'features/common/domain/PurchaseRepository.dart';
+import 'features/logging/data/CrashlyticsLogAdapter.dart';
+import 'features/logging/data/LogAdatper.dart';
+import 'features/logging/domain/InitializeLog.dart';
+import 'features/logging/domain/Log.dart';
+import 'features/logging/domain/LogService.dart';
 import 'features/login/data/datasources/AuthenticationDataSource.dart';
 import 'features/login/data/datasources/FirebaseAuthenticationDataSourceImpl.dart';
 import 'features/login/data/datasources/FirebaseOAuthProvider.dart';
@@ -38,6 +43,7 @@ import 'features/product/data/TextSearchDataSource.dart';
 import 'features/product/data/TextSearchDataSourceImpl.dart';
 import 'features/product/data/TextSearchRepositoryImpl.dart';
 import 'features/product/domain/GetMinPriceProductByUserByProductIdUseCase.dart';
+import 'features/product/domain/GetPricesProductByUserByProductIdUseCase.dart';
 import 'features/product/domain/ListProductsByTextUseCase.dart';
 import 'features/product/domain/ProductRepository.dart';
 import 'features/product/domain/ProductService.dart';
@@ -93,7 +99,8 @@ void init() {
       authenticateWithGoogle: sl(),
       logout: sl(),
       asyncLogin: sl(),
-      createUser: sl()));
+      createUser: sl(),
+      initializeLog: sl()));
 
   sl.registerFactory(() => RegistrationBloc(registrationUseCase: sl()));
   sl.registerFactory(() => QrcodeBloc(scanQRCode: sl()));
@@ -131,6 +138,9 @@ void init() {
       () => GetMinPriceProductByUserByProductIdUseCase(productService: sl()));
   sl.registerLazySingleton(
       () => GetPricesProductByUserByProductIdUseCase(productService: sl()));
+  sl.registerLazySingleton(() => InitializeLog(logService: sl()));
+  sl.registerSingleton(() => Log(logService: sl()));
+
 //Services
   sl.registerLazySingleton<SecretsService>(
       () => SecretsServiceImpl(secretDataSource: sl()));
@@ -147,6 +157,7 @@ void init() {
           authenticationRepository: sl(),
           addressingDataSource: sl(),
           userService: sl()));
+  sl.registerLazySingleton<LogService>(() => LogServiceImpl(logAdapter: sl()));
   //Repository
   sl.registerLazySingleton<AuthenticationRepository>(
       () => AuthenticationRepositoryImpl(authenticationDataSource: sl()));
@@ -224,12 +235,16 @@ void init() {
           secretsService: sl()));
   sl.registerLazySingleton<GeohashServiceAdapter>(
       () => GeohashServiceAdapterImpl(geoHasher: sl()));
+
+  sl.registerLazySingleton<LogAdapter>(
+      () => CrashlyticsLogAdapter(firebaseCrashlytics: sl()));
   //External
 
   sl.registerLazySingleton<FirebaseFirestore>(() => FirebaseFirestore.instance);
   sl.registerLazySingleton(() => http.Client());
   sl.registerLazySingleton(() => GeolocatorPlatform.instance);
   sl.registerLazySingleton(() => GeoHasher());
+  sl.registerLazySingleton(() => FirebaseCrashlytics.instance);
 }
 
 void initFeatures() {}

@@ -5,6 +5,7 @@ import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:grocery_brasil_app/core/usecases/asyncUseCase.dart'
     as asyncUseCase;
+import 'package:grocery_brasil_app/features/logging/domain/InitializeLog.dart';
 import 'package:grocery_brasil_app/features/user/domain/CreateUserUseCase.dart';
 import 'package:meta/meta.dart';
 
@@ -28,6 +29,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final Logout logout;
   final AsyncLogin asyncLogin;
   final CreateUserUseCase createUser;
+  final InitializeLog initializeLog;
 
   LoginBloc(
       {@required this.authenticateWithEmailAndPassword,
@@ -35,7 +37,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       @required this.authenticateWithGoogle,
       @required this.logout,
       @required this.asyncLogin,
-      @required this.createUser})
+      @required this.createUser,
+      @required this.initializeLog})
       : super(LoginInitial()) {
     mapAsyncStateChanges(asyncLogin(asyncUseCase.NoParams()));
   }
@@ -87,6 +90,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     yield* status.fold((failure) async* {
       yield LoginError(failure);
     }, (user) async* {
+      this.initializeLog.call(user);
       this.add(CreateUserEvent(user: user));
     });
   }
@@ -99,6 +103,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     yield* status.fold((failure) async* {
       yield LoginError(failure);
     }, (user) async* {
+      this.initializeLog.call(user);
       this.add(CreateUserEvent(user: user));
     });
   }
@@ -110,6 +115,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     yield* status.fold((failure) async* {
       yield LoginError(failure);
     }, (user) async* {
+      this.initializeLog.call(user);
       this.add(CreateUserEvent(user: user));
     });
   }
@@ -163,6 +169,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           break;
       }
     }, (user) async* {
+      this.initializeLog.call(user);
       this.add(CreateUserEvent(user: user));
     });
   }
