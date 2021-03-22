@@ -29,8 +29,15 @@ main() {
 
       when(mockGeolocatorPlatform.getCurrentPosition(
               desiredAccuracy: LocationAccuracy.high, timeLimit: gpsTimeout))
-          .thenAnswer((realInvocation) async =>
-              Position(latitude: 10.0, longitude: 11.0));
+          .thenAnswer((realInvocation) async => Position(
+              latitude: 10.0,
+              longitude: 11.0,
+              timestamp: null,
+              accuracy: null,
+              altitude: null,
+              heading: null,
+              speed: null,
+              speedAccuracy: null));
 
       //act
       Location actual = await sut.getCurrentLocation();
@@ -57,8 +64,15 @@ main() {
 
       when(mockGeolocatorPlatform.getCurrentPosition(
               desiredAccuracy: LocationAccuracy.high, timeLimit: gpsTimeout))
-          .thenAnswer((realInvocation) async =>
-              Position(latitude: 10.0, longitude: 11.0));
+          .thenAnswer((realInvocation) async => Position(
+              latitude: 10.0,
+              longitude: 11.0,
+              timestamp: null,
+              accuracy: null,
+              altitude: null,
+              heading: null,
+              speed: null,
+              speedAccuracy: null));
 
       //act
       Location actual = await sut.getCurrentLocation();
