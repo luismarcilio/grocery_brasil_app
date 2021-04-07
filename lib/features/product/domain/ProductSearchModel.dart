@@ -48,6 +48,20 @@ class ProductSearchModel extends Equatable {
     );
   }
 
+  factory ProductSearchModel.fromTextSearch(Map<String, dynamic> json) {
+    return ProductSearchModel(
+      productId: json['id'],
+      eanCode: json['eanCode'] as String,
+      name: json['name'] as String,
+      ncmCode: json['ncmCode'] as String,
+      normalized: json['normalized'] as bool,
+      thumbnail: json['thumbnail'] as String,
+      unity: json['unity'] == null
+          ? null
+          : Unity.fromJson(json['unity'] as Map<String, dynamic>),
+    );
+  }
+
   @override
   String toString() => jsonEncode(this.toJson());
 }
