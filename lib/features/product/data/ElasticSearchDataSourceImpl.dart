@@ -9,11 +9,11 @@ import '../../secrets/domain/SecretsService.dart';
 import '../domain/ProductSearchModel.dart';
 import 'TextSearchDataSource.dart';
 
-class TextSearchDataSourceImpl implements TextSearchDataSource {
+class ElasticSearchDataSourceImpl implements TextSearchDataSource {
   final http.Client httpClient;
   final SecretsService secretsService;
 
-  TextSearchDataSourceImpl(
+  ElasticSearchDataSourceImpl(
       {@required this.httpClient, @required this.secretsService});
 
   @override

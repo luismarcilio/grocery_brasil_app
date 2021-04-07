@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:grocery_brasil_app/core/errors/exceptions.dart';
 import 'package:grocery_brasil_app/features/product/data/TextSearchDataSource.dart';
-import 'package:grocery_brasil_app/features/product/data/TextSearchDataSourceImpl.dart';
+import 'package:grocery_brasil_app/features/product/data/ElasticSearchDataSourceImpl.dart';
 import 'package:grocery_brasil_app/features/secrets/domain/SecretsService.dart';
 import 'package:mockito/mockito.dart';
 import 'package:http/http.dart' as http;
@@ -16,11 +16,11 @@ main() {
   MockSecretsService mockSecretsService;
   TextSearchDataSource sut;
 
-  group('TextSearchDataSourceImpl', () {
+  group('ElastictSearchDataSourceImpl', () {
     setUp(() {
       mockHttpClient = MockHttpClient();
       mockSecretsService = MockSecretsService();
-      sut = TextSearchDataSourceImpl(
+      sut = ElasticSearchDataSourceImpl(
           httpClient: mockHttpClient, secretsService: mockSecretsService);
     });
 

@@ -40,7 +40,7 @@ import 'features/product/data/ProductDataSource.dart';
 import 'features/product/data/ProductDataSourceImpl.dart';
 import 'features/product/data/ProductRepositoryImpl.dart';
 import 'features/product/data/TextSearchDataSource.dart';
-import 'features/product/data/TextSearchDataSourceImpl.dart';
+import 'features/product/data/ElasticSearchDataSourceImpl.dart';
 import 'features/product/data/TextSearchRepositoryImpl.dart';
 import 'features/product/domain/GetMinPriceProductByUserByProductIdUseCase.dart';
 import 'features/product/domain/GetPricesProductByUserByProductIdUseCase.dart';
@@ -218,8 +218,8 @@ void init() {
       functionsDetailsDataSource: sl(),
       authenticationDataSource: sl(),
       httpClient: sl()));
-  sl.registerLazySingleton<TextSearchDataSource>(
-      () => TextSearchDataSourceImpl(httpClient: sl(), secretsService: sl()));
+  sl.registerLazySingleton<TextSearchDataSource>(() =>
+      ElasticSearchDataSourceImpl(httpClient: sl(), secretsService: sl()));
 
   sl.registerLazySingleton<ProductDataSource>(
       () => ProductDataSourceImpl(firebaseFirestore: sl()));
