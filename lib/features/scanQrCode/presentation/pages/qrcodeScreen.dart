@@ -47,20 +47,25 @@ class QrCodeScreen extends StatelessWidget {
         if (state is QrcodeInitial) {
           BlocProvider.of<QrcodeBloc>(context).add(ReadQRCode());
         } else if (state is QrcodeReading) {
-          return QrCamera(
-              onError: (context, error) {
-                BlocProvider.of<QrcodeBloc>(context).add(ReadCodeErrorReceived(
-                    qrCodeFailure: QRCodeFailure(messageId: error)));
-                return Loading();
-              },
-              child: Text("Child"),
-              fit: BoxFit.fitWidth,
-              formats: [BarcodeFormats.QR_CODE],
-              qrCodeCallback: (code) {
-                BlocProvider.of<QrcodeBloc>(context)
-                    .add(ReadCodeReceived(qrCode: QRCode(url: code)));
-                return;
-              });
+          return Scaffold(
+            appBar: AppBar(
+              title: Text("Leia o QR Code"),
+            ),
+            body: QrCamera(
+                onError: (context, error) {
+                  BlocProvider.of<QrcodeBloc>(context).add(
+                      ReadCodeErrorReceived(
+                          qrCodeFailure: QRCodeFailure(messageId: error)));
+                  return Loading();
+                },
+                fit: BoxFit.fitWidth,
+                formats: [BarcodeFormats.QR_CODE],
+                qrCodeCallback: (code) {
+                  BlocProvider.of<QrcodeBloc>(context)
+                      .add(ReadCodeReceived(qrCode: QRCode(url: code)));
+                  return;
+                }),
+          );
         }
         return Loading();
       }),
