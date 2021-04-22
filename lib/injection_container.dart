@@ -67,11 +67,6 @@ import 'features/register/data/repository/RegistrationRepositoryImpl.dart';
 import 'features/register/domain/repository/RegistrationRepository.dart';
 import 'features/register/domain/usecases/register.dart';
 import 'features/register/presentation/bloc/registration_bloc_bloc.dart';
-import 'features/scanQrCode/data/QRCodeRepositoryImpl.dart';
-import 'features/scanQrCode/data/QRCodeScanner.dart';
-import 'features/scanQrCode/data/QRCodeScannerImpl.dart';
-import 'features/scanQrCode/domain/QRCodeRepository.dart';
-import 'features/scanQrCode/domain/ScanQrCodeUseCase.dart';
 import 'features/scanQrCode/presentation/bloc/qrcode_bloc.dart';
 import 'features/secrets/data/SecretDataSource.dart';
 import 'features/secrets/data/SecretDataSourceImpl.dart';
@@ -103,7 +98,7 @@ void init() {
       initializeLog: sl()));
 
   sl.registerFactory(() => RegistrationBloc(registrationUseCase: sl()));
-  sl.registerFactory(() => QrcodeBloc(scanQRCode: sl()));
+  sl.registerFactory(() => QrcodeBloc());
   sl.registerFactory(
       () => ReadnfBloc(getDetailsfromUrlUseCase: sl(), saveNfUseCase: sl()));
   sl.registerFactory(() =>
@@ -124,7 +119,6 @@ void init() {
   sl.registerLazySingleton(() => Logout(authenticationService: sl()));
   sl.registerLazySingleton(() => AsyncLogin(authenticationService: sl()));
   sl.registerLazySingleton(() => RegistrationUseCase(sl()));
-  sl.registerLazySingleton(() => ScanQRCode(sl()));
   sl.registerLazySingleton(() => GetDetailsfromUrlUseCase(repository: sl()));
   sl.registerLazySingleton(() => SaveNfUseCase(purchaseRepository: sl()));
   sl.registerLazySingleton(() => ListPurchasesUseCase(repository: sl()));
@@ -190,12 +184,6 @@ void init() {
   sl.registerLazySingleton<FirebaseAuth>(() => FirebaseAuth.instance);
   sl.registerLazySingleton<FirebaseOAuthProvider>(
       () => FirebaseOAuthProviderImpl());
-
-  sl.registerLazySingleton<QRCodeRepository>(
-      () => QRCodeRepositoryImpl(qrCodeScanner: sl()));
-  sl.registerLazySingleton<QRCodeScanner>(
-      () => QRCodeScannerImpl(barcodeScannerStub: sl()));
-  sl.registerLazySingleton<BarcodeScannerStub>(() => BarcodeScannerStub());
 
   sl.registerLazySingleton<FunctionsDetailsDataSource>(
       () => FunctionsDetailsDataSourceImpl(firebaseFirestore: sl()));

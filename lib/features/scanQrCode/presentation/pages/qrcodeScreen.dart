@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grocery_brasil_app/core/errors/exceptions.dart';
+import 'package:grocery_brasil_app/core/errors/failures.dart';
 import 'package:grocery_brasil_app/features/scanQrCode/domain/QRCode.dart';
 import 'package:grocery_brasil_app/screens/common/loading.dart';
+import 'package:qr_mobile_vision/qr_camera.dart';
+import 'package:qr_mobile_vision/qr_mobile_vision.dart';
 
 import '../../../../injection_container.dart';
 import '../bloc/qrcode_bloc.dart';
@@ -37,10 +40,27 @@ class QrCodeScreen extends StatelessWidget {
             ),
           );
           Navigator.of(context).pop<QRCode>(null);
+        } else if (state is QrcodeReadDone) {
+          Navigator.of(context).pop<QRCode>(state.qrCode);
         }
       }, builder: (context, state) {
         if (state is QrcodeInitial) {
           BlocProvider.of<QrcodeBloc>(context).add(ReadQRCode());
+        } else if (state is QrcodeReading) {
+          return QrCamera(
+              onError: (context, error) {
+                BlocProvider.of<QrcodeBloc>(context).add(ReadCodeErrorReceived(
+                    qrCodeFailure: QRCodeFailure(messageId: error)));
+                return Loading();
+              },
+              child: Text("Child"),
+              fit: BoxFit.fitWidth,
+              formats: [BarcodeFormats.QR_CODE],
+              qrCodeCallback: (code) {
+                BlocProvider.of<QrcodeBloc>(context)
+                    .add(ReadCodeReceived(qrCode: QRCode(url: code)));
+                return;
+              });
         }
         return Loading();
       }),

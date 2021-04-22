@@ -8,3 +8,13 @@ abstract class QrcodeEvent extends Equatable {
 }
 
 class ReadQRCode extends QrcodeEvent {}
+
+class ReadCodeReceived extends QrcodeEvent {
+  final QRCode qrCode;
+  ReadCodeReceived({@required this.qrCode});
+}
+
+class ReadCodeErrorReceived extends QrcodeEvent {
+  final QRCodeFailure qrCodeFailure;
+  ReadCodeErrorReceived({@required this.qrCodeFailure});
+}

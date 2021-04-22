@@ -25,7 +25,7 @@ dependencies:
   webview_flutter: ^2.0.2
   cloud_firestore: ^1.0.1
   intl: ^0.17.0
-  barcode_scan: ^3.0.1
+  qr_mobile_vision: ^3.0.0
   flutter_typeahead: ^3.1.0
   geolocator: ^7.0.1
   flutter_bloc: ^7.0.0

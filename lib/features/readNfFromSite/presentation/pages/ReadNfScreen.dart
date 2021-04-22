@@ -72,20 +72,30 @@ class NfWebView extends StatelessWidget {
     print('nFProcessData.initialUrl: ${nFProcessData.initialUrl}');
 
     print('javascript: ${nFProcessData.javascriptFunctions}');
-    return WebView(
-      debuggingEnabled: true,
-      initialUrl: nFProcessData.initialUrl,
-      javascriptMode: JavascriptMode.unrestricted,
-      gestureNavigationEnabled: true,
-      onPageFinished: (String url) {
-        _webViewController
-            .evaluateJavascript(nFProcessData.javascriptFunctions);
-      },
-      javascriptChannels: Set<JavascriptChannel>.from(
-          {SaveNf(state: nFProcessData.uf, context: context)}),
-      onWebViewCreated: (WebViewController webViewController) {
-        _webViewController = webViewController;
-      },
+    return Scaffold(
+      appBar: AppBar(
+        title: Row(
+          children: [
+            Text("Lendo nota fiscal"),
+            TextButton(onPressed: () {}, child: Icon(Icons.refresh))
+          ],
+        ),
+      ),
+      body: WebView(
+        debuggingEnabled: true,
+        initialUrl: nFProcessData.initialUrl,
+        javascriptMode: JavascriptMode.unrestricted,
+        gestureNavigationEnabled: true,
+        onPageFinished: (String url) {
+          _webViewController
+              .evaluateJavascript(nFProcessData.javascriptFunctions);
+        },
+        javascriptChannels: Set<JavascriptChannel>.from(
+            {SaveNf(state: nFProcessData.uf, context: context)}),
+        onWebViewCreated: (WebViewController webViewController) {
+          _webViewController = webViewController;
+        },
+      ),
     );
   }
 }
