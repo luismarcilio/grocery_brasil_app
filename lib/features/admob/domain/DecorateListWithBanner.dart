@@ -25,3 +25,16 @@ class DecorateHeroListWithBanner
     return original;
   }
 }
+
+class DecorateWidgetListWithBanner
+    implements DecorateListWithAds<Widget, BannerAdd> {
+  @override
+  List<Widget> decorate(
+      List<Widget> original, BannerAdd addFactory, int frequency) {
+    for (int i = frequency; i < original.length; i += frequency) {
+      original.insert(i++, addFactory.get());
+    }
+    original.add(addFactory.get());
+    return original;
+  }
+}

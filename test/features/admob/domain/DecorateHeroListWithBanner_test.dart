@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:grocery_brasil_app/features/admob/domain/DecorateHeroListWithBanner.dart';
+import 'package:grocery_brasil_app/features/admob/domain/DecorateListWithBanner.dart';
 import 'package:grocery_brasil_app/features/admob/widgets/BannerInline.dart';
 
 main() {
