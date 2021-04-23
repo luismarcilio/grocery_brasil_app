@@ -45,7 +45,8 @@ class TextSearchDataSourceImpl implements TextSearchDataSource {
                 "Status: ${response.statusCode} - ${body['error']} ${body['message']}");
       }
 
-      final elResponse = jsonDecode(utf8.decode(response.bodyBytes));
+      final elResponse =
+          jsonDecode(utf8.decode(response.bodyBytes, allowMalformed: true));
       final List<ProductSearchModel> productList = _parse(elResponse);
       return productList;
     } catch (e) {
