@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dart_geohash/dart_geohash.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:flutter/widgets.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
@@ -14,6 +15,10 @@ import 'features/addressing/data/GeohashServiceAdapter.dart';
 import 'features/addressing/data/GeohashServiceAdapterImpl.dart';
 import 'features/addressing/data/GeolocatorGPSServiceAdapter.dart';
 import 'features/addressing/data/GoogleAddressingServiceAdapter.dart';
+import 'features/admob/domain/AddFactory.dart';
+import 'features/admob/domain/DecorateListWithAds.dart';
+import 'features/admob/domain/DecorateListWithBanner.dart';
+import 'features/admob/widgets/BannerInline.dart';
 import 'features/apisDetails/data/FunctionsDetailsDataSource.dart';
 import 'features/common/data/PurchaseDataSource.dart';
 import 'features/common/data/PurchaseRepositoryImpl.dart';
@@ -226,8 +231,14 @@ void init() {
 
   sl.registerLazySingleton<LogAdapter>(
       () => CrashlyticsLogAdapter(firebaseCrashlytics: sl()));
-  //External
+  // Presentation
+  sl.registerLazySingleton<DecorateListWithAds<Hero, BannerAdd>>(
+      () => DecorateHeroListWithBanner());
+  sl.registerLazySingleton<DecorateListWithAds<Widget, BannerAdd>>(
+      () => DecorateWidgetListWithBanner());
+  sl.registerLazySingleton<AddFactory<BannerInline>>(() => BannerAdd());
 
+  //External
   sl.registerLazySingleton<FirebaseFirestore>(() => FirebaseFirestore.instance);
   sl.registerLazySingleton(() => http.Client());
   sl.registerLazySingleton(() => GeolocatorPlatform.instance);
