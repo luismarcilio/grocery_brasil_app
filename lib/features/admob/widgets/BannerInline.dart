@@ -52,6 +52,9 @@ class _BannerInlineState extends State<BannerInline> {
       child: AdWidget(
         ad: _ad,
       ),
+      width: _ad.size.width.toDouble(),
+      height: 100,
+      alignment: Alignment.center,
     );
   }
 
