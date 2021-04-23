@@ -46,7 +46,7 @@ const returnFromTextSearch = '''
     {
         "id": "7891025105244",
         "eanCode" : "7891025105244",
-        "name" : "PACK SOBREMESA LÁCTEA CHOCOLATE AO LEITE DANETTE BANDEJA 720G 8 UNIDADES GRÁTIS 1 UNIDADE",
+        "name" : "PACK SOBREMESA LACTEA CHOCOLATE AO LEITE DANETTE BANDEJA 720G 8 UNIDADES GRATIS 1 UNIDADE",
         "ncmCode" : null,
         "normalized" : null,
         "thumbnail" : "https://storage.googleapis.com/grocery-brasil-app-thumbnails/7891025105244",
@@ -121,7 +121,7 @@ const returnFromElasticSearch = '''
         "_score" : 1.2892814,
         "_source" : {
           "eanCode" : "7891025105244",
-          "name" : "PACK SOBREMESA LÁCTEA CHOCOLATE AO LEITE DANETTE BANDEJA 720G 8 UNIDADES GRÁTIS 1 UNIDADE",
+          "name" : "PACK SOBREMESA LACTEA CHOCOLATE AO LEITE DANETTE BANDEJA 720G 8 UNIDADES GRATIS 1 UNIDADE",
           "firebaseDocId" : "7891025105244",
           "thumbnail" : "https://storage.googleapis.com/grocery-brasil-app-thumbnails/7891025105244"
         }
@@ -163,7 +163,7 @@ final expected = [
       productId: '7891025105244',
       eanCode: '7891025105244',
       name:
-          'PACK SOBREMESA LÁCTEA CHOCOLATE AO LEITE DANETTE BANDEJA 720G 8 UNIDADES GRÁTIS 1 UNIDADE',
+          'PACK SOBREMESA LACTEA CHOCOLATE AO LEITE DANETTE BANDEJA 720G 8 UNIDADES GRATIS 1 UNIDADE',
       ncmCode: null,
       normalized: null,
       thumbnail:
