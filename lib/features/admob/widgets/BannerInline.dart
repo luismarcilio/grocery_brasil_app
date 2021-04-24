@@ -26,7 +26,7 @@ class _BannerInlineState extends State<BannerInline> {
     super.initState();
     _ad = BannerAd(
       adUnitId: AdHelper.bannerAdUnitId,
-      size: AdSize.banner,
+      size: AdSize.largeBanner,
       request: AdRequest(),
       listener: AdListener(
         onAdLoaded: (_) {
@@ -48,14 +48,16 @@ class _BannerInlineState extends State<BannerInline> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: AdWidget(
-        ad: _ad,
-      ),
-      width: _ad.size.width.toDouble(),
-      height: 100,
-      alignment: Alignment.center,
-    );
+    return !_isAdLoaded
+        ? Container()
+        : Container(
+            child: AdWidget(
+              ad: _ad,
+            ),
+            width: _ad.size.width.toDouble(),
+            height: _ad.size.height.toDouble(),
+            alignment: Alignment.center,
+          );
   }
 
   @override
