@@ -32,9 +32,9 @@ class DecorateWidgetListWithBanner
   List<Widget> decorate(
       List<Widget> original, BannerAdd addFactory, int frequency) {
     for (int i = frequency; i < original.length; i += frequency) {
-      original.insert(i++, addFactory.get());
+      original.insert(i++, Container(child: addFactory.get()));
     }
-    original.add(addFactory.get());
+    original.add(Container(child: addFactory.get()));
     return original;
   }
 }
