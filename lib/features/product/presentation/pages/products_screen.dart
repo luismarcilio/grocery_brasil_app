@@ -6,6 +6,9 @@ import 'package:intl/intl.dart';
 
 import '../../../../injection_container.dart';
 import '../../../../screens/common/loading.dart';
+import '../../../admob/domain/AddFactory.dart';
+import '../../../admob/domain/DecorateListWithAds.dart';
+import '../../../admob/widgets/BannerInline.dart';
 import '../../domain/ProductPrices.dart';
 import '../../domain/ProductSearchModel.dart';
 import '../bloc/product_prices_bloc.dart';
@@ -96,9 +99,19 @@ class BuildProductsTable extends StatelessWidget {
   const BuildProductsTable({Key key, this.products}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    final DecorateListWithAds _adDecorator =
+        sl<DecorateListWithAds<Widget, BannerAdd>>();
+    final AddFactory _addFactory = sl<AddFactory<BannerInline>>();
+    final frequency = 10;
+
     return ListView(
-        children: List<Widget>.of(
-            products.map((product) => ProductCard(product: product))).toList());
+      children: _adDecorator.decorate(
+          List<Widget>.of(
+                  products.map((product) => ProductCard(product: product)))
+              .toList(),
+          _addFactory,
+          frequency),
+    );
   }
 }
 

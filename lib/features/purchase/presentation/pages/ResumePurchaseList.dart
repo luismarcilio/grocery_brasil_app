@@ -4,6 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../domain/Purchase.dart';
 import '../../../../injection_container.dart';
 import '../../../../screens/common/loading.dart';
+import '../../../admob/domain/AddFactory.dart';
+import '../../../admob/domain/DecorateListWithAds.dart';
+import '../../../admob/widgets/BannerInline.dart';
 import '../bloc/purchase_bloc.dart';
 import '../widgets/NFScreensWidgets.dart';
 import 'FullPurchaseList.dart';
@@ -47,6 +50,10 @@ class PurchaseResumeScreen extends StatelessWidget {
 
 class BuildListOfPurchases extends StatelessWidget {
   final Stream<List<Purchase>> _resumes;
+  final DecorateListWithAds _adDecorator =
+      sl<DecorateListWithAds<Hero, BannerAdd>>();
+  final AddFactory _addFactory = sl<AddFactory<BannerInline>>();
+  static final frequency = 10;
 
   BuildListOfPurchases(this._resumes);
 
@@ -59,14 +66,16 @@ class BuildListOfPurchases extends StatelessWidget {
       BuildContext context, AsyncSnapshot<List<Purchase>> purchases) {
     if (purchases.hasData) {
       return ListView(
-        children: purchases.data
-            .map((purchase) => NFScreensWidgets.resumoNfCard(
-                onLongPress: () {},
-                onTap: () => _loadFullPurchase(context, purchase),
-                context: context,
-                purchase: purchase))
-            .toList(),
-      );
+          children: _adDecorator.decorate(
+              purchases.data
+                  .map((purchase) => NFScreensWidgets.resumoNfCard(
+                      onLongPress: () {},
+                      onTap: () => _loadFullPurchase(context, purchase),
+                      context: context,
+                      purchase: purchase))
+                  .toList(),
+              _addFactory,
+              frequency));
     } else if (purchases.hasError) {
       return Loading();
     } else {

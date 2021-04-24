@@ -4,6 +4,9 @@ import 'package:intl/intl.dart';
 
 import '../../../../injection_container.dart';
 import '../../../../screens/common/loading.dart';
+import '../../../admob/domain/AddFactory.dart';
+import '../../../admob/domain/DecorateListWithAds.dart';
+import '../../../admob/widgets/BannerInline.dart';
 import '../../domain/ProductPrices.dart';
 import '../../domain/ProductSearchModel.dart';
 import '../bloc/product_prices_bloc.dart';
@@ -62,6 +65,10 @@ class BuildProductsPricesTable extends StatelessWidget {
       : super(key: key);
   @override
   Widget build(BuildContext context) {
+    final DecorateListWithAds _adDecorator =
+        sl<DecorateListWithAds<Widget, BannerAdd>>();
+    final AddFactory _addFactory = sl<AddFactory<BannerInline>>();
+    final frequency = 10;
     return Scaffold(
         appBar: AppBar(
           title: productCard(
@@ -74,10 +81,16 @@ class BuildProductsPricesTable extends StatelessWidget {
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 return ListView(
-                  children: snapshot.data
-                      .map((productPrice) => priceCard(
-                          context: context, productPrices: productPrice))
-                      .toList(),
+                  children: _adDecorator.decorate(
+                      snapshot.data
+                          .map((productPrice) => Container(
+                                child: priceCard(
+                                    context: context,
+                                    productPrices: productPrice),
+                              ))
+                          .toList(),
+                      _addFactory,
+                      frequency),
                 );
               } else if (snapshot.hasError) {
                 ScaffoldMessenger.of(context)

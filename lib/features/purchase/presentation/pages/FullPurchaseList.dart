@@ -4,6 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../domain/Purchase.dart';
 import '../../../../injection_container.dart';
 import '../../../../screens/common/loading.dart';
+import '../../../admob/domain/AddFactory.dart';
+import '../../../admob/domain/DecorateListWithAds.dart';
+import '../../../admob/widgets/BannerInline.dart';
 import '../bloc/purchase_bloc.dart';
 import '../widgets/NFScreensWidgets.dart';
 
@@ -64,7 +67,10 @@ class PurchaseFullFiscalNoteScreen extends StatelessWidget {
 class BuildPurchaseScreen extends StatelessWidget {
   final Purchase _purchase;
   BuildPurchaseScreen(this._purchase);
-
+  final DecorateListWithAds _adDecorator =
+      sl<DecorateListWithAds<Widget, BannerAdd>>();
+  final AddFactory _addFactory = sl<AddFactory<BannerInline>>();
+  static final frequency = 10;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -75,13 +81,16 @@ class BuildPurchaseScreen extends StatelessWidget {
               onTap: null,
               onLongPress: null)),
       body: ListView(
-        children: _purchase.purchaseItemList
-            .map<Widget>((purchaseItem) => NFScreensWidgets.newnfItemCard(
-                context: context,
-                onLongPress: null,
-                onTap: null,
-                purchaseItem: purchaseItem))
-            .toList(),
+        children: _adDecorator.decorate(
+            _purchase.purchaseItemList
+                .map<Widget>((purchaseItem) => NFScreensWidgets.newnfItemCard(
+                    context: context,
+                    onLongPress: null,
+                    onTap: null,
+                    purchaseItem: purchaseItem))
+                .toList(),
+            _addFactory,
+            frequency),
       ),
     );
   }
