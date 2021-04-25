@@ -15,6 +15,9 @@ class RegisterScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text("Bem vindo."),
+      ),
       body: buildBody(context),
     );
   }
