@@ -33,18 +33,24 @@ class _DashboardState extends State<Dashboard> {
           children: [
             Text("Suas Compras mais barato"),
             Expanded(
-                child: Container(
-                    alignment: Alignment.centerRight,
-                    child: TextButton(
-                        onPressed: () {
-                          logout(NoParams());
-                          Navigator.of(context).pushReplacement(
-                            MaterialPageRoute(
-                              builder: (context) => Login(),
-                            ),
-                          );
-                        },
-                        child: Icon(Icons.logout))))
+              child: Container(
+                alignment: Alignment.centerRight,
+                child: TextButton(
+                  onPressed: () {
+                    logout(NoParams());
+                    Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(
+                        builder: (context) => Login(),
+                      ),
+                    );
+                  },
+                  child: Icon(
+                    Icons.logout,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            )
           ],
         ),
       ),
