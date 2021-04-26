@@ -77,6 +77,12 @@ import 'features/secrets/data/SecretDataSource.dart';
 import 'features/secrets/data/SecretDataSourceImpl.dart';
 import 'features/secrets/data/SecretsServiceImpl.dart';
 import 'features/secrets/domain/SecretsService.dart';
+import 'features/share/domain/ShareAdapter.dart';
+import 'features/share/domain/ShareAdapterImpl.dart';
+import 'features/share/domain/ShareService.dart';
+import 'features/share/domain/ShareServiceImpl.dart';
+import 'features/share/domain/ShareUseCase.dart';
+import 'features/share/presentation/bloc/share_bloc.dart';
 import 'features/user/data/FirbaseUserDataSource.dart';
 import 'features/user/data/UserDataSource.dart';
 import 'features/user/data/UserRepositoryImpl.dart';
@@ -114,6 +120,7 @@ void init() {
   sl.registerFactory(() => ProductPricesBloc(
       getMinPriceProductByUserByProductIdUseCase: sl(),
       getPricesProductByUserByProductIdUseCase: sl()));
+  sl.registerFactory(() => ShareBloc(shareUseCase: sl()));
   //UseCases
   sl.registerLazySingleton(
       () => AuthenticateWithEmailAndPassword(authenticationService: sl()));
@@ -139,7 +146,7 @@ void init() {
       () => GetPricesProductByUserByProductIdUseCase(productService: sl()));
   sl.registerLazySingleton(() => InitializeLog(logService: sl()));
   sl.registerSingleton(() => Log(logService: sl()));
-
+  sl.registerLazySingleton(() => ShareUseCase(shareService: sl()));
 //Services
   sl.registerLazySingleton<SecretsService>(
       () => SecretsServiceImpl(secretDataSource: sl()));
@@ -157,6 +164,8 @@ void init() {
           addressingDataSource: sl(),
           userService: sl()));
   sl.registerLazySingleton<LogService>(() => LogServiceImpl(logAdapter: sl()));
+  sl.registerLazySingleton<ShareService>(
+      () => ShareServiceImpl(shareAdapter: sl()));
   //Repository
   sl.registerLazySingleton<AuthenticationRepository>(
       () => AuthenticationRepositoryImpl(authenticationDataSource: sl()));
@@ -231,6 +240,8 @@ void init() {
 
   sl.registerLazySingleton<LogAdapter>(
       () => CrashlyticsLogAdapter(firebaseCrashlytics: sl()));
+  sl.registerLazySingleton<ShareAdapter>(
+      () => ShareAdapterImpl(flutterShareStub: FlutterShareStub()));
   // Presentation
   sl.registerLazySingleton<DecorateListWithAds<Hero, BannerAdd>>(
       () => DecorateHeroListWithBanner());
