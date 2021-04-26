@@ -77,3 +77,11 @@ class LoggingFailure extends Failure {
   @override
   List<Object> get props => [messageId, message];
 }
+
+class ShareFailure extends Failure {
+  ShareFailure({@required MessageIds messageId, String message})
+      : super(messageId: messageId, message: message);
+
+  @override
+  List<Object> get props => [messageId, message];
+}
