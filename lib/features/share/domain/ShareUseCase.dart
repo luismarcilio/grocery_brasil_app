@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:grocery_brasil_app/core/errors/exceptions.dart';
-import 'package:grocery_brasil_app/features/share/domain/ShareFormat.dart';
+import 'package:grocery_brasil_app/features/share/domain/Shareable.dart';
 import 'package:meta/meta.dart';
 
 import '../../../core/errors/failures.dart';
@@ -16,8 +16,8 @@ class ShareUseCase implements UseCase<bool, Params> {
   @override
   Future<Either<ShareFailure, bool>> call(Params params) async {
     try {
-      final outcome =
-          await shareService.shareContent(params.content, params.format);
+      final outcome = await shareService.shareContent(
+          params.shareable.content, params.shareable.format);
       if (!outcome) {
         return Left(
           ShareFailure(
@@ -38,12 +38,10 @@ class ShareUseCase implements UseCase<bool, Params> {
 }
 
 class Params extends Equatable {
-  final dynamic content;
-  final ShareFormat format;
+  final Shareable shareable;
 
-  Params({@required this.content, @required this.format});
+  Params({@required this.shareable});
 
   @override
-  // TODO: implement props
-  List<Object> get props => [content, format];
+  List<Object> get props => [shareable];
 }

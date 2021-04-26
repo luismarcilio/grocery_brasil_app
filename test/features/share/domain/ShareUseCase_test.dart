@@ -6,6 +6,7 @@ import 'package:grocery_brasil_app/core/errors/failures.dart';
 import 'package:grocery_brasil_app/features/share/domain/ShareFormat.dart';
 import 'package:grocery_brasil_app/features/share/domain/ShareService.dart';
 import 'package:grocery_brasil_app/features/share/domain/ShareUseCase.dart';
+import 'package:grocery_brasil_app/features/share/domain/Shareable.dart';
 import 'package:mockito/mockito.dart';
 
 class MockShareService extends Mock implements ShareService {}
@@ -30,8 +31,8 @@ main() {
           .thenAnswer((realInvocation) async => true);
 
       //act
-      final actual =
-          await sut(Params(content: input, format: ShareFormat.TEXT));
+      final actual = await sut(Params(
+          shareable: Shareable(content: input, format: ShareFormat.TEXT)));
       //assert
       expect(actual, Right(expected));
     });
@@ -46,8 +47,8 @@ main() {
       when(mockShareService.shareContent(input, format))
           .thenThrow(Exception('Error'));
       //act
-      final actual =
-          await sut(Params(content: input, format: ShareFormat.TEXT));
+      final actual = await sut(Params(
+          shareable: Shareable(content: input, format: ShareFormat.TEXT)));
       //assert
       expect(actual, Left(expected));
     });

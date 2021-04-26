@@ -5,6 +5,7 @@ import 'package:equatable/equatable.dart';
 import 'package:grocery_brasil_app/core/errors/failures.dart';
 import 'package:grocery_brasil_app/features/share/domain/ShareFormat.dart';
 import 'package:grocery_brasil_app/features/share/domain/ShareUseCase.dart';
+import 'package:grocery_brasil_app/features/share/domain/Shareable.dart';
 import 'package:meta/meta.dart';
 
 part 'share_event.dart';
@@ -26,8 +27,9 @@ class ShareBloc extends Bloc<ShareEvent, ShareState> {
 
   Stream<ShareState> _mapShareTextToState(ShareText event) async* {
     yield Sharing();
-    final status = await shareUseCase(
-        Params(content: event.textToShare, format: ShareFormat.TEXT));
+    final status = await shareUseCase(Params(
+        shareable:
+            Shareable(content: event.textToShare, format: ShareFormat.TEXT)));
     yield* status.fold((shareFailure) async* {
       yield ShareError(shareFailure: shareFailure);
     }, (user) async* {
