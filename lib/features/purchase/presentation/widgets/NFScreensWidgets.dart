@@ -34,6 +34,30 @@ class NFScreensWidgets {
     );
   }
 
+  Hero appbarTitle({Function onTap, Function onLongPress}) {
+    print('date: ${purchase.fiscalNote}');
+    return Hero(
+      tag: purchase.fiscalNote.accessKey,
+      child: new Card(
+        child: Center(
+          child: ListTile(
+            leading:
+                _moreItemsMenu(itemBuilder: _resumoNfCardMenuItemBuilder()),
+            title: Text(purchase.fiscalNote.company.name.length > 20
+                ? purchase.fiscalNote.company.name.substring(0, 20) + '...'
+                : purchase.fiscalNote.company.name),
+            trailing: new Text(
+                "R\$ ${currencyNumberFormat.format(purchase.totalAmount)}"),
+            subtitle: new Text(
+                DateFormat('dd/MM/yyyy').format(purchase.fiscalNote.date)),
+            onTap: onTap,
+            onLongPress: onLongPress,
+          ),
+        ),
+      ),
+    );
+  }
+
   Widget _moreItemsMenu({@required List<PopupMenuEntry<dynamic>> itemBuilder}) {
     return PopupMenuButton(
       itemBuilder: (context) => itemBuilder,

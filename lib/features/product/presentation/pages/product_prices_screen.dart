@@ -116,7 +116,9 @@ class BuildProductsPricesTable extends StatelessWidget {
               leading: product.thumbnail == null
                   ? Icon(Icons.shopping_cart)
                   : Image.network(product.thumbnail),
-              title: new Text(product.name),
+              title: Text(product.name.length > 20
+                  ? product.name.substring(0, 20) + '...'
+                  : product.name),
               subtitle: new Text("${product.unity.name} "),
               onTap: onTap,
               onLongPress: onLongPress,

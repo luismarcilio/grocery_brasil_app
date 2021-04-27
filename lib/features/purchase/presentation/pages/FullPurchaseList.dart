@@ -77,7 +77,7 @@ class BuildPurchaseScreen extends StatelessWidget {
         NFScreensWidgets(context: context, purchase: _purchase);
     return Scaffold(
       appBar: AppBar(
-          title: nFScreensWidgets.resumoNfCard(onTap: null, onLongPress: null)),
+          title: nFScreensWidgets.appbarTitle(onTap: null, onLongPress: null)),
       body: ListView(
         children: _adDecorator.decorate(
             _purchase.purchaseItemList
