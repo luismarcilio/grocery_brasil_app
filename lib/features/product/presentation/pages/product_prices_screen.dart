@@ -7,6 +7,9 @@ import '../../../../screens/common/loading.dart';
 import '../../../admob/domain/AddFactory.dart';
 import '../../../admob/domain/DecorateListWithAds.dart';
 import '../../../admob/widgets/BannerInline.dart';
+import '../../../share/domain/Shareable.dart';
+import '../../../share/domain/ShareableConverter.dart';
+import '../../../share/presentation/pages/share.dart';
 import '../../domain/ProductPrices.dart';
 import '../../domain/ProductSearchModel.dart';
 import '../bloc/product_prices_bloc.dart';
@@ -131,6 +134,7 @@ class BuildProductsPricesTable extends StatelessWidget {
       Function onLongPress}) {
     return Card(
       child: ListTile(
+        leading: _shareButton(context: context, productPrices: productPrices),
         isThreeLine: false,
         dense: true,
         title: new Text(productPrices.company.name),
@@ -143,6 +147,30 @@ class BuildProductsPricesTable extends StatelessWidget {
         subtitle: new Text(
             '${productPrices.company.address.street},${productPrices.company.address.number} , ${productPrices.company.address.county}, ${productPrices.company.address.city.name}'),
       ),
+    );
+  }
+
+  TextButton _shareButton(
+      {@required BuildContext context, @required ProductPrices productPrices}) {
+    ShareableConverter converter = ProductPricesConverter();
+    ProductPricesConverterInput productPricesConverterInput =
+        ProductPricesConverterInput(
+      productPrices: productPrices,
+      product: product,
+    );
+    Shareable shareable = converter.convert(productPricesConverterInput);
+    return TextButton(
+      onPressed: () async {
+        await Navigator.push<Share>(
+          context,
+          MaterialPageRoute(
+            builder: (context) => Share(
+              shareable: shareable,
+            ),
+          ),
+        );
+      },
+      child: Icon(Icons.share),
     );
   }
 }
