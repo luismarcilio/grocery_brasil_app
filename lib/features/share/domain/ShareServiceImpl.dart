@@ -1,7 +1,8 @@
-import 'package:grocery_brasil_app/features/share/domain/ShareAdapter.dart';
-import 'package:grocery_brasil_app/features/share/domain/ShareFormat.dart';
-import 'package:grocery_brasil_app/features/share/domain/ShareService.dart';
 import 'package:meta/meta.dart';
+
+import 'ShareAdapter.dart';
+import 'ShareService.dart';
+import 'Shareable.dart';
 
 class ShareServiceImpl implements ShareService {
   final ShareAdapter shareAdapter;
@@ -9,14 +10,8 @@ class ShareServiceImpl implements ShareService {
   ShareServiceImpl({@required this.shareAdapter});
 
   @override
-  convertToShareFormat(input) {
-    // TODO: implement convertToShareFormat
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<bool> shareContent(input, ShareFormat format) async {
-    await shareAdapter.share(input, format);
+  Future<bool> shareContent(Shareable input) async {
+    await shareAdapter.share(input);
     return true;
   }
 }

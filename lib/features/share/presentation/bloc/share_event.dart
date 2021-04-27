@@ -7,7 +7,7 @@ abstract class ShareEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class ShareText extends ShareEvent {
-  final String textToShare;
-  ShareText({@required this.textToShare});
+class ShareContent extends ShareEvent {
+  final Shareable shareable;
+  ShareContent({@required this.shareable});
 }

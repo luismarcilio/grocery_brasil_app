@@ -1,5 +1,5 @@
-import 'package:grocery_brasil_app/features/share/domain/ShareFormat.dart';
+import 'Shareable.dart';
 
 abstract class ShareAdapter {
-  Future<void> share(dynamic contents, ShareFormat format);
+  Future<void> share(Shareable shareable);
 }

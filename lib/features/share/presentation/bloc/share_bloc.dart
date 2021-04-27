@@ -2,11 +2,11 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:grocery_brasil_app/core/errors/failures.dart';
-import 'package:grocery_brasil_app/features/share/domain/ShareFormat.dart';
-import 'package:grocery_brasil_app/features/share/domain/ShareUseCase.dart';
-import 'package:grocery_brasil_app/features/share/domain/Shareable.dart';
 import 'package:meta/meta.dart';
+
+import '../../../../core/errors/failures.dart';
+import '../../domain/ShareUseCase.dart';
+import '../../domain/Shareable.dart';
 
 part 'share_event.dart';
 part 'share_state.dart';
@@ -20,16 +20,14 @@ class ShareBloc extends Bloc<ShareEvent, ShareState> {
   Stream<ShareState> mapEventToState(
     ShareEvent event,
   ) async* {
-    if (event is ShareText) {
+    if (event is ShareContent) {
       yield* _mapShareTextToState(event);
     }
   }
 
-  Stream<ShareState> _mapShareTextToState(ShareText event) async* {
+  Stream<ShareState> _mapShareTextToState(ShareContent event) async* {
     yield Sharing();
-    final status = await shareUseCase(Params(
-        shareable:
-            Shareable(content: event.textToShare, format: ShareFormat.TEXT)));
+    final status = await shareUseCase(Params(shareable: event.shareable));
     yield* status.fold((shareFailure) async* {
       yield ShareError(shareFailure: shareFailure);
     }, (user) async* {

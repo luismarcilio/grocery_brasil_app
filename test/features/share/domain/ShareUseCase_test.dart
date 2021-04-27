@@ -23,32 +23,31 @@ main() {
   group('ShareUseCase', () {
     test('Should call service', () async {
       //setup
-      final input = 'Data text to be shared';
-      final format = ShareFormat.TEXT;
+      final input = Shareable(
+          content: ShareableContent(text: 'some text', subject: 'someSubject'),
+          format: ShareFormat.TEXT);
       final expected = true;
 
-      when(mockShareService.shareContent(input, format))
+      when(mockShareService.shareContent(input))
           .thenAnswer((realInvocation) async => true);
 
       //act
-      final actual = await sut(Params(
-          shareable: Shareable(content: input, format: ShareFormat.TEXT)));
+      final actual = await sut(Params(shareable: input));
       //assert
       expect(actual, Right(expected));
     });
 
     test('Should sould return failure if some exception occurs', () async {
       //setup
-      final input = 'Data text to be shared';
-      final format = ShareFormat.TEXT;
+      final input = Shareable(
+          content: ShareableContent(text: 'some text', subject: 'someSubject'),
+          format: ShareFormat.TEXT);
       final expected = ShareFailure(
           messageId: MessageIds.UNEXPECTED, message: 'Exception: Error');
 
-      when(mockShareService.shareContent(input, format))
-          .thenThrow(Exception('Error'));
+      when(mockShareService.shareContent(input)).thenThrow(Exception('Error'));
       //act
-      final actual = await sut(Params(
-          shareable: Shareable(content: input, format: ShareFormat.TEXT)));
+      final actual = await sut(Params(shareable: input));
       //assert
       expect(actual, Left(expected));
     });

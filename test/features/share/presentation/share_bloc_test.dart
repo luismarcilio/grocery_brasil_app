@@ -15,30 +15,35 @@ main() {
   group('share bloc test', () {
     group('should send Sharing and Shared', () {
       MockShareUseCase mockShareUseCase = MockShareUseCase();
-      when(mockShareUseCase.call(Params(
-              shareable:
-                  Shareable(content: 'some text', format: ShareFormat.TEXT))))
+      final input = Shareable(
+          content: ShareableContent(text: 'someText'),
+          format: ShareFormat.TEXT);
+      when(mockShareUseCase.call(Params(shareable: input)))
           .thenAnswer((realInvocation) async => Right(true));
       blocTest('Should send sharing and shared',
           build: () => ShareBloc(shareUseCase: mockShareUseCase),
-          act: (bloc) => bloc.add(ShareText(textToShare: 'some text')),
+          act: (bloc) => bloc.add(ShareContent(shareable: input)),
           expect: () => [Sharing(), Shared()]);
     });
     group('should send Sharing and Shared error', () {
       MockShareUseCase mockShareUseCase = MockShareUseCase();
-      when(mockShareUseCase.call(Params(
-              shareable:
-                  Shareable(content: 'some text', format: ShareFormat.TEXT))))
-          .thenAnswer((realInvocation) async => Left(ShareFailure(
-              messageId: MessageIds.UNEXPECTED, message: 'ERROR')));
+      final input = Shareable(
+          content: ShareableContent(text: 'someText'),
+          format: ShareFormat.TEXT);
+      when(mockShareUseCase.call(Params(shareable: input))).thenAnswer(
+        (realInvocation) async => Left(
+          ShareFailure(messageId: MessageIds.UNEXPECTED, message: 'ERROR'),
+        ),
+      );
       blocTest('Should send sharing and shared',
           build: () => ShareBloc(shareUseCase: mockShareUseCase),
-          act: (bloc) => bloc.add(ShareText(textToShare: 'some text')),
+          act: (bloc) => bloc.add(ShareContent(shareable: input)),
           expect: () => [
                 Sharing(),
                 ShareError(
-                    shareFailure: ShareFailure(
-                        messageId: MessageIds.UNEXPECTED, message: 'ERROR'))
+                  shareFailure: ShareFailure(
+                      messageId: MessageIds.UNEXPECTED, message: 'ERROR'),
+                )
               ]);
     });
   });
