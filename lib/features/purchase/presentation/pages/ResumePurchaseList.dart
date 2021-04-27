@@ -67,13 +67,13 @@ class BuildListOfPurchases extends StatelessWidget {
     if (purchases.hasData) {
       return ListView(
           children: _adDecorator.decorate(
-              purchases.data
-                  .map((purchase) => NFScreensWidgets.resumoNfCard(
-                      onLongPress: () {},
-                      onTap: () => _loadFullPurchase(context, purchase),
-                      context: context,
-                      purchase: purchase))
-                  .toList(),
+              purchases.data.map((purchase) {
+                final NFScreensWidgets nFScreensWidgets =
+                    NFScreensWidgets(context: context, purchase: purchase);
+                return nFScreensWidgets.resumoNfCard(
+                    onLongPress: () {},
+                    onTap: () => _loadFullPurchase(context, purchase));
+              }).toList(),
               _addFactory,
               frequency));
     } else if (purchases.hasError) {

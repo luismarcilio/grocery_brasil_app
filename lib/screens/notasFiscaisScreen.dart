@@ -67,13 +67,13 @@ class BuildListOfPurchases extends StatelessWidget {
       BuildContext context, AsyncSnapshot<List<Purchase>> purchases) {
     if (purchases.hasData) {
       return ListView(
-        children: purchases.data
-            .map((purchase) => NFScreensWidgets.resumoNfCard(
-                onLongPress: () {},
-                onTap: () => _loadFullPurchase(context, purchase),
-                context: context,
-                purchase: purchase))
-            .toList(),
+        children: purchases.data.map((purchase) {
+          NFScreensWidgets nFScreensWidgets =
+              NFScreensWidgets(context: context, purchase: purchase);
+          return nFScreensWidgets.resumoNfCard(
+              onLongPress: () {},
+              onTap: () => _loadFullPurchase(context, purchase));
+        }).toList(),
       );
     } else if (purchases.hasError) {
       return Loading();

@@ -73,21 +73,16 @@ class BuildPurchaseScreen extends StatelessWidget {
   static final frequency = 10;
   @override
   Widget build(BuildContext context) {
+    final NFScreensWidgets nFScreensWidgets =
+        NFScreensWidgets(context: context, purchase: _purchase);
     return Scaffold(
       appBar: AppBar(
-          title: NFScreensWidgets.resumoNfCard(
-              purchase: _purchase,
-              context: context,
-              onTap: null,
-              onLongPress: null)),
+          title: nFScreensWidgets.resumoNfCard(onTap: null, onLongPress: null)),
       body: ListView(
         children: _adDecorator.decorate(
             _purchase.purchaseItemList
-                .map<Widget>((purchaseItem) => NFScreensWidgets.newnfItemCard(
-                    context: context,
-                    onLongPress: null,
-                    onTap: null,
-                    purchaseItem: purchaseItem))
+                .map<Widget>((purchaseItem) => nFScreensWidgets.newnfItemCard(
+                    onLongPress: null, onTap: null, purchaseItem: purchaseItem))
                 .toList(),
             _addFactory,
             frequency),

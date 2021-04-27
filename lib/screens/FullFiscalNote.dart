@@ -68,20 +68,16 @@ class BuildPurchaseScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    NFScreensWidgets nFScreensWidgets =
+        NFScreensWidgets(context: context, purchase: _purchase);
     return Scaffold(
         appBar: AppBar(
-            title: NFScreensWidgets.resumoNfCard(
-                purchase: _purchase,
-                context: context,
-                onTap: null,
-                onLongPress: null)),
+            title:
+                nFScreensWidgets.resumoNfCard(onTap: null, onLongPress: null)),
         body: ListView(
           children: _purchase.purchaseItemList
-              .map<Widget>((purchaseItem) => NFScreensWidgets.newnfItemCard(
-                  context: context,
-                  onLongPress: null,
-                  onTap: null,
-                  purchaseItem: purchaseItem))
+              .map<Widget>((purchaseItem) => nFScreensWidgets.newnfItemCard(
+                  onLongPress: null, onTap: null, purchaseItem: purchaseItem))
               .toList(),
         ));
   }

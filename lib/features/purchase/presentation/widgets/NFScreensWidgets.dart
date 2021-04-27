@@ -5,18 +5,17 @@ import '../../../../domain/Purchase.dart';
 import '../../../../domain/PurchaseItem.dart';
 
 class NFScreensWidgets {
-  static Hero resumoNfCard(
-      {BuildContext context,
-      Purchase purchase,
-      Function onTap,
-      Function onLongPress}) {
+  final Purchase purchase;
+  final BuildContext context;
+  NFScreensWidgets({@required this.context, @required this.purchase});
+  Hero resumoNfCard({Function onTap, Function onLongPress}) {
     print('date: ${purchase.fiscalNote}');
     return Hero(
       tag: purchase.fiscalNote.accessKey,
       child: new Card(
         child: Center(
           child: ListTile(
-            leading: _moreItemsMenu(context),
+            leading: _moreItemsMenu(),
             title: new Text(purchase.fiscalNote.company.name),
             trailing: new Text("R\$ ${purchase.totalAmount.toString()}"),
             subtitle: new Text(
@@ -29,24 +28,36 @@ class NFScreensWidgets {
     );
   }
 
-  static Widget _moreItemsMenu(BuildContext context) {
+  Widget _moreItemsMenu() {
     return PopupMenuButton(
       itemBuilder: (BuildContext context) => [
-        const PopupMenuItem(child: Icon(Icons.share)),
+        PopupMenuItem(
+          child: TextButton(
+            onPressed: () async {
+              // await Navigator.push<Share>(
+              //   context,
+              //   MaterialPageRoute(
+              //     builder: (context) => Share(
+              //       shareable: Shareable(
+              //           content: 'Some text', format: ShareFormat.TEXT),
+              //     ),
+              //   ),
+              // );
+            },
+            child: Icon(Icons.share),
+          ),
+        ),
         const PopupMenuItem(child: Icon(Icons.delete)),
       ],
     );
   }
 
-  static Card newnfItemCard(
-      {BuildContext context,
-      PurchaseItem purchaseItem,
-      Function onTap,
-      Function onLongPress}) {
+  Card newnfItemCard(
+      {PurchaseItem purchaseItem, Function onTap, Function onLongPress}) {
     return Card(
       child: Row(
         children: [
-          _moreItemsMenu(context),
+          _moreItemsMenu(),
           Expanded(
             child: ListTile(
               leading: purchaseItem.product.thumbnail == null
@@ -65,14 +76,11 @@ class NFScreensWidgets {
     );
   }
 
-  static Card nfItemCard(
-      {BuildContext context,
-      PurchaseItem purchaseItem,
-      Function onTap,
-      Function onLongPress}) {
+  Card nfItemCard(
+      {PurchaseItem purchaseItem, Function onTap, Function onLongPress}) {
     return Card(
       child: ListTile(
-        leading: _moreItemsMenu(context),
+        leading: _moreItemsMenu(),
         title: new Text(purchaseItem.product.name),
         trailing: new Text("R\$ ${purchaseItem.totalValue.toString()}"),
         subtitle: new Text(
@@ -82,4 +90,8 @@ class NFScreensWidgets {
       ),
     );
   }
+
+  List<PopupMenuEntry<dynamic>> nfItemCardMenuItemBuilder(
+    BuildContext context,
+  ) {}
 }
