@@ -8,6 +8,7 @@ import '../../../share/domain/ShareableConverter.dart';
 import '../../../share/presentation/pages/share.dart';
 
 class NFScreensWidgets {
+  final currencyNumberFormat = NumberFormat("###.00", "pt_BR");
   final Purchase purchase;
   final BuildContext context;
   NFScreensWidgets({@required this.context, @required this.purchase});
@@ -21,7 +22,8 @@ class NFScreensWidgets {
             leading:
                 _moreItemsMenu(itemBuilder: _resumoNfCardMenuItemBuilder()),
             title: new Text(purchase.fiscalNote.company.name),
-            trailing: new Text("R\$ ${purchase.totalAmount.toString()}"),
+            trailing: new Text(
+                "R\$ ${currencyNumberFormat.format(purchase.totalAmount)}"),
             subtitle: new Text(
                 DateFormat('dd/MM/yyyy').format(purchase.fiscalNote.date)),
             onTap: onTap,
@@ -52,7 +54,8 @@ class NFScreensWidgets {
                   ? Icon(Icons.shopping_cart)
                   : Image.network(purchaseItem.product.thumbnail),
               title: new Text(purchaseItem.product.name),
-              trailing: new Text("R\$ ${purchaseItem.totalValue.toString()}"),
+              trailing: new Text(
+                  "R\$ ${currencyNumberFormat.format(purchaseItem.totalValue)}"),
               subtitle: new Text(
                   "${purchaseItem.units.toString()} ${purchaseItem.unity.name} "),
               onTap: onTap,
@@ -72,7 +75,8 @@ class NFScreensWidgets {
             itemBuilder:
                 _nfItemCardMenuItemBuilder(purchaseItem: purchaseItem)),
         title: new Text(purchaseItem.product.name),
-        trailing: new Text("R\$ ${purchaseItem.totalValue.toString()}"),
+        trailing: new Text(
+            "R\$ ${currencyNumberFormat.format(purchaseItem.totalValue)}"),
         subtitle: new Text(
             "${purchaseItem.units.toString()} ${purchaseItem.unity.name} "),
         onTap: onTap,
