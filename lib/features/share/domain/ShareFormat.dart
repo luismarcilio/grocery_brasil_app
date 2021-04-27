@@ -1,1 +1,1 @@
-enum ShareFormat { TEXT }
+enum ShareFormat { TEXT, PDF }
