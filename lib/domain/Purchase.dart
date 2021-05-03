@@ -25,15 +25,12 @@ class Purchase extends Equatable {
   List<Object> get props => [user, fiscalNote, totalAmount, purchaseItemList];
 
   factory Purchase.fromResumeSnapshot(DocumentSnapshot resume) {
-    print('resume.data: ${resume.data()["date"]}');
     return Purchase(
         fiscalNote: FiscalNote(
             company: Company.fromJson(resume.data()['company']),
-            date: resume.data()['date'] != null
-                ? resume.data()['date'].toDate()
-                : null,
+            date: resume.data()['date']?.toDate(),
             accessKey: resume.id),
-        totalAmount: resume.data()['totalAmount']);
+        totalAmount: resume.data()['totalAmount']?.toDouble());
   }
 
   factory Purchase.fromSnapshot(DocumentSnapshot doc) {
