@@ -66,6 +66,8 @@ class NFScreensWidgets {
 
   Card newnfItemCard(
       {PurchaseItem purchaseItem, Function onTap, Function onLongPress}) {
+    final unitsNumberFormat = NumberFormat("###,###,###.###", "pt_BR");
+
     return Card(
       child: Row(
         children: [
@@ -81,7 +83,7 @@ class NFScreensWidgets {
               trailing: new Text(
                   "R\$ ${currencyNumberFormat.format(purchaseItem.totalValue)}"),
               subtitle: new Text(
-                  "${purchaseItem.units.toString()} ${purchaseItem.unity.name} "),
+                  "${unitsNumberFormat.format(purchaseItem.units)} ${purchaseItem.unity.name} "),
               onTap: onTap,
               onLongPress: onLongPress,
             ),
@@ -93,6 +95,8 @@ class NFScreensWidgets {
 
   Card nfItemCard(
       {PurchaseItem purchaseItem, Function onTap, Function onLongPress}) {
+    final unitsNumberFormat = NumberFormat("###,###,###.###", "pt_BR");
+
     return Card(
       child: ListTile(
         leading: _moreItemsMenu(
@@ -102,7 +106,7 @@ class NFScreensWidgets {
         trailing: new Text(
             "R\$ ${currencyNumberFormat.format(purchaseItem.totalValue)}"),
         subtitle: new Text(
-            "${purchaseItem.units.toString()} ${purchaseItem.unity.name} "),
+            "${unitsNumberFormat.format(purchaseItem.units)} ${purchaseItem.unity.name} "),
         onTap: onTap,
         onLongPress: onLongPress,
       ),
