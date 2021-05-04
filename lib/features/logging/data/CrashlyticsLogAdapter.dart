@@ -1,10 +1,10 @@
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:meta/meta.dart';
 import 'package:sprintf/sprintf.dart';
 
 import '../../../domain/User.dart';
 import '../domain/LogMessage.dart';
 import 'LogAdatper.dart';
-import 'package:meta/meta.dart';
 
 class CrashlyticsLogAdapter implements LogAdapter {
   final FirebaseCrashlytics firebaseCrashlytics;

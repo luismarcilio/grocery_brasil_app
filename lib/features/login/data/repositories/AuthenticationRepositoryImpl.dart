@@ -1,11 +1,11 @@
 import 'package:dartz/dartz.dart';
-import 'package:grocery_brasil_app/core/errors/exceptions.dart';
-import 'package:grocery_brasil_app/features/login/domain/usecases/AsyncLogin.dart';
 import 'package:meta/meta.dart';
 
+import '../../../../core/errors/exceptions.dart';
 import '../../../../core/errors/failures.dart';
 import '../../../../domain/User.dart';
 import '../../domain/repositories/AuthenticationRepository.dart';
+import '../../domain/usecases/AsyncLogin.dart';
 import '../datasources/AuthenticationDataSource.dart';
 
 class AuthenticationRepositoryImpl extends AuthenticationRepository {

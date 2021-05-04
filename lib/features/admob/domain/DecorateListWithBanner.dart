@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:grocery_brasil_app/features/admob/domain/DecorateListWithAds.dart';
-import 'package:grocery_brasil_app/features/admob/widgets/BannerInline.dart';
+
+import '../widgets/BannerInline.dart';
+import 'DecorateListWithAds.dart';
 
 class DecorateHeroListWithBanner
     implements DecorateListWithAds<Hero, BannerAdd> {

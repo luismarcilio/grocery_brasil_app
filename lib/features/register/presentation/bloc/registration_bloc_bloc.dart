@@ -2,9 +2,10 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:grocery_brasil_app/core/errors/failures.dart';
-import 'package:grocery_brasil_app/domain/User.dart';
-import 'package:grocery_brasil_app/features/register/domain/usecases/register.dart';
+
+import '../../../../core/errors/failures.dart';
+import '../../../../domain/User.dart';
+import '../../domain/usecases/register.dart';
 
 part 'registration_bloc_event.dart';
 part 'registration_bloc_state.dart';

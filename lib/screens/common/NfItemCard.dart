@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:grocery_brasil_app/services/ProductsRepository.dart';
+
+import '../../services/ProductsRepository.dart';
 
 Widget _getThumbnail(dynamic purchaseItem) {
   return FutureBuilder(

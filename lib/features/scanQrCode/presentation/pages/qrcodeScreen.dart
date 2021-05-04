@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:grocery_brasil_app/core/errors/exceptions.dart';
-import 'package:grocery_brasil_app/core/errors/failures.dart';
-import 'package:grocery_brasil_app/features/scanQrCode/domain/QRCode.dart';
-import 'package:grocery_brasil_app/screens/common/loading.dart';
 import 'package:qr_mobile_vision/qr_camera.dart';
 import 'package:qr_mobile_vision/qr_mobile_vision.dart';
 
+import '../../../../core/errors/exceptions.dart';
+import '../../../../core/errors/failures.dart';
 import '../../../../injection_container.dart';
+import '../../../../screens/common/loading.dart';
+import '../../domain/QRCode.dart';
 import '../bloc/qrcode_bloc.dart';
 
 class QrCodeScreen extends StatelessWidget {

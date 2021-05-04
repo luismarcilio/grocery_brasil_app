@@ -1,8 +1,8 @@
 import 'package:dartz/dartz.dart';
-import 'package:grocery_brasil_app/features/product/domain/ProductPrices.dart';
 import 'package:meta/meta.dart';
 
 import '../../../core/errors/failures.dart';
+import 'ProductPrices.dart';
 import 'ProductSearchModel.dart';
 
 abstract class ProductService {

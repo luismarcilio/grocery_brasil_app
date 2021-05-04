@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:grocery_brasil_app/features/admob/domain/AddFactory.dart';
-import 'package:grocery_brasil_app/features/admob/widgets/AdHelper.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+
+import '../domain/AddFactory.dart';
+import 'AdHelper.dart';
 
 class BannerAdd implements AddFactory<BannerInline> {
   @override

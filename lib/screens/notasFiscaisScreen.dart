@@ -1,10 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:grocery_brasil_app/features/purchase/presentation/widgets/NFScreensWidgets.dart';
 
 import '../bloc_backup/purchase_bloc.dart';
 import '../domain/Purchase.dart';
+import '../features/purchase/presentation/widgets/NFScreensWidgets.dart';
 import '../services/PurchaseRepository.dart';
 import 'FullFiscalNote.dart';
 import 'common/loading.dart';

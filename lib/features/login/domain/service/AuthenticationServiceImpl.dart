@@ -1,10 +1,10 @@
 import 'package:dartz/dartz.dart';
-import 'package:grocery_brasil_app/core/errors/exceptions.dart';
-import 'package:grocery_brasil_app/domain/UserPreferences.dart';
 import 'package:meta/meta.dart';
 
+import '../../../../core/errors/exceptions.dart';
 import '../../../../core/errors/failures.dart';
 import '../../../../domain/User.dart';
+import '../../../../domain/UserPreferences.dart';
 import '../../../addressing/data/AddressingDataSource.dart';
 import '../../../user/domain/UserService.dart';
 import '../repositories/AuthenticationRepository.dart';

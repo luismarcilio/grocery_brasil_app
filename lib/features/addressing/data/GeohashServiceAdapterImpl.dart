@@ -1,8 +1,8 @@
 import 'package:dart_geohash/dart_geohash.dart';
-import 'package:grocery_brasil_app/domain/Location.dart';
 import 'package:meta/meta.dart';
 import 'package:proximity_hash/proximity_hash.dart' as proximity_hash;
 
+import '../../../domain/Location.dart';
 import 'GeohashServiceAdapter.dart';
 
 class GeohashServiceAdapterImpl implements GeohashServiceAdapter {

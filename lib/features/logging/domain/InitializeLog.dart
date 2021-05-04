@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
-import 'package:grocery_brasil_app/core/errors/exceptions.dart';
 import 'package:meta/meta.dart';
 
+import '../../../core/errors/exceptions.dart';
 import '../../../core/errors/failures.dart';
 import '../../../core/usecases/usecase.dart';
 import '../../../domain/User.dart';

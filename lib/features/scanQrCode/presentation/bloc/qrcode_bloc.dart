@@ -2,9 +2,10 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:grocery_brasil_app/core/errors/failures.dart';
-import 'package:grocery_brasil_app/features/scanQrCode/domain/QRCode.dart';
 import 'package:meta/meta.dart';
+
+import '../../../../core/errors/failures.dart';
+import '../../domain/QRCode.dart';
 
 part 'qrcode_event.dart';
 part 'qrcode_state.dart';

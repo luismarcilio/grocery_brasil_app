@@ -1,11 +1,12 @@
 import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
-import 'package:grocery_brasil_app/core/utils/Utils.dart';
 import 'package:json_annotation/json_annotation.dart';
 
+import '../../../core/utils/Utils.dart';
 import '../../../domain/Company.dart';
 import '../../../domain/Product.dart';
+
 part 'ProductPrices.g.dart';
 
 @JsonSerializable(explicitToJson: true)

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:grocery_brasil_app/features/initialize_firebase/bloc/initialize_firebase_bloc.dart';
-import 'package:grocery_brasil_app/features/login/presentation/pages/login.dart';
+
+import '../../../login/presentation/pages/login.dart';
+import '../../bloc/initialize_firebase_bloc.dart';
 
 class InitialiseFirebase extends StatelessWidget {
   @override

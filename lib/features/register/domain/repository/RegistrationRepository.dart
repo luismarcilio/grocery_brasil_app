@@ -1,8 +1,8 @@
 import 'package:dartz/dartz.dart';
-import 'package:grocery_brasil_app/features/register/data/datasource/RegistrationDataSource.dart';
 
 import '../../../../core/errors/failures.dart';
 import '../../../../domain/User.dart';
+import '../../data/datasource/RegistrationDataSource.dart';
 
 abstract class RegistrationRepository {
   final RegistrationDataSource registrationDataSource;

@@ -9,10 +9,10 @@ import 'package:grocery_brasil_app/features/logging/domain/InitializeLog.dart';
 import 'package:grocery_brasil_app/features/user/domain/CreateUserUseCase.dart';
 import 'package:meta/meta.dart';
 
+import '../../../../core/errors/exceptions.dart';
 import '../../../../core/errors/failures.dart';
 import '../../../../core/usecases/usecase.dart';
 import '../../../../domain/User.dart';
-import '../../../../core/errors/exceptions.dart';
 import '../../domain/usecases/AsyncLogin.dart';
 import '../../domain/usecases/AuthenticateWithEmailAndPassword.dart';
 import '../../domain/usecases/AuthenticateWithFacebook.dart';

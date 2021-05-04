@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:grocery_brasil_app/features/register/presentation/pages/register.dart';
 
 import '../../../../core/widgets/registration_widgets.dart';
 import '../../../../injection_container.dart';
 import '../../../../screens/common/loading.dart';
 import '../../../../screens/dashboard.dart';
+import '../../../register/presentation/pages/register.dart';
 import '../bloc/login_bloc.dart';
 
 class Login extends StatelessWidget {

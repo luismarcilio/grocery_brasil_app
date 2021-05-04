@@ -2,11 +2,11 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:grocery_brasil_app/features/purchase/domain/GetFullPurchaseUseCase.dart';
 import 'package:meta/meta.dart';
 
 import '../../../../core/errors/failures.dart';
 import '../../../../domain/Purchase.dart';
+import '../../domain/GetFullPurchaseUseCase.dart';
 import '../../domain/ListPurchasesUseCase.dart';
 
 part 'purchase_event.dart';

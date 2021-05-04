@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:grocery_brasil_app/core/usecases/usecase.dart';
-import 'package:grocery_brasil_app/features/login/domain/usecases/Logout.dart';
-import 'package:grocery_brasil_app/features/login/presentation/pages/login.dart';
 
+import '../core/usecases/usecase.dart';
+import '../features/login/domain/usecases/Logout.dart';
+import '../features/login/presentation/pages/login.dart';
 import '../features/product/presentation/pages/products_screen.dart';
 import '../features/purchase/presentation/pages/ResumePurchaseList.dart';
 import '../features/readNfFromSite/presentation/pages/ReadNfScreen.dart';

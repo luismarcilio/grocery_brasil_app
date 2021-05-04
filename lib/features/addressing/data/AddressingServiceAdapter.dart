@@ -1,7 +1,6 @@
-import 'package:grocery_brasil_app/features/addressing/domain/Autocomplete.dart';
-
 import '../../../domain/Address.dart';
 import '../../../domain/Location.dart';
+import '../domain/Autocomplete.dart';
 
 abstract class AddressingServiceAdapter {
   Future<Address> getAddressFromLocation(Location location);

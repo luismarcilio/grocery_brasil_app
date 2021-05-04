@@ -1,5 +1,5 @@
-import 'package:meta/meta.dart';
 import 'package:flutter/material.dart';
+import 'package:meta/meta.dart';
 
 class ApplicationFormField extends StatelessWidget {
   final String hint;

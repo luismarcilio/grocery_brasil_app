@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:grocery_brasil_app/features/readNfFromSite/domain/model/NfHtmlFromSite.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../../../injection_container.dart';
 import '../../../../screens/common/loading.dart';
 import '../../domain/model/NFProcessData.dart';
+import '../../domain/model/NfHtmlFromSite.dart';
 import '../bloc/readnf_bloc.dart';
 
 class ReadNfScreen extends StatelessWidget {

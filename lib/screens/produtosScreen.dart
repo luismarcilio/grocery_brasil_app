@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
-import 'package:grocery_brasil_app/services/ProductsRepository.dart';
+
+import '../services/ProductsRepository.dart';
 
 class ProdutosScreen extends StatelessWidget {
   @override

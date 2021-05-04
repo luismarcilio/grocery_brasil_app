@@ -1,12 +1,13 @@
 import 'dart:async';
-import 'package:grocery_brasil_app/features/product/domain/GetMinPriceProductByUserByProductIdUseCase.dart';
-import 'package:grocery_brasil_app/features/product/domain/GetPricesProductByUserByProductIdUseCase.dart';
-import 'package:grocery_brasil_app/features/product/domain/ProductPrices.dart';
-import 'package:meta/meta.dart';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:grocery_brasil_app/core/errors/failures.dart';
+import 'package:meta/meta.dart';
+
+import '../../../../core/errors/failures.dart';
+import '../../domain/GetMinPriceProductByUserByProductIdUseCase.dart';
+import '../../domain/GetPricesProductByUserByProductIdUseCase.dart';
+import '../../domain/ProductPrices.dart';
 
 part 'product_prices_event.dart';
 part 'product_prices_state.dart';

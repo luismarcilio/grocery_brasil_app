@@ -2,10 +2,10 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:grocery_brasil_app/core/usecases/usecase.dart';
 import 'package:meta/meta.dart';
 
 import '../../../../core/errors/failures.dart';
+import '../../../../core/usecases/usecase.dart';
 import '../../../../domain/User.dart';
 import '../../domain/GetUserUseCase.dart';
 import '../../domain/UpdateUserUseCase.dart';
