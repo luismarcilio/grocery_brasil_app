@@ -205,19 +205,23 @@ class BuildMinimumPriceListTile extends StatelessWidget {
     });
   }
 
-  Widget _minimumPricesWidget(ProductPrices productPrices) => ListTile(
-        isThreeLine: false,
-        dense: true,
-        title: new Text(productPrices.company.name),
-        trailing: Column(
-          children: [
-            new Text("R\$ ${productPrices.unityValue}"),
-            new Text(DateFormat('d/M/y').format(productPrices.date))
-          ],
-        ),
-        subtitle: new Text(
-            '${productPrices.company.address.street},${productPrices.company.address.number} , ${productPrices.company.address.county}, ${productPrices.company.address.city.name}'),
-      );
+  Widget _minimumPricesWidget(ProductPrices productPrices) {
+    final currencyNumberFormat = NumberFormat("###.00", "pt_BR");
+    return ListTile(
+      isThreeLine: false,
+      dense: true,
+      title: new Text(productPrices.company.name),
+      trailing: Column(
+        children: [
+          new Text(
+              "R\$ ${currencyNumberFormat.format(productPrices.unityValue)}"),
+          new Text(DateFormat('d/M/y').format(productPrices.date))
+        ],
+      ),
+      subtitle: new Text(
+          '${productPrices.company.address.street},${productPrices.company.address.number} , ${productPrices.company.address.county}, ${productPrices.company.address.city.name}'),
+    );
+  }
 }
 
 class MoreItemsMenu extends StatelessWidget {

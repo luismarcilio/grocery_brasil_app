@@ -134,6 +134,8 @@ class BuildProductsPricesTable extends StatelessWidget {
       ProductPrices productPrices,
       Function onTap,
       Function onLongPress}) {
+    final currencyNumberFormat = NumberFormat("###.00", "pt_BR");
+
     return Card(
       child: ListTile(
         leading: _shareButton(context: context, productPrices: productPrices),
@@ -142,7 +144,8 @@ class BuildProductsPricesTable extends StatelessWidget {
         title: new Text(productPrices.company.name),
         trailing: Column(
           children: [
-            new Text("R\$ ${productPrices.unityValue}"),
+            new Text(
+                "R\$ ${currencyNumberFormat.format(productPrices.unityValue)}"),
             new Text(DateFormat('d/M/y').format(productPrices.date))
           ],
         ),
