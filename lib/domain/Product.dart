@@ -9,6 +9,7 @@ part 'Product.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class Product extends Equatable {
+  final String productId;
   final String name;
   final String eanCode;
   final String ncmCode;
@@ -16,7 +17,8 @@ class Product extends Equatable {
   final bool normalized;
   final String thumbnail;
   Product(
-      {this.name,
+      {this.productId,
+      this.name,
       this.eanCode,
       this.ncmCode,
       this.unity,
@@ -31,5 +33,5 @@ class Product extends Equatable {
   Map<String, dynamic> toJson() => _$ProductToJson(this);
   @override
   List<Object> get props =>
-      [name, eanCode, ncmCode, unity, normalized, thumbnail];
+      [productId, name, eanCode, ncmCode, unity, normalized, thumbnail];
 }

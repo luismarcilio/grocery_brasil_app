@@ -104,7 +104,10 @@ class BuildPurchaseScreen extends StatelessWidget {
   _loadProductPricesScreen(
       {@required BuildContext context, @required PurchaseItem purchaseItem}) {
     final ProductSearchModel productSearch = ProductSearchModel(
-        productId: _getProductId(purchaseItem.product),
+        productId: purchaseItem.product.productId == null ||
+                purchaseItem.product.productId.length == 0
+            ? _getProductId(purchaseItem.product)
+            : purchaseItem.product.productId,
         name: purchaseItem.product.name,
         eanCode: purchaseItem.product.eanCode,
         ncmCode: purchaseItem.product.ncmCode,
