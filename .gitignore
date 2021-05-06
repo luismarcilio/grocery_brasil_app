@@ -62,3 +62,4 @@ amplifytools.xcconfig
 
 # Flutter generated code
 **/lib/**/*.g.dart
+android/app/key.jks
