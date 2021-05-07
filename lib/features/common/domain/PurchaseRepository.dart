@@ -12,4 +12,6 @@ abstract class PurchaseRepository {
   Future<Either<Failure, Stream<List<Purchase>>>> listPurchaseResume();
   Future<Either<Failure, Purchase>> getPurchaseById(
       {@required String purchaseId});
+  Future<Either<PurchaseFailure, void>> deletePurchase(
+      {@required String purchaseId});
 }

@@ -8,6 +8,8 @@ abstract class PurchaseDataSource {
   Stream<List<Purchase>> listPurchaseResume({@required String userId});
   Future<Purchase> getPurchaseById(
       {@required String purchaseId, @required String userId});
+  Future<void> deletePurchaseById(
+      {@required String purchaseId, @required String userId});
 }
 
 class PurchaseDataSourceImpl extends PurchaseDataSource {
@@ -47,5 +49,22 @@ class PurchaseDataSourceImpl extends PurchaseDataSource {
       throw PurchaseException(messageId: MessageIds.NOT_FOUND);
     }
     return Purchase.fromJson(documentSnapshot.data());
+  }
+
+  @override
+  Future<void> deletePurchaseById(
+      {@required String purchaseId, @required String userId}) async {
+    await firebaseFirestore
+        .collection('COMPRAS')
+        .doc(userId)
+        .collection('COMPLETA')
+        .doc(purchaseId)
+        .delete();
+    await firebaseFirestore
+        .collection('COMPRAS')
+        .doc(userId)
+        .collection('RESUMIDA')
+        .doc(purchaseId)
+        .delete();
   }
 }

@@ -139,4 +139,47 @@ main() {
       expect(actual, Left(expected));
     });
   });
+
+  group('deletePurchase', () {
+    test('should delete purchase when all ok', () async {
+      //setup
+      final purchaseId = '1';
+      final userId = '1';
+      when(mockAuthenticationDataSource.getUserId())
+          .thenAnswer((realInvocation) => userId);
+      when(mockPurchaseDataSource.deletePurchaseById(
+              purchaseId: purchaseId, userId: userId))
+          .thenAnswer((realInvocation) => null);
+      //act
+      final actual =
+          await purchaseRepositoryImpl.deletePurchase(purchaseId: purchaseId);
+      //assert
+
+      expect(actual, Right(null));
+      verify(mockPurchaseDataSource.deletePurchaseById(
+              purchaseId: '1', userId: '1'))
+          .called(1);
+    });
+
+    test('should return failure when an exception occurs', () async {
+      //setup
+      final purchaseId = '1';
+      final userId = '1';
+      when(mockAuthenticationDataSource.getUserId())
+          .thenAnswer((realInvocation) => userId);
+      final expected = PurchaseFailure(
+          messageId: MessageIds.UNEXPECTED,
+          message: "Operação falhou. (Mensagem original: [Exception: erro])");
+      when(mockPurchaseDataSource.deletePurchaseById(
+              purchaseId: purchaseId, userId: userId))
+          .thenThrow(Exception('erro'));
+
+      //act
+      final actual =
+          await purchaseRepositoryImpl.deletePurchase(purchaseId: purchaseId);
+      //assert
+
+      expect(actual, Left(expected));
+    });
+  });
 }

@@ -79,4 +79,25 @@ class PurchaseRepositoryImpl extends PurchaseRepository {
       );
     }
   }
+
+  @override
+  Future<Either<PurchaseFailure, void>> deletePurchase(
+      {String purchaseId}) async {
+    try {
+      await purchaseDataSource.deletePurchaseById(
+          purchaseId: purchaseId, userId: authenticationDataSource.getUserId());
+      return Right(null);
+    } catch (e) {
+      if (e is PurchaseException) {
+        return Left(
+          PurchaseFailure(messageId: e.messageId, message: e.message),
+        );
+      }
+      return Left(
+        PurchaseFailure(
+            messageId: MessageIds.UNEXPECTED,
+            message: 'Operação falhou. (Mensagem original: [${e.toString()}])'),
+      );
+    }
+  }
 }
