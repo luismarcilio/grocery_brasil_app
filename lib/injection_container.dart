@@ -56,6 +56,7 @@ import 'features/product/domain/ProductServiceImpl.dart';
 import 'features/product/domain/TextSearchRepository.dart';
 import 'features/product/presentation/bloc/product_prices_bloc.dart';
 import 'features/product/presentation/bloc/products_bloc.dart';
+import 'features/purchase/domain/DeletePurchaseUseCase.dart';
 import 'features/purchase/domain/GetFullPurchaseUseCase.dart';
 import 'features/purchase/domain/ListPurchasesUseCase.dart';
 import 'features/purchase/presentation/bloc/purchase_bloc.dart';
@@ -112,8 +113,10 @@ void init() {
   sl.registerFactory(() => QrcodeBloc());
   sl.registerFactory(
       () => ReadnfBloc(getDetailsfromUrlUseCase: sl(), saveNfUseCase: sl()));
-  sl.registerFactory(() =>
-      PurchaseBloc(listPurchasesUseCase: sl(), getFullPurchaseUseCase: sl()));
+  sl.registerFactory(() => PurchaseBloc(
+      listPurchasesUseCase: sl(),
+      getFullPurchaseUseCase: sl(),
+      deletePurchaseUseCase: sl()));
   sl.registerFactory(
       () => UserBloc(updateUserUseCase: sl(), getUserUseCase: sl()));
   sl.registerFactory(() => ProductsBloc(listProductsByTextUseCase: sl()));
@@ -135,6 +138,7 @@ void init() {
   sl.registerLazySingleton(() => SaveNfUseCase(purchaseRepository: sl()));
   sl.registerLazySingleton(() => ListPurchasesUseCase(repository: sl()));
   sl.registerLazySingleton(() => GetFullPurchaseUseCase(repository: sl()));
+  sl.registerLazySingleton(() => DeletePurchaseUseCase(repository: sl()));
   sl.registerLazySingleton(() => CreateUserUseCase(sl()));
   sl.registerLazySingleton(() => UpdateUserUseCase(sl()));
   sl.registerLazySingleton(() => GetUserUseCase(userService: sl()));
