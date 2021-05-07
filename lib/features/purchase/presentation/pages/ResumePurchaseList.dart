@@ -35,7 +35,7 @@ class PurchaseResumeScreen extends StatelessWidget {
         }
       },
       builder: (context, state) {
-        if (state is PurchaseInitial) {
+        if (state is PurchaseInitial || state is PurchaseDeleted) {
           BlocProvider.of<PurchaseBloc>(context).add(ListResumeEvent());
         } else if (state is PurchaseLoading) {
           return Loading();

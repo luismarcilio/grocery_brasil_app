@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../domain/Purchase.dart';
@@ -6,6 +7,7 @@ import '../../../../domain/PurchaseItem.dart';
 import '../../../share/domain/Shareable.dart';
 import '../../../share/domain/ShareableConverter.dart';
 import '../../../share/presentation/pages/share.dart';
+import '../bloc/purchase_bloc.dart';
 
 class NFScreensWidgets {
   final currencyNumberFormat = NumberFormat("###.00", "pt_BR");
@@ -19,8 +21,9 @@ class NFScreensWidgets {
       child: new Card(
         child: Center(
           child: ListTile(
-            leading:
-                _moreItemsMenu(itemBuilder: _resumoNfCardMenuItemBuilder()),
+            leading: _moreItemsMenu(
+                itemBuilder: _resumoNfCardMenuItemBuilder(),
+                itemAction: _resumoNfCardMenuItemAction()),
             title: new Text(purchase.fiscalNote.company.name),
             trailing: new Text(
                 "R\$ ${currencyNumberFormat.format(purchase.totalAmount)}"),
@@ -41,8 +44,6 @@ class NFScreensWidgets {
       child: new Card(
         child: Center(
           child: ListTile(
-            leading:
-                _moreItemsMenu(itemBuilder: _resumoNfCardMenuItemBuilder()),
             title: Text(purchase.fiscalNote.company.name.length > 20
                 ? purchase.fiscalNote.company.name.substring(0, 20) + '...'
                 : purchase.fiscalNote.company.name),
@@ -58,8 +59,13 @@ class NFScreensWidgets {
     );
   }
 
-  Widget _moreItemsMenu({@required List<PopupMenuEntry<dynamic>> itemBuilder}) {
+  Widget _moreItemsMenu(
+      {@required List<PopupMenuEntry<dynamic>> itemBuilder,
+      @required List<Function> itemAction}) {
+    assert(itemBuilder.length == itemAction.length);
     return PopupMenuButton(
+      enableFeedback: true,
+      onSelected: (item) => itemAction[item](),
       itemBuilder: (context) => itemBuilder,
     );
   }
@@ -72,8 +78,9 @@ class NFScreensWidgets {
       child: Row(
         children: [
           _moreItemsMenu(
-              itemBuilder:
-                  _nfItemCardMenuItemBuilder(purchaseItem: purchaseItem)),
+              itemBuilder: _nfItemCardMenuItemBuilder(),
+              itemAction:
+                  _nfItemCardMenuItemAction(purchaseItem: purchaseItem)),
           Expanded(
             child: ListTile(
               leading: purchaseItem.product.thumbnail == null
@@ -100,8 +107,8 @@ class NFScreensWidgets {
     return Card(
       child: ListTile(
         leading: _moreItemsMenu(
-            itemBuilder:
-                _nfItemCardMenuItemBuilder(purchaseItem: purchaseItem)),
+            itemBuilder: _nfItemCardMenuItemBuilder(),
+            itemAction: _nfItemCardMenuItemAction(purchaseItem: purchaseItem)),
         title: new Text(purchaseItem.product.name),
         trailing: new Text(
             "R\$ ${currencyNumberFormat.format(purchaseItem.totalValue)}"),
@@ -114,30 +121,35 @@ class NFScreensWidgets {
   }
 
   List<PopupMenuEntry<dynamic>> _resumoNfCardMenuItemBuilder() {
+    return [PopupMenuItem(value: 0, child: Icon(Icons.delete))];
+  }
+
+  List<Function> _resumoNfCardMenuItemAction() {
     return [
-      PopupMenuItem(
-        child: Icon(Icons.delete),
-      ),
+      () async {
+        final response = await _showMyDialog();
+        if (response) {
+          BlocProvider.of<PurchaseBloc>(context).add(
+              DeletePurchaseEvent(purchaseId: purchase.fiscalNote.accessKey));
+        }
+      }
     ];
   }
 
-  List<PopupMenuEntry<dynamic>> _nfItemCardMenuItemBuilder(
+  List<PopupMenuEntry<dynamic>> _nfItemCardMenuItemBuilder() {
+    return [PopupMenuItem(value: 0, child: Icon(Icons.share))];
+  }
+
+  List<Function> _nfItemCardMenuItemAction(
       {@required PurchaseItem purchaseItem}) {
     return [
-      PopupMenuItem(
-        child: _shareButton(purchaseItem: purchaseItem),
-      ),
-    ];
-  }
-
-  TextButton _shareButton({@required PurchaseItem purchaseItem}) {
-    PurchaseItemConverterInput purchaseItemConverterInput =
-        PurchaseItemConverterInput(
-            purchaseItem: purchaseItem, company: purchase.fiscalNote.company);
-    ShareableConverter converter = PurchaseItemConverter();
-    Shareable shareable = converter.convert(purchaseItemConverterInput);
-    return TextButton(
-      onPressed: () async {
+      () async {
+        PurchaseItemConverterInput purchaseItemConverterInput =
+            PurchaseItemConverterInput(
+                purchaseItem: purchaseItem,
+                company: purchase.fiscalNote.company);
+        ShareableConverter converter = PurchaseItemConverter();
+        Shareable shareable = converter.convert(purchaseItemConverterInput);
         await Navigator.push<Share>(
           context,
           MaterialPageRoute(
@@ -146,8 +158,34 @@ class NFScreensWidgets {
             ),
           ),
         );
+      }
+    ];
+  }
+
+  Future<bool> _showMyDialog() async {
+    return showDialog<bool>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Alerta'),
+          content: Text('Tem certeza que quer deletar a compra?'),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Sim'),
+              onPressed: () {
+                Navigator.of(context).pop(true);
+              },
+            ),
+            TextButton(
+              child: Text('Não'),
+              onPressed: () {
+                Navigator.of(context).pop(false);
+              },
+            ),
+          ],
+        );
       },
-      child: Icon(Icons.share),
     );
   }
 }
