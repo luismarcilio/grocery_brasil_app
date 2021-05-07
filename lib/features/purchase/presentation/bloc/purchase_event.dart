@@ -14,3 +14,9 @@ class GetPurchaseByIdEvent extends PurchaseEvent {
 
   GetPurchaseByIdEvent({@required this.purchaseId});
 }
+
+class DeletePurchaseEvent extends PurchaseEvent {
+  final String purchaseId;
+
+  DeletePurchaseEvent({@required this.purchaseId});
+}

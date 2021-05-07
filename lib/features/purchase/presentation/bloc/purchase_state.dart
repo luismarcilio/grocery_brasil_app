@@ -28,3 +28,5 @@ class PurchaseRetrieved extends PurchaseState {
 
   PurchaseRetrieved({@required this.purchase});
 }
+
+class PurchaseDeleted extends PurchaseState {}
