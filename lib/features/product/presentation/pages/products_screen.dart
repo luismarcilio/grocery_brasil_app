@@ -56,9 +56,12 @@ class SearchTextForm extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: TextFormField(
-        onChanged: (text) => debouncer.run(() =>
+        onChanged: (text) => debouncer.run(() {
+          if (text.trim().length > 0) {
             BlocProvider.of<ProductsBloc>(context)
-                .add(SearchProductsByText(text))),
+                .add(SearchProductsByText(text));
+          }
+        }),
         decoration: InputDecoration(
             alignLabelWithHint: true,
             border: OutlineInputBorder(),
