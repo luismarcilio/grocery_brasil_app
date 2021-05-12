@@ -5,9 +5,9 @@ import '../../../core/errors/exceptions.dart';
 import '../../../core/errors/failures.dart';
 import '../../../domain/Purchase.dart';
 import '../../login/data/datasources/AuthenticationDataSource.dart';
+import '../../purchase/domain/PurchaseRepository.dart';
 import '../../readNfFromSite/data/NFDataSource.dart';
 import '../../readNfFromSite/domain/model/NfHtmlFromSite.dart';
-import '../domain/PurchaseRepository.dart';
 import 'PurchaseDataSource.dart';
 
 class PurchaseRepositoryImpl extends PurchaseRepository {

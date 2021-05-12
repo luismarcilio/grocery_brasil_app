@@ -1,12 +1,10 @@
-import 'dart:ffi';
-
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
 import '../../../core/errors/failures.dart';
 import '../../../core/usecases/usecase.dart';
-import '../../common/domain/PurchaseRepository.dart';
+import 'PurchaseRepository.dart';
 
 class DeletePurchaseUseCase implements UseCase<void, Params> {
   final PurchaseRepository repository;

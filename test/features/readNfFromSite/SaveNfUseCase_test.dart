@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:grocery_brasil_app/features/common/domain/PurchaseRepository.dart';
+import 'package:grocery_brasil_app/features/purchase/domain/PurchaseRepository.dart';
 import 'package:grocery_brasil_app/features/readNfFromSite/domain/SaveNfUseCase.dart';
 import 'package:grocery_brasil_app/features/readNfFromSite/domain/model/NfHtmlFromSite.dart';
 import 'package:mockito/mockito.dart';

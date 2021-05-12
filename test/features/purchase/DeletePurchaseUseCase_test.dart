@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:grocery_brasil_app/core/errors/failures.dart';
-import 'package:grocery_brasil_app/features/common/domain/PurchaseRepository.dart';
+import 'package:grocery_brasil_app/features/purchase/domain/PurchaseRepository.dart';
 import 'package:grocery_brasil_app/features/purchase/domain/DeletePurchaseUseCase.dart';
 import 'package:mockito/mockito.dart';
 

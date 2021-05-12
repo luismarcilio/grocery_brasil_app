@@ -5,7 +5,7 @@ import 'package:meta/meta.dart';
 import '../../../core/errors/failures.dart';
 import '../../../core/usecases/usecase.dart';
 import '../../../domain/Purchase.dart';
-import '../../common/domain/PurchaseRepository.dart';
+import 'PurchaseRepository.dart';
 
 class GetFullPurchaseUseCase implements UseCase<Purchase, Params> {
   final PurchaseRepository repository;

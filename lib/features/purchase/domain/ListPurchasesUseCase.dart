@@ -4,8 +4,8 @@ import 'package:meta/meta.dart';
 import '../../../core/errors/failures.dart';
 import '../../../core/usecases/usecase.dart';
 import '../../../domain/Purchase.dart';
-import '../../common/domain/PurchaseRepository.dart';
 import '../../register/domain/usecases/register.dart';
+import 'PurchaseRepository.dart';
 
 class ListPurchasesUseCase
     implements UseCase<Stream<List<Purchase>>, NoParams> {

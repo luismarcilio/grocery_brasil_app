@@ -7,7 +7,7 @@ import 'package:grocery_brasil_app/domain/FiscalNote.dart';
 import 'package:grocery_brasil_app/domain/Location.dart';
 import 'package:grocery_brasil_app/domain/Purchase.dart';
 import 'package:grocery_brasil_app/domain/PurchaseItem.dart';
-import 'package:grocery_brasil_app/features/common/data/PurchaseDataSource.dart';
+import 'package:grocery_brasil_app/features/purchase/data/PurchaseDataSource.dart';
 import 'package:mockito/mockito.dart';
 
 class MockFirebaseFirestore extends Mock implements FirebaseFirestore {}

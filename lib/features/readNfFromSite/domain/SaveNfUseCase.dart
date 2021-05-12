@@ -4,7 +4,7 @@ import 'package:meta/meta.dart';
 
 import '../../../core/errors/failures.dart';
 import '../../../core/usecases/usecase.dart';
-import '../../common/domain/PurchaseRepository.dart';
+import '../../purchase/domain/PurchaseRepository.dart';
 import 'model/NfHtmlFromSite.dart';
 
 class SaveNfUseCase implements UseCase<NfHtmlFromSite, Params> {
