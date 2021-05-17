@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:webview_flutter/webview_flutter.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
 import '../../../../injection_container.dart';
 import '../../../../screens/common/loading.dart';
@@ -67,11 +67,12 @@ class NfWebView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    WebViewController _webViewController;
-
     print('nFProcessData.initialUrl: ${nFProcessData.initialUrl}');
 
     print('javascript: ${nFProcessData.javascriptFunctions}');
+
+    SaveNf saveNf = SaveNf(state: nFProcessData.uf, context: context);
+
     return Scaffold(
       appBar: AppBar(
         title: Row(
@@ -81,44 +82,46 @@ class NfWebView extends StatelessWidget {
           ],
         ),
       ),
-      body: WebView(
-        debuggingEnabled: true,
-        initialUrl: nFProcessData.initialUrl,
-        javascriptMode: JavascriptMode.unrestricted,
-        gestureNavigationEnabled: true,
-        onPageFinished: (String url) {
-          _webViewController
-              .evaluateJavascript(nFProcessData.javascriptFunctions);
+      body: InAppWebView(
+        iosShouldAllowDeprecatedTLS: (controller, challenge) async {
+          return IOSShouldAllowDeprecatedTLSAction.ALLOW;
         },
-        javascriptChannels: Set<JavascriptChannel>.from(
-            {SaveNf(state: nFProcessData.uf, context: context)}),
-        onWebViewCreated: (WebViewController webViewController) {
-          _webViewController = webViewController;
+        initialUrlRequest: URLRequest(url: Uri.parse(nFProcessData.initialUrl)),
+        onReceivedServerTrustAuthRequest: (InAppWebViewController controller,
+            URLAuthenticationChallenge challenge) async {
+          return ServerTrustAuthResponse(
+              action: ServerTrustAuthResponseAction.PROCEED);
+        },
+        onLoadError: (controller, uri, code, msg) =>
+            print("onLoadError $code: $msg"),
+        onLoadHttpError: (controller, uri, code, msg) =>
+            print("onLoadHttpError $code: $msg"),
+        onLoadStop: (controller, url) async {
+          final result = await controller.evaluateJavascript(
+              source: nFProcessData.javascriptFunctions);
+          print(result.runtimeType); // int
+          print(result);
+          await saveNf.onMessageReceived(result);
+          return;
         },
       ),
     );
   }
 }
 
-class SaveNf implements JavascriptChannel {
+class SaveNf {
   final String state;
   final BuildContext context;
   SaveNf({@required this.state, @required this.context});
 
-  @override
-  String get name => 'Print';
-
-  @override
-  get onMessageReceived => (JavascriptMessage message) async {
-        print("PrintHtml: ${message.message}");
-        if (message.message == null ||
-            message.message == 'undefined' ||
-            message.message == '(null)') {
+  get onMessageReceived => (String message) async {
+        print("PrintHtml: $message");
+        if (message == null || message == 'undefined' || message == '(null)') {
           return;
         }
         BlocProvider.of<ReadnfBloc>(context).add(
           SaveNfEvent(
-            nfHtmlFromSite: NfHtmlFromSite(html: message.message, uf: state),
+            nfHtmlFromSite: NfHtmlFromSite(html: message, uf: state),
           ),
         );
       };
