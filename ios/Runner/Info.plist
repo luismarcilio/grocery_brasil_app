@@ -52,8 +52,48 @@
 		<true/>
 		<key>NSAppTransportSecurity</key>
 		<dict>
-			<key>NSAllowsArbitraryLoads</key>
-			<true/>
+			<key>NSExceptionDomains</key>
+			<dict>
+				<key>satsp.fazenda.sp.gov.br</key>
+				<dict>
+					<key>NSIncludesSubdomains</key>
+					<true/>
+					<key>NSExceptionAllowsInsecureHTTPLoads</key>
+					<true/>
+					<key>NSExceptionMinimumTLSVersion</key>
+					<string>TLSv1.0</string>
+					<key>NSExceptionRequiresForwardSecrecy</key>
+					<false/>
+					<key>NSRequiresCertificateTransparency</key>
+					<false/>
+				</dict>
+				<key>nfce.fazenda.mg.gov.br</key>
+				<dict>
+					<key>NSIncludesSubdomains</key>
+					<true/>
+					<key>NSExceptionAllowsInsecureHTTPLoads</key>
+					<true/>
+					<key>NSExceptionMinimumTLSVersion</key>
+					<string>TLSv1.0</string>
+					<key>NSExceptionRequiresForwardSecrecy</key>
+					<false/>
+					<key>NSRequiresCertificateTransparency</key>
+					<false/>
+				</dict>
+				<key>www4.fazenda.rj.gov.br</key>
+				<dict>
+					<key>NSIncludesSubdomains</key>
+					<true/>
+					<key>NSExceptionAllowsInsecureHTTPLoads</key>
+					<true/>
+					<key>NSExceptionMinimumTLSVersion</key>
+					<string>TLSv1.0</string>
+					<key>NSExceptionRequiresForwardSecrecy</key>
+					<false/>
+					<key>NSRequiresCertificateTransparency</key>
+					<false/>
+				</dict>
+			</dict>
 		</dict>
 		<key>NSCameraUsageDescription</key>
 		<string>Camera permission is required for barcode scanning.</string>
