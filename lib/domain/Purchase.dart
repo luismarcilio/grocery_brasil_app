@@ -16,13 +16,19 @@ class Purchase extends Equatable {
   final User user;
   final FiscalNote fiscalNote;
   final double totalAmount;
+  final double totalDiscount;
   final List<PurchaseItem> purchaseItemList;
 
   Purchase(
-      {this.user, this.fiscalNote, this.totalAmount, this.purchaseItemList});
+      {this.user,
+      this.fiscalNote,
+      this.totalAmount,
+      this.purchaseItemList,
+      this.totalDiscount});
 
   @override
-  List<Object> get props => [user, fiscalNote, totalAmount, purchaseItemList];
+  List<Object> get props =>
+      [user, fiscalNote, totalAmount, purchaseItemList, totalDiscount];
 
   factory Purchase.fromResumeSnapshot(DocumentSnapshot resume) {
     return Purchase(
@@ -30,7 +36,8 @@ class Purchase extends Equatable {
             company: Company.fromJson(resume.data()['company']),
             date: resume.data()['date']?.toDate(),
             accessKey: resume.id),
-        totalAmount: resume.data()['totalAmount']?.toDouble());
+        totalAmount: resume.data()['totalAmount']?.toDouble(),
+        totalDiscount: resume.data()['totalDiscount']);
   }
 
   factory Purchase.fromSnapshot(DocumentSnapshot doc) {

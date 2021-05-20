@@ -15,13 +15,20 @@ class PurchaseItem extends Equatable {
   final double unityValue;
   final double units;
   final double totalValue;
+  final double discount;
 
   @JsonSerializable()
   PurchaseItem(
-      {this.product, this.unity, this.unityValue, this.units, this.totalValue});
+      {this.product,
+      this.unity,
+      this.unityValue,
+      this.units,
+      this.totalValue,
+      this.discount});
 
   @override
-  List<Object> get props => [product, unity, unityValue, units, totalValue];
+  List<Object> get props =>
+      [product, unity, unityValue, units, totalValue, discount];
 
   factory PurchaseItem.fromJson(Map<String, dynamic> json) =>
       _$PurchaseItemFromJson(json);
