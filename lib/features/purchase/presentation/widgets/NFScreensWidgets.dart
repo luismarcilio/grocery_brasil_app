@@ -25,8 +25,8 @@ class NFScreensWidgets {
                 itemBuilder: _resumoNfCardMenuItemBuilder(),
                 itemAction: _resumoNfCardMenuItemAction()),
             title: new Text(purchase.fiscalNote.company.name),
-            trailing: new Text(
-                "R\$ ${currencyNumberFormat.format(purchase.totalAmount)}"),
+            trailing: _priceTag(
+                amount: purchase.totalAmount, discount: purchase.totalDiscount),
             subtitle: new Text(
                 DateFormat('dd/MM/yyyy').format(purchase.fiscalNote.date)),
             onTap: onTap,
@@ -47,8 +47,8 @@ class NFScreensWidgets {
             title: Text(purchase.fiscalNote.company.name.length > 20
                 ? purchase.fiscalNote.company.name.substring(0, 20) + '...'
                 : purchase.fiscalNote.company.name),
-            trailing: new Text(
-                "R\$ ${currencyNumberFormat.format(purchase.totalAmount)}"),
+            trailing: _priceTag(
+                amount: purchase.totalAmount, discount: purchase.totalDiscount),
             subtitle: new Text(
                 DateFormat('dd/MM/yyyy').format(purchase.fiscalNote.date)),
             onTap: onTap,
@@ -87,8 +87,9 @@ class NFScreensWidgets {
                   ? Icon(Icons.shopping_cart)
                   : Image.network(purchaseItem.product.thumbnail),
               title: new Text(purchaseItem.product.name),
-              trailing: new Text(
-                  "R\$ ${currencyNumberFormat.format(purchaseItem.totalValue)}"),
+              trailing: _priceTag(
+                  amount: purchaseItem.totalValue,
+                  discount: purchaseItem.discount),
               subtitle: new Text(
                   "${unitsNumberFormat.format(purchaseItem.units)} ${purchaseItem.unity.name} "),
               onTap: onTap,
@@ -110,8 +111,8 @@ class NFScreensWidgets {
             itemBuilder: _nfItemCardMenuItemBuilder(),
             itemAction: _nfItemCardMenuItemAction(purchaseItem: purchaseItem)),
         title: new Text(purchaseItem.product.name),
-        trailing: new Text(
-            "R\$ ${currencyNumberFormat.format(purchaseItem.totalValue)}"),
+        trailing: _priceTag(
+            amount: purchaseItem.totalValue, discount: purchaseItem.discount),
         subtitle: new Text(
             "${unitsNumberFormat.format(purchaseItem.units)} ${purchaseItem.unity.name} "),
         onTap: onTap,
@@ -186,6 +187,24 @@ class NFScreensWidgets {
           ],
         );
       },
+    );
+  }
+
+  Column _priceTag({@required double amount, @required double discount}) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        new Text(
+          "R\$ ${currencyNumberFormat.format(amount)}",
+          style: TextStyle(color: Colors.indigo[900]),
+        ),
+        if (discount != null && discount != 0)
+          Text(
+            "Disc: R\$ ${currencyNumberFormat.format(discount)}",
+            style: TextStyle(color: Colors.red[900]),
+          ),
+      ],
     );
   }
 }
