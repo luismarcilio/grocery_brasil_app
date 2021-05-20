@@ -14,6 +14,7 @@ import '../../domain/ProductPrices.dart';
 import '../../domain/ProductSearchModel.dart';
 import '../bloc/product_prices_bloc.dart';
 import '../bloc/products_bloc.dart';
+import '../widgets/PriceTag.dart';
 
 class ProductPricesScreen extends StatelessWidget {
   final ProductSearchModel product;
@@ -134,8 +135,6 @@ class BuildProductsPricesTable extends StatelessWidget {
       ProductPrices productPrices,
       Function onTap,
       Function onLongPress}) {
-    final currencyNumberFormat = NumberFormat("###.00", "pt_BR");
-
     return Card(
       child: ListTile(
         leading: _shareButton(context: context, productPrices: productPrices),
@@ -144,8 +143,9 @@ class BuildProductsPricesTable extends StatelessWidget {
         title: new Text(productPrices.company.name),
         trailing: Column(
           children: [
-            new Text(
-                "R\$ ${currencyNumberFormat.format(productPrices.unityValue)}"),
+            priceTag(
+                amount: productPrices.unityValue,
+                discount: productPrices.discount),
             new Text(DateFormat('d/M/y').format(productPrices.date))
           ],
         ),

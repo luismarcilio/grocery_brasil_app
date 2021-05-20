@@ -13,6 +13,7 @@ import '../../domain/ProductPrices.dart';
 import '../../domain/ProductSearchModel.dart';
 import '../bloc/product_prices_bloc.dart';
 import '../bloc/products_bloc.dart';
+import '../widgets/PriceTag.dart';
 import 'product_prices_screen.dart';
 
 class ProductsScreen extends StatelessWidget {
@@ -209,16 +210,18 @@ class BuildMinimumPriceListTile extends StatelessWidget {
   }
 
   Widget _minimumPricesWidget(ProductPrices productPrices) {
-    final currencyNumberFormat = NumberFormat("###.00", "pt_BR");
     return ListTile(
-      isThreeLine: false,
+      isThreeLine: true,
       dense: true,
       title: new Text(productPrices.company.name),
       trailing: Column(
+        crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          new Text(
-              "R\$ ${currencyNumberFormat.format(productPrices.unityValue)}"),
-          new Text(DateFormat('d/M/y').format(productPrices.date))
+          priceTag(
+              amount: productPrices.unityValue,
+              discount: productPrices.discount),
+          new Text(DateFormat('d/M/y').format(productPrices.date),
+              style: TextStyle(fontSize: 12))
         ],
       ),
       subtitle: new Text(

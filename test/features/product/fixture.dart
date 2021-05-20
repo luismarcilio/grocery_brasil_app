@@ -232,6 +232,7 @@ final oneProductPrice = ProductPrices(
             city: City(name: 'Uberaba'),
             location: Location(lon: -47.9562274, lat: -19.7433014))),
     unityValue: 15.0,
+    discount: 5.0,
     date: DateTime.now());
 
 final otherProductPrice = ProductPrices(
@@ -259,6 +260,7 @@ final otherProductPrice = ProductPrices(
             city: City(name: 'Uberaba'),
             location: Location(lon: -47.9478899, lat: -19.7490176))),
     unityValue: 15.0,
+    discount: 4.0,
     date: DateTime.now());
 
 final listOfProductPrices = Stream.fromIterable({
