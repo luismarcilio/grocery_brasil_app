@@ -11,6 +11,8 @@ import 'package:grocery_brasil_app/features/login/domain/usecases/AuthenticateWi
 import 'package:grocery_brasil_app/features/login/domain/usecases/AuthenticateWithFacebook.dart';
 import 'package:grocery_brasil_app/features/login/domain/usecases/AuthenticateWithGoogle.dart';
 import 'package:grocery_brasil_app/features/login/domain/usecases/Logout.dart';
+import 'package:grocery_brasil_app/features/login/domain/usecases/ResetPassword.dart'
+    as rp;
 import 'package:grocery_brasil_app/features/login/presentation/bloc/login_bloc.dart';
 import 'package:grocery_brasil_app/features/user/domain/CreateUserUseCase.dart';
 import 'package:mockito/mockito.dart';
@@ -32,6 +34,8 @@ class MockCreateUserUseCase extends Mock implements CreateUserUseCase {}
 
 class MockInitializeLog extends Mock implements InitializeLog {}
 
+class MockResetPassword extends Mock implements rp.ResetPassword {}
+
 void main() {
   LoginBloc loginBloc;
 
@@ -42,6 +46,7 @@ void main() {
   MockAsyncLogin mockAsyncLogin;
   MockCreateUserUseCase mockCreateUserUseCase;
   MockInitializeLog mockInitializeLog;
+  MockResetPassword mockResetPassword;
   setUp(() {
     mockAuthenticateWithEmailAndPassword =
         MockAuthenticateWithEmailAndPassword();
@@ -51,6 +56,7 @@ void main() {
     mockAsyncLogin = MockAsyncLogin();
     mockCreateUserUseCase = MockCreateUserUseCase();
     mockInitializeLog = MockInitializeLog();
+    mockResetPassword = MockResetPassword();
     when(mockAsyncLogin(any)).thenAnswer(
         (realInvocation) => Stream<Either<AsyncLoginFailure, User>>.empty());
     loginBloc = LoginBloc(
@@ -60,7 +66,8 @@ void main() {
         logout: mockLogout,
         createUser: mockCreateUserUseCase,
         asyncLogin: mockAsyncLogin,
-        initializeLog: mockInitializeLog);
+        initializeLog: mockInitializeLog,
+        resetPassword: mockResetPassword);
   });
 
   test('initial state should be LoginInitial', () {
@@ -89,7 +96,8 @@ void main() {
               logout: mockLogout,
               createUser: mockCreateUserUseCase,
               asyncLogin: mockAsyncLogin,
-              initializeLog: mockInitializeLog),
+              initializeLog: mockInitializeLog,
+              resetPassword: mockResetPassword),
           act: (bloc) {},
           expect: () =>
               [LoginRunning(), UserCreating(), LoginDone(expectedUser)]);
@@ -116,7 +124,8 @@ void main() {
               logout: mockLogout,
               createUser: mockCreateUserUseCase,
               asyncLogin: mockAsyncLogin,
-              initializeLog: mockInitializeLog),
+              initializeLog: mockInitializeLog,
+              resetPassword: mockResetPassword),
           act: (bloc) {},
           expect: () => [
                 LoginRunning(),

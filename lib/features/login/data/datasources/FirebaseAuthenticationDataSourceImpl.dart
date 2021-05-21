@@ -122,4 +122,9 @@ class FirebaseAuthenticationDataSourceImpl implements AuthenticationDataSource {
   String getUserId() {
     return firebaseAuth.currentUser.uid;
   }
+
+  @override
+  Future<void> resetPasswrod(String email) {
+    return firebaseAuth.sendPasswordResetEmail(email: email);
+  }
 }

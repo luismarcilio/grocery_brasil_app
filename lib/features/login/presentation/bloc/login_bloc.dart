@@ -6,6 +6,8 @@ import 'package:equatable/equatable.dart';
 import 'package:grocery_brasil_app/core/usecases/asyncUseCase.dart'
     as asyncUseCase;
 import 'package:grocery_brasil_app/features/logging/domain/InitializeLog.dart';
+import 'package:grocery_brasil_app/features/login/domain/usecases/ResetPassword.dart'
+    as rp;
 import 'package:grocery_brasil_app/features/user/domain/CreateUserUseCase.dart';
 import 'package:meta/meta.dart';
 
@@ -30,6 +32,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final AsyncLogin asyncLogin;
   final CreateUserUseCase createUser;
   final InitializeLog initializeLog;
+  final rp.ResetPassword resetPassword;
 
   LoginBloc(
       {@required this.authenticateWithEmailAndPassword,
@@ -38,7 +41,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       @required this.logout,
       @required this.asyncLogin,
       @required this.createUser,
-      @required this.initializeLog})
+      @required this.initializeLog,
+      @required this.resetPassword})
       : super(LoginInitial()) {
     mapAsyncStateChanges(asyncLogin(asyncUseCase.NoParams()));
   }
@@ -70,6 +74,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       yield* _mapAsyncEvent(event);
     } else if (event is CreateUserEvent) {
       yield* _mapCreateUserEvent(event);
+    } else if (event is ResetPasswordEvent) {
+      yield* _mapResetPasswordEvent(event);
     }
   }
 
@@ -172,5 +178,13 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       this.initializeLog.call(user);
       this.add(CreateUserEvent(user: user));
     });
+  }
+
+  Stream<LoginState> _mapResetPasswordEvent(ResetPasswordEvent event) async* {
+    yield LoginRunning();
+    print("LoginRunning()");
+    Either<Failure, void> status = await resetPassword(rp.Params(event.email));
+    yield status.fold((failure) => ResetPasswordFailure(failure),
+        (_) => ResetPasswordSuccess());
   }
 }

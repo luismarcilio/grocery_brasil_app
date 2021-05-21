@@ -8,4 +8,5 @@ abstract class AuthenticationDataSource {
   Future<String> getJWT();
   Stream<User> asyncAuthentication();
   String getUserId();
+  Future<void> resetPasswrod(String email);
 }

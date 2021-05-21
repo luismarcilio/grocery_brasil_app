@@ -37,6 +37,7 @@ import 'features/login/domain/usecases/AuthenticateWithEmailAndPassword.dart';
 import 'features/login/domain/usecases/AuthenticateWithFacebook.dart';
 import 'features/login/domain/usecases/AuthenticateWithGoogle.dart';
 import 'features/login/domain/usecases/Logout.dart';
+import 'features/login/domain/usecases/ResetPassword.dart';
 import 'features/login/presentation/bloc/login_bloc.dart';
 import 'features/product/data/ProductDataSource.dart';
 import 'features/product/data/ProductDataSourceImpl.dart';
@@ -107,7 +108,8 @@ void init() {
       logout: sl(),
       asyncLogin: sl(),
       createUser: sl(),
-      initializeLog: sl()));
+      initializeLog: sl(),
+      resetPassword: sl()));
 
   sl.registerFactory(() => RegistrationBloc(registrationUseCase: sl()));
   sl.registerFactory(() => QrcodeBloc());
@@ -151,6 +153,7 @@ void init() {
   sl.registerLazySingleton(() => InitializeLog(logService: sl()));
   sl.registerSingleton(() => Log(logService: sl()));
   sl.registerLazySingleton(() => ShareUseCase(shareService: sl()));
+  sl.registerLazySingleton(() => ResetPassword(authenticationRepository: sl()));
 //Services
   sl.registerLazySingleton<SecretsService>(
       () => SecretsServiceImpl(secretDataSource: sl()));

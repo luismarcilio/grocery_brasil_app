@@ -10,6 +10,7 @@ abstract class AuthenticationRepository {
   Future<Either<AuthenticationFailure, User>> authenticateWithFacebook();
   Future<Either<AuthenticationFailure, User>> authenticateWithEmailAndPassword(
       String email, String password);
+  Future<Either<AuthenticationFailure, User>> resetPassword(String email);
   Future<Either<AuthenticationFailure, String>> getJWT();
   Future<Either<AuthenticationFailure, bool>> logout();
   Stream<Either<AsyncLoginFailure, User>> asyncAuthentication();

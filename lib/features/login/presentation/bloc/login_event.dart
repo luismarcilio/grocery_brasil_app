@@ -38,3 +38,12 @@ class CreateUserEvent extends LoginEvent {
   @override
   List<Object> get props => [user];
 }
+
+class ResetPasswordEvent extends LoginEvent {
+  final String email;
+
+  ResetPasswordEvent({@required this.email}) : assert(email != null);
+
+  @override
+  List<Object> get props => [email];
+}

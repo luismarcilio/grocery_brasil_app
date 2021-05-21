@@ -47,6 +47,19 @@ class Login extends StatelessWidget {
                   content: Text(state.failure.message),
                 ),
               );
+            } else if (state is ResetPasswordSuccess) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(
+                      "Enviamos um email com um link para que você possa resetar sua password"),
+                ),
+              );
+            } else if (state is ResetPasswordFailure) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text("Ocorreu um erro: '${state.failure.message}'"),
+                ),
+              );
             }
           },
           builder: (context, state) {
@@ -83,6 +96,7 @@ class Login extends StatelessWidget {
           loginTextField(emailController),
           passwordTextField(passwordController),
           _loginButton(context),
+          _recoverPassword(context),
           getDefaultContainer(
               child: Divider(
             color: Colors.black,
@@ -124,6 +138,26 @@ class Login extends StatelessWidget {
         LoginWithUsernameAndPasswordEvent(
             email: emailController.text, password: passwordController.text),
       ),
+    );
+  }
+
+  Widget _recoverPassword(BuildContext context) {
+    return getTextButton(
+      icon: Icons.refresh,
+      text: "Esqueci a password",
+      color: Colors.blue,
+      onPressed: () {
+        if (emailController.text.isEmpty) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text("Por favor digite o email de sua conta"),
+            ),
+          );
+          return;
+        }
+        BlocProvider.of<LoginBloc>(context)
+            .add(ResetPasswordEvent(email: emailController.text));
+      },
     );
   }
 

@@ -46,3 +46,13 @@ class CreateUserFailure extends LoginState {
   @override
   List<Object> get props => [failure];
 }
+
+class ResetPasswordFailure extends LoginState {
+  final Failure failure;
+
+  ResetPasswordFailure(this.failure);
+  @override
+  List<Object> get props => [failure];
+}
+
+class ResetPasswordSuccess extends LoginState {}

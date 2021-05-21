@@ -17,6 +17,7 @@ Widget authField(
     bool obscureText = false}) {
   return getDefaultContainer(
       child: TextField(
+    keyboardType: TextInputType.emailAddress,
     obscureText: obscureText,
     decoration: InputDecoration(
         prefixIcon: Icon(icon),

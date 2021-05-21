@@ -125,4 +125,20 @@ class AuthenticationRepositoryImpl extends AuthenticationRepository {
       );
     }
   }
+
+  @override
+  Future<Either<AuthenticationFailure, User>> resetPassword(
+      String email) async {
+    try {
+      await authenticationDataSource.resetPasswrod(email);
+      return Right(null);
+    } catch (e) {
+      return Future.value(
+        Left(
+          AuthenticationFailure(
+              messageId: MessageIds.UNEXPECTED, message: e.toString()),
+        ),
+      );
+    }
+  }
 }
