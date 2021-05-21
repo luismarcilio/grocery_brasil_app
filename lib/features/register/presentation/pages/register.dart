@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import '../../../../screens/common/loading.dart';
 
 import '../../../../core/widgets/registration_widgets.dart';
 import '../../../../injection_container.dart';
+import '../../../../screens/common/loading.dart';
 import '../bloc/registration_bloc_bloc.dart';
 
 class RegisterScreen extends StatelessWidget {
