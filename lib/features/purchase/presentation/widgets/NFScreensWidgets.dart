@@ -201,7 +201,7 @@ class NFScreensWidgets {
         ),
         if (discount != null && discount != 0)
           Text(
-            "Disc: R\$ ${currencyNumberFormat.format(discount)}",
+            "Desc: R\$ ${currencyNumberFormat.format(discount)}",
             style: TextStyle(color: Colors.red[900]),
           ),
       ],
