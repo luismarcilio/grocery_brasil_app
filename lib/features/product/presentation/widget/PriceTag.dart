@@ -14,7 +14,7 @@ Column priceTag({@required double amount, @required double discount}) {
       ),
       if (discount != null && discount != 0)
         Text(
-          "Disc: R\$ ${currencyNumberFormat.format(discount)}",
+          "Desc: R\$ ${currencyNumberFormat.format(discount)}",
           style: TextStyle(color: Colors.red[900], fontSize: 12),
         ),
     ],

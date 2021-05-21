@@ -37,7 +37,7 @@ class Purchase extends Equatable {
             date: resume.data()['date']?.toDate(),
             accessKey: resume.id),
         totalAmount: resume.data()['totalAmount']?.toDouble(),
-        totalDiscount: resume.data()['totalDiscount']);
+        totalDiscount: resume.data()['totalDiscount']?.toDouble());
   }
 
   factory Purchase.fromSnapshot(DocumentSnapshot doc) {
