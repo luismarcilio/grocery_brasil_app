@@ -44,6 +44,8 @@ dependencies:
   firebase_analytics: ^8.0.1
   share: ^2.0.1
   flutter_inappwebview: ^5.3.2
+  sign_in_with_apple: ^3.0.0
+  crypto: ^3.0.1
 
 dev_dependencies:
   build_runner: ^1.11.5
