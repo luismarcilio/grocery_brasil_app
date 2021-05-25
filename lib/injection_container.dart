@@ -33,6 +33,7 @@ import 'features/login/domain/repositories/AuthenticationRepository.dart';
 import 'features/login/domain/service/AuthenticationService.dart';
 import 'features/login/domain/service/AuthenticationServiceImpl.dart';
 import 'features/login/domain/usecases/AsyncLogin.dart';
+import 'features/login/domain/usecases/AuthenticateWithApple.dart';
 import 'features/login/domain/usecases/AuthenticateWithEmailAndPassword.dart';
 import 'features/login/domain/usecases/AuthenticateWithFacebook.dart';
 import 'features/login/domain/usecases/AuthenticateWithGoogle.dart';
@@ -105,6 +106,7 @@ void init() {
       authenticateWithEmailAndPassword: sl(),
       authenticateWithFacebook: sl(),
       authenticateWithGoogle: sl(),
+      authenticateWithApple: sl(),
       logout: sl(),
       asyncLogin: sl(),
       createUser: sl(),
@@ -133,6 +135,8 @@ void init() {
       () => AuthenticateWithFacebook(authenticationService: sl()));
   sl.registerLazySingleton(
       () => AuthenticateWithGoogle(authenticationService: sl()));
+  sl.registerLazySingleton(
+      () => AuthenticateWithApple(authenticationService: sl()));
   sl.registerLazySingleton(() => Logout(authenticationService: sl()));
   sl.registerLazySingleton(() => AsyncLogin(authenticationService: sl()));
   sl.registerLazySingleton(() => RegistrationUseCase(sl()));

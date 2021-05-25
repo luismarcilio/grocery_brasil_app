@@ -1,9 +1,13 @@
+import 'dart:convert';
 import 'dart:developer';
+import 'dart:math' show Random;
 
+import 'package:crypto/crypto.dart';
 import 'package:firebase_auth/firebase_auth.dart'
-    show FirebaseAuth, UserCredential, User;
+    show FirebaseAuth, OAuthProvider, User, UserCredential;
 import 'package:grocery_brasil_app/core/errors/exceptions.dart';
 import 'package:grocery_brasil_app/features/login/data/datasources/FirebaseOAuthProvider.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 import '../../../../domain/User.dart' as domain;
 import 'AuthenticationDataSource.dart';
@@ -126,5 +130,21 @@ class FirebaseAuthenticationDataSourceImpl implements AuthenticationDataSource {
   @override
   Future<void> resetPasswrod(String email) {
     return firebaseAuth.sendPasswordResetEmail(email: email);
+  }
+
+  @override
+  Future<domain.User> authenticateWithApple() async {
+    try {
+      final UserCredential userCredential =
+          await firebaseAuth.signInWithCredential(
+              await oAuthProvider(OAuthProviderEntities.APPLE));
+      final domain.User user = _getUserFromUserCredential(userCredential.user);
+      return user;
+    } catch (e) {
+      throw AuthenticationException(
+          messageId: MessageIds.UNEXPECTED,
+          message:
+              'Autenticação falhou. (Mensagem original: [${e.toString()}])');
+    }
   }
 }

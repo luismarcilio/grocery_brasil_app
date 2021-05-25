@@ -8,6 +8,7 @@ abstract class AuthenticationService {
   Future<Either<AuthenticationFailure, String>> getUserId();
   Future<Either<AuthenticationFailure, User>> authenticateWithGoogle();
   Future<Either<AuthenticationFailure, User>> authenticateWithFacebook();
+  Future<Either<AuthenticationFailure, User>> authenticateWithApple();
   Future<Either<AuthenticationFailure, User>> authenticateWithEmailAndPassword(
       String email, String password);
   Future<Either<AuthenticationFailure, String>> getJWT();

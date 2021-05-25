@@ -141,4 +141,19 @@ class AuthenticationRepositoryImpl extends AuthenticationRepository {
       );
     }
   }
+
+  @override
+  Future<Either<AuthenticationFailure, User>> authenticateWithApple() async {
+    try {
+      final User user =
+          await this.authenticationDataSource.authenticateWithApple();
+      return Right(user);
+    } on AuthenticationException catch (authenticationException) {
+      return Left(
+        AuthenticationFailure(
+            messageId: authenticationException.messageId,
+            message: authenticationException.formattedMessage),
+      );
+    }
+  }
 }

@@ -23,6 +23,8 @@ class LoginWithGoogleEvent extends LoginEvent {}
 
 class LoginWithFacebookEvent extends LoginEvent {}
 
+class LoginWithAppleEvent extends LoginEvent {}
+
 class LogoutEvent extends LoginEvent {}
 
 class AsyncLoginEvent extends LoginEvent {

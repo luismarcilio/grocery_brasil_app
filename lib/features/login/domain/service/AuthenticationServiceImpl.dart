@@ -121,4 +121,10 @@ class AuthenticationServiceImpl implements AuthenticationService {
           messageId: userFailure.messageId, message: userFailure.message),
     );
   }
+
+  @override
+  Future<Either<AuthenticationFailure, User>> authenticateWithApple() {
+    return _authenticationServiceOAuth(
+        authenticationRepository.authenticateWithApple);
+  }
 }

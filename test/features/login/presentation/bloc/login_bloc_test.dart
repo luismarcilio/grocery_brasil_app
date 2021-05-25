@@ -7,6 +7,7 @@ import 'package:grocery_brasil_app/core/usecases/usecase.dart';
 import 'package:grocery_brasil_app/domain/User.dart';
 import 'package:grocery_brasil_app/features/logging/domain/InitializeLog.dart';
 import 'package:grocery_brasil_app/features/login/domain/usecases/AsyncLogin.dart';
+import 'package:grocery_brasil_app/features/login/domain/usecases/AuthenticateWithApple.dart';
 import 'package:grocery_brasil_app/features/login/domain/usecases/AuthenticateWithEmailAndPassword.dart';
 import 'package:grocery_brasil_app/features/login/domain/usecases/AuthenticateWithFacebook.dart';
 import 'package:grocery_brasil_app/features/login/domain/usecases/AuthenticateWithGoogle.dart';
@@ -26,6 +27,8 @@ class MockAuthenticateWithFacebook extends Mock
 class MockAuthenticateWithGoogle extends Mock
     implements AuthenticateWithGoogle {}
 
+class MockAuthenticateWithApple extends Mock implements AuthenticateWithApple {}
+
 class MockLogout extends Mock implements Logout {}
 
 class MockAsyncLogin extends Mock implements AsyncLogin {}
@@ -42,6 +45,7 @@ void main() {
   MockAuthenticateWithEmailAndPassword mockAuthenticateWithEmailAndPassword;
   MockAuthenticateWithFacebook mockAuthenticateWithFacebook;
   MockAuthenticateWithGoogle mockAuthenticateWithGoogle;
+  MockAuthenticateWithApple mockAuthenticateWithApple;
   MockLogout mockLogout;
   MockAsyncLogin mockAsyncLogin;
   MockCreateUserUseCase mockCreateUserUseCase;
@@ -52,6 +56,7 @@ void main() {
         MockAuthenticateWithEmailAndPassword();
     mockAuthenticateWithFacebook = MockAuthenticateWithFacebook();
     mockAuthenticateWithGoogle = MockAuthenticateWithGoogle();
+    mockAuthenticateWithApple = MockAuthenticateWithApple();
     mockLogout = MockLogout();
     mockAsyncLogin = MockAsyncLogin();
     mockCreateUserUseCase = MockCreateUserUseCase();
@@ -63,6 +68,7 @@ void main() {
         authenticateWithEmailAndPassword: mockAuthenticateWithEmailAndPassword,
         authenticateWithFacebook: mockAuthenticateWithFacebook,
         authenticateWithGoogle: mockAuthenticateWithGoogle,
+        authenticateWithApple: mockAuthenticateWithApple,
         logout: mockLogout,
         createUser: mockCreateUserUseCase,
         asyncLogin: mockAsyncLogin,
@@ -93,6 +99,7 @@ void main() {
                   mockAuthenticateWithEmailAndPassword,
               authenticateWithFacebook: mockAuthenticateWithFacebook,
               authenticateWithGoogle: mockAuthenticateWithGoogle,
+              authenticateWithApple: mockAuthenticateWithApple,
               logout: mockLogout,
               createUser: mockCreateUserUseCase,
               asyncLogin: mockAsyncLogin,
@@ -121,6 +128,7 @@ void main() {
                   mockAuthenticateWithEmailAndPassword,
               authenticateWithFacebook: mockAuthenticateWithFacebook,
               authenticateWithGoogle: mockAuthenticateWithGoogle,
+              authenticateWithApple: mockAuthenticateWithApple,
               logout: mockLogout,
               createUser: mockCreateUserUseCase,
               asyncLogin: mockAsyncLogin,

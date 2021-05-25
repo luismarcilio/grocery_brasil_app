@@ -6,6 +6,7 @@ import 'package:equatable/equatable.dart';
 import 'package:grocery_brasil_app/core/usecases/asyncUseCase.dart'
     as asyncUseCase;
 import 'package:grocery_brasil_app/features/logging/domain/InitializeLog.dart';
+import 'package:grocery_brasil_app/features/login/domain/usecases/AuthenticateWithApple.dart';
 import 'package:grocery_brasil_app/features/login/domain/usecases/ResetPassword.dart'
     as rp;
 import 'package:grocery_brasil_app/features/user/domain/CreateUserUseCase.dart';
@@ -28,6 +29,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final AuthenticateWithEmailAndPassword authenticateWithEmailAndPassword;
   final AuthenticateWithFacebook authenticateWithFacebook;
   final AuthenticateWithGoogle authenticateWithGoogle;
+  final AuthenticateWithApple authenticateWithApple;
   final Logout logout;
   final AsyncLogin asyncLogin;
   final CreateUserUseCase createUser;
@@ -38,6 +40,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       {@required this.authenticateWithEmailAndPassword,
       @required this.authenticateWithFacebook,
       @required this.authenticateWithGoogle,
+      @required this.authenticateWithApple,
       @required this.logout,
       @required this.asyncLogin,
       @required this.createUser,
@@ -68,6 +71,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       yield* _mapLoginWithFacebook(event);
     } else if (event is LoginWithGoogleEvent) {
       yield* _mapLoginWithGoogle(event);
+    } else if (event is LoginWithAppleEvent) {
+      yield* _mapLoginWithApple(event);
     } else if (event is LogoutEvent) {
       yield* _mapLogout(event);
     } else if (event is AsyncLoginEvent) {
@@ -118,6 +123,17 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     yield LoginRunning();
     Either<Failure, User> status =
         await authenticateWithGoogle.call(NoParams());
+    yield* status.fold((failure) async* {
+      yield LoginError(failure);
+    }, (user) async* {
+      this.initializeLog.call(user);
+      this.add(CreateUserEvent(user: user));
+    });
+  }
+
+  Stream<LoginState> _mapLoginWithApple(LoginWithAppleEvent event) async* {
+    yield LoginRunning();
+    Either<Failure, User> status = await authenticateWithApple.call(NoParams());
     yield* status.fold((failure) async* {
       yield LoginError(failure);
     }, (user) async* {

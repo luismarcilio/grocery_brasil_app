@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -84,6 +86,11 @@ class Login extends StatelessWidget {
           ),
           _loginWithFacebook(context),
           _loginWithGoogle(context),
+          (() {
+            if (Platform.isIOS) {
+              return _loginWithApple(context);
+            }
+          })(),
           getDefaultContainer(
               child: Divider(
             color: Colors.black,
@@ -125,6 +132,17 @@ class Login extends StatelessWidget {
       color: Color(0xffEA4335),
       onPressed: () => BlocProvider.of<LoginBloc>(context).add(
         LoginWithGoogleEvent(),
+      ),
+    );
+  }
+
+  Widget _loginWithApple(BuildContext context) {
+    return getTextButton(
+      icon: FontAwesomeIcons.apple,
+      text: "Entre com Apple",
+      color: Colors.black87,
+      onPressed: () => BlocProvider.of<LoginBloc>(context).add(
+        LoginWithAppleEvent(),
       ),
     );
   }
