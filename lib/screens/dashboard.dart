@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../core/usecases/usecase.dart';
 import '../features/login/domain/usecases/Logout.dart';
@@ -45,7 +46,7 @@ class _DashboardState extends State<Dashboard> {
                     );
                   },
                   child: Icon(
-                    Icons.logout,
+                    FontAwesomeIcons.signOutAlt,
                     color: Colors.white,
                   ),
                 ),
@@ -70,7 +71,7 @@ class _DashboardState extends State<Dashboard> {
           );
         },
         label: Text('Escanear nota'),
-        icon: Icon(Icons.add),
+        icon: Icon(FontAwesomeIcons.qrcode),
       ),
       bottomNavigationBar: BottomNavigationBar(
         onTap: (index) {
