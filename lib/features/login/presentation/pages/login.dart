@@ -89,6 +89,8 @@ class Login extends StatelessWidget {
           (() {
             if (Platform.isIOS) {
               return _loginWithApple(context);
+            } else {
+              return Container();
             }
           })(),
           getDefaultContainer(
@@ -161,7 +163,7 @@ class Login extends StatelessWidget {
 
   Widget _recoverPassword(BuildContext context) {
     return getTextButton(
-      icon: Icons.refresh,
+      icon: FontAwesomeIcons.syncAlt,
       text: "Esqueci a password",
       color: Colors.blue,
       onPressed: () {
