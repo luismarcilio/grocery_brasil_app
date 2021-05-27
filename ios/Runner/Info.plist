@@ -98,11 +98,9 @@
 			</dict>
 		</dict>
 		<key>NSCameraUsageDescription</key>
-		<string>Camera permission is required for barcode scanning.</string>
-		<key>NSLocationAlwaysUsageDescription</key>
-		<string>This app needs access to location when in the background.</string>
+		<string>Precisamos da câmera para ler o QRCODE</string>
 		<key>NSLocationWhenInUseUsageDescription</key>
-		<string>This app needs access to location when open.</string>
+		<string>Precisamos saber sua localização enquanto usa o app</string>
 		<key>GADApplicationIdentifier</key>
 		<string>ca-app-pub-6350395903807209~6410429637</string>
 		<key>SKAdNetworkItems</key>
