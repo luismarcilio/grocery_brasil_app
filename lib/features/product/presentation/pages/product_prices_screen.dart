@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
+import '../../../../core/errors/exceptions.dart';
+import '../../../../core/errors/failures.dart';
+import '../../../../core/widgets/UserMessaging.dart';
 import '../../../../injection_container.dart';
 import '../../../../screens/common/loading.dart';
 import '../../../admob/domain/AddFactory.dart';
@@ -40,11 +43,7 @@ class BuildProductsPricesScreen extends StatelessWidget {
     return BlocConsumer<ProductPricesBloc, ProductPricesState>(
         listener: (context, state) {
       if (state is ProductPricesError) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(state.productFailure.toString()),
-          ),
-        );
+        showErrorWidget(failure: state.productFailure, context: context);
       }
     }, builder: (context, state) {
       if (state is ProductsSearching) {
@@ -97,8 +96,11 @@ class BuildProductsPricesTable extends StatelessWidget {
                       frequency),
                 );
               } else if (snapshot.hasError) {
-                ScaffoldMessenger.of(context)
-                    .showSnackBar(new SnackBar(content: Text(snapshot.error)));
+                showErrorWidget(
+                    failure: ProductFailure(
+                        messageId: MessageIds.UNEXPECTED,
+                        message: snapshot.error.toString()),
+                    context: context);
               }
               return Loading();
             }));

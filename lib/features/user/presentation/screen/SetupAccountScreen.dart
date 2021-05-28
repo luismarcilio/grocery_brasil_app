@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/widgets/ApplicationFormField.dart';
 import '../../../../core/widgets/TextElevatedButton.dart';
+import '../../../../core/widgets/UserMessaging.dart';
 import '../../../../domain/Address.dart';
 import '../../../../domain/User.dart';
 import '../../../../domain/UserPreferences.dart';
@@ -32,11 +33,7 @@ class UserDetailsForm extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocConsumer<UserBloc, UserState>(listener: (context, state) {
       if (state is UserError) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(state.failure.toString()),
-          ),
-        );
+        showErrorWidget(failure: state.failure, context: context);
       }
     }, builder: (context, state) {
       if (state is UserInitial) {

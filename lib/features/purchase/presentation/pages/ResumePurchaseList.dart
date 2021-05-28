@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../core/widgets/UserMessaging.dart';
 import '../../../../domain/Purchase.dart';
 import '../../../../injection_container.dart';
 import '../../../../screens/common/loading.dart';
@@ -27,11 +28,7 @@ class PurchaseResumeScreen extends StatelessWidget {
     return BlocConsumer<PurchaseBloc, PurchaseState>(
       listener: (context, state) {
         if (state is PurchaseError) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Error'),
-            ),
-          );
+          showErrorWidget(failure: state.purchaseFailure, context: context);
         }
       },
       builder: (context, state) {

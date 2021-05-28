@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
+import '../../../../core/widgets/UserMessaging.dart';
 import '../../../../injection_container.dart';
 import '../../../../screens/common/loading.dart';
 import '../../domain/model/NFProcessData.dart';
@@ -27,17 +28,9 @@ class ReadNfScreen extends StatelessWidget {
       child: BlocConsumer<ReadnfBloc, ReadnfState>(
         listener: (context, state) {
           if (state is GetDetailsFromUrlError) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(state.failure.message),
-              ),
-            );
+            showErrorWidget(failure: state.failure, context: context);
           } else if (state is SaveNfError) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(state.purchaseFailure.message),
-              ),
-            );
+            showErrorWidget(failure: state.purchaseFailure, context: context);
           } else if (state is SaveNfDone) {
             Navigator.of(context).pop();
           }

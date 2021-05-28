@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../core/widgets/UserMessaging.dart';
 import '../../../../domain/Product.dart';
 import '../../../../domain/Purchase.dart';
 import '../../../../domain/PurchaseItem.dart';
@@ -39,11 +40,7 @@ class PurchaseFullFiscalNoteScreen extends StatelessWidget {
       listener: (context, state) {
         print("listener PurchaseState: $state");
         if (state is PurchaseError) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Error'),
-            ),
-          );
+          showErrorWidget(failure: state.purchaseFailure, context: context);
         } else if (state is PurchaseInitial) {
           BlocProvider.of<PurchaseBloc>(context)
               .add(GetPurchaseByIdEvent(purchaseId: purchaseId));

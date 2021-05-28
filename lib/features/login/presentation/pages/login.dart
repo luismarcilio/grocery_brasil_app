@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+import '../../../../core/widgets/UserMessaging.dart';
 import '../../../../core/widgets/registration_widgets.dart';
 import '../../../../injection_container.dart';
 import '../../../../screens/common/loading.dart';
@@ -38,30 +39,17 @@ class Login extends StatelessWidget {
                 ),
               );
             } else if (state is LoginError) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(state.failure.message),
-                ),
-              );
+              showErrorWidget(failure: state.failure, context: context);
             } else if (state is CreateUserFailure) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(state.failure.message),
-                ),
-              );
+              showErrorWidget(failure: state.failure, context: context);
             } else if (state is ResetPasswordSuccess) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(
-                      "Enviamos um email com um link para que você possa resetar sua password"),
-                ),
-              );
+              showInformationWidget(
+                  message:
+                      "Enviamos um email com um link para que você possa resetar sua password",
+                  context: context);
             } else if (state is ResetPasswordFailure) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text("Ocorreu um erro: '${state.failure.message}'"),
-                ),
-              );
+              //TODO: ADD PROPER ERROR MESSAGE
+              showErrorWidget(failure: state.failure, context: context);
             }
           },
           builder: (context, state) {
@@ -168,11 +156,9 @@ class Login extends StatelessWidget {
       color: Colors.blue,
       onPressed: () {
         if (emailController.text.isEmpty) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text("Por favor digite o email de sua conta"),
-            ),
-          );
+          showInformationWidget(
+              message: "Por favor digite o email de sua conta",
+              context: context);
           return;
         }
         BlocProvider.of<LoginBloc>(context)

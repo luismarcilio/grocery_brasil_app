@@ -20,6 +20,7 @@ class FirebaseInitialized extends InitializeFirebaseState {
 }
 
 class FirebaseError extends InitializeFirebaseState {
+  //TODO: switch to Failure
   final String error;
 
   FirebaseError(this.error);

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../core/widgets/UserMessaging.dart';
 import '../../../../injection_container.dart';
 import '../../../../screens/common/loading.dart';
 import '../../domain/Shareable.dart';
@@ -27,11 +28,7 @@ class Share extends StatelessWidget {
       child: BlocConsumer<ShareBloc, ShareState>(
         listener: (context, state) {
           if (state is ShareError) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(state.shareFailure.message),
-              ),
-            );
+            showErrorWidget(failure: state.shareFailure, context: context);
           } else if (state is Shared) {
             Navigator.of(context).pop();
           }

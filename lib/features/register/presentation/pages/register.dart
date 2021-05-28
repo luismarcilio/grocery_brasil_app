@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+import '../../../../core/widgets/UserMessaging.dart';
 import '../../../../core/widgets/registration_widgets.dart';
 import '../../../../injection_container.dart';
 import '../../../../screens/common/loading.dart';
@@ -28,18 +29,12 @@ class RegisterScreen extends StatelessWidget {
       child: BlocConsumer<RegistrationBloc, RegistrationBlocState>(
         listener: (context, state) {
           if (state is RegistrationBlocFailed) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(state.failure.message),
-              ),
-            );
+            showErrorWidget(failure: state.failure, context: context);
           } else if (state is RegistrationBlocSucceeded) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(
-                    'Você se registrou com sucesso. Por favor verifique seu email'),
-              ),
-            );
+            showInformationWidget(
+                message:
+                    'Você se registrou com sucesso. Por favor verifique seu email',
+                context: context);
           }
         },
         builder: (context, state) {

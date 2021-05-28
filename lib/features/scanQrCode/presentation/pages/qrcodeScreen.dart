@@ -5,6 +5,7 @@ import 'package:qr_mobile_vision/qr_mobile_vision.dart';
 
 import '../../../../core/errors/exceptions.dart';
 import '../../../../core/errors/failures.dart';
+import '../../../../core/widgets/UserMessaging.dart';
 import '../../../../injection_container.dart';
 import '../../../../screens/common/loading.dart';
 import '../../domain/QRCode.dart';
@@ -33,12 +34,7 @@ class QrCodeScreen extends StatelessWidget {
             default:
               message = state.failure?.message ?? 'Erro lendo QRCODE';
           }
-
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(message),
-            ),
-          );
+          showInformationWidget(message: message, context: context);
           Navigator.of(context).pop<QRCode>(null);
         } else if (state is QrcodeReadDone) {
           Navigator.of(context).pop<QRCode>(state.qrCode);
