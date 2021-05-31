@@ -26,14 +26,8 @@ class QrCodeScreen extends StatelessWidget {
         if (state is QrcodeReadDone) {
           Navigator.of(context).pop<QRCode>(state.qrCode);
         } else if (state is QrcodeReadError) {
-          String message;
-          switch (state.failure.messageId) {
-            case MessageIds.CANCELLED:
-              message = 'Scan cancelado';
-              break;
-            default:
-              message = state.failure?.message ?? 'Erro lendo QRCODE';
-          }
+          final message = errorMessages[state.failure.messageId]?.message ??
+              'Erro lendo QRCODE';
           showInformationWidget(message: message, context: context);
           Navigator.of(context).pop<QRCode>(null);
         } else if (state is QrcodeReadDone) {
@@ -51,7 +45,8 @@ class QrCodeScreen extends StatelessWidget {
                 onError: (context, error) {
                   BlocProvider.of<QrcodeBloc>(context).add(
                       ReadCodeErrorReceived(
-                          qrCodeFailure: QRCodeFailure(messageId: error)));
+                          qrCodeFailure: QRCodeFailure(
+                              messageId: MessageIds.PERMISSION_DENIED)));
                   return Loading();
                 },
                 fit: BoxFit.fitWidth,
