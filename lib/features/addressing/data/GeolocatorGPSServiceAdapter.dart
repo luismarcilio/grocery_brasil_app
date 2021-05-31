@@ -49,7 +49,7 @@ class GeolocatorGPSServiceAdapter implements GPSServiceAdapter {
       case LocationPermission.denied:
       case LocationPermission.deniedForever:
         throw AddressingException(
-            messageId: MessageIds.UNEXPECTED, message: 'Not permitted');
+            messageId: MessageIds.PERMISSION_DENIED, message: 'Not permitted');
         break;
       default:
     }
