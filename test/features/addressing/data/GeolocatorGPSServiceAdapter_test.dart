@@ -90,7 +90,7 @@ main() {
     test('should throw error when permission not granted', () async {
       //setup
       final expected = AddressingException(
-          messageId: MessageIds.UNEXPECTED, message: 'Not permitted');
+          messageId: MessageIds.PERMISSION_DENIED, message: 'Not permitted');
       when(mockGeolocatorPlatform.isLocationServiceEnabled())
           .thenAnswer((realInvocation) async => true);
 

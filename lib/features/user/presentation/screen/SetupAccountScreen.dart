@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../core/errors/exceptions.dart';
+import '../../../../core/errors/failures.dart';
 import '../../../../core/widgets/ApplicationFormField.dart';
 import '../../../../core/widgets/TextElevatedButton.dart';
 import '../../../../core/widgets/UserMessaging.dart';
@@ -89,17 +91,24 @@ class BuildUserDetailsForm extends StatelessWidget {
             TextElevatedButton(
               onLongPress: () {},
               onPressed: () async {
-                final currentLocation =
-                    await geolocatorGPSServiceAdapter.getCurrentLocation();
-                final newAddress = await addressingServiceAdapter
-                    .getAddressFromLocation(currentLocation);
-                final newUser = User(
-                    email: user.email,
-                    userId: user.userId,
-                    emailVerified: user.emailVerified,
-                    address: newAddress,
-                    preferences: user.preferences);
-                saveUser(context, newUser);
+                //TODO: put in standard format
+                try {
+                  final currentLocation =
+                      await geolocatorGPSServiceAdapter.getCurrentLocation();
+                  final newAddress = await addressingServiceAdapter
+                      .getAddressFromLocation(currentLocation);
+                  final newUser = User(
+                      email: user.email,
+                      userId: user.userId,
+                      emailVerified: user.emailVerified,
+                      address: newAddress,
+                      preferences: user.preferences);
+                  saveUser(context, newUser);
+                } on AddressingException catch (e) {
+                  final failure = AddressingFailure(
+                      messageId: e.messageId, message: e.message);
+                  showErrorWidget(failure: failure, context: context);
+                }
               },
               label: 'Usar Posição atual',
             ),
