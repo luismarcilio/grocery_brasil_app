@@ -22,12 +22,10 @@ class AuthenticationRepositoryImpl extends AuthenticationRepository {
           .authenticateWithEmailAndPassword(email, password);
       return Right(user);
     } on AuthenticationException catch (authenticationException) {
-      print("messageId: ${authenticationException.messageId}");
-      print("message: ${authenticationException.formattedMessage}");
       return Left(
         AuthenticationFailure(
             messageId: authenticationException.messageId,
-            message: authenticationException.formattedMessage),
+            message: authenticationException.message),
       );
     }
   }

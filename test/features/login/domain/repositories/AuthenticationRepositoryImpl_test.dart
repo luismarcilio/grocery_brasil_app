@@ -132,8 +132,7 @@ void main() {
         equals(
           Left(
             AuthenticationFailure(
-                messageId: MessageIds.EMAIL_NOT_VERIFIED,
-                message: 'Por favor verifique seu email'),
+                messageId: MessageIds.EMAIL_NOT_VERIFIED, message: null),
           ),
         ),
       );

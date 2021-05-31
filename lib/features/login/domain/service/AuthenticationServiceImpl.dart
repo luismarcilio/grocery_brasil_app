@@ -33,13 +33,13 @@ class AuthenticationServiceImpl implements AuthenticationService {
       final authenticationResult = await authenticationRepository
           .authenticateWithEmailAndPassword(email, password);
       return _checkUserInDb(authenticationResult);
-    } catch (e) {
-      if (e is Failure) {
-        return Left(
-            AuthenticationFailure(messageId: e.messageId, message: e.message));
-      }
+    } on AuthenticationException catch (authenticationException) {
       return Left(AuthenticationFailure(
-          messageId: MessageIds.UNEXPECTED, message: e.toString()));
+          messageId: authenticationException.messageId,
+          message: authenticationException.message));
+    } catch (e) {
+      return Left(AuthenticationFailure(
+          messageId: MessageIds.UNEXPECTED, message: e.toString(0)));
     }
   }
 

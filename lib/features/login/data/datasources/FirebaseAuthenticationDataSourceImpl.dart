@@ -1,7 +1,7 @@
 import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart'
-    show FirebaseAuth, User, UserCredential;
+    show FirebaseAuth, FirebaseAuthException, User, UserCredential;
 import 'package:grocery_brasil_app/core/errors/exceptions.dart';
 import 'package:grocery_brasil_app/features/login/data/datasources/FirebaseOAuthProvider.dart';
 
@@ -24,6 +24,16 @@ class FirebaseAuthenticationDataSourceImpl implements AuthenticationDataSource {
     try {
       userCredential = await firebaseAuth.signInWithEmailAndPassword(
           email: email, password: password);
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'wrong-password' || e.code == 'user-not-found') {
+        throw AuthenticationException(
+            messageId: MessageIds.WRONG_USERNAME_OR_PASSWORD,
+            message: e.message);
+      }
+      throw AuthenticationException(
+          messageId: MessageIds.UNEXPECTED,
+          message:
+              'Autenticação falhou. (Mensagem original: [${e.toString()}])');
     } catch (e) {
       throw AuthenticationException(
           messageId: MessageIds.UNEXPECTED,
