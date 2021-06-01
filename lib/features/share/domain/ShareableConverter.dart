@@ -26,7 +26,7 @@ que fica na ${input.company.address.street}, ${input.company.address.number} ${i
 no bairro ${input.company.address.county}
 por R\$ ${NumberFormat("###.00", "pt_BR").format(input.purchaseItem.unityValue)} / ${input.purchaseItem.unity.name}.
 
-Baixe o aplicativo pra encontrar outras ofertas! http://www.grocerybrazil.com'''),
+Baixe o aplicativo pra encontrar outras ofertas! http://www.grocerybrasil.com'''),
         format: ShareFormat.TEXT);
   }
 }
@@ -55,7 +55,7 @@ que fica na ${input.productPrices.company.address.street}, ${input.productPrices
 no bairro ${input.productPrices.company.address.county}
 por R\$ ${NumberFormat("###.00", "pt_BR").format(input.productPrices.unityValue)} / ${input.product.unity.name}.
 
-Baixe o aplicativo pra encontrar outras ofertas! http://www.grocerybrazil.com'''),
+Baixe o aplicativo pra encontrar outras ofertas! http://www.grocerybrasil.com'''),
         format: ShareFormat.TEXT);
   }
 }
