@@ -100,7 +100,7 @@
 		<key>NSCameraUsageDescription</key>
 		<string>Precisamos da câmera para ler o QRCODE</string>
 		<key>NSLocationWhenInUseUsageDescription</key>
-		<string>Precisamos saber sua localização enquanto usa o app</string>
+		<string>Precisamos saber sua localização para completar o campo de endereço.</string>
 		<key>GADApplicationIdentifier</key>
 		<string>ca-app-pub-6350395903807209~6410429637</string>
 		<key>SKAdNetworkItems</key>
