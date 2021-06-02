@@ -88,7 +88,7 @@ class Login extends StatelessWidget {
           getTextButton(
               color: Colors.grey,
               icon: FontAwesomeIcons.envelope,
-              text: "Entre com email e password",
+              text: "Iniciar sessão com a email e password",
               onPressed: null),
           loginTextField(emailController),
           passwordTextField(passwordController),
@@ -107,7 +107,7 @@ class Login extends StatelessWidget {
   Widget _loginWithFacebook(BuildContext context) {
     return getTextButton(
       icon: FontAwesomeIcons.facebookSquare,
-      text: "Entre com Facebook",
+      text: "Iniciar sessão com o Facebook",
       color: Color(0xff263C68),
       onPressed: () => BlocProvider.of<LoginBloc>(context).add(
         LoginWithFacebookEvent(),
@@ -118,7 +118,7 @@ class Login extends StatelessWidget {
   Widget _loginWithGoogle(BuildContext context) {
     return getTextButton(
       icon: FontAwesomeIcons.google,
-      text: "Entre com Google",
+      text: "Iniciar sessão com o Google",
       color: Color(0xffEA4335),
       onPressed: () => BlocProvider.of<LoginBloc>(context).add(
         LoginWithGoogleEvent(),
@@ -129,7 +129,7 @@ class Login extends StatelessWidget {
   Widget _loginWithApple(BuildContext context) {
     return getTextButton(
       icon: FontAwesomeIcons.apple,
-      text: "Entre com Apple",
+      text: "Iniciar sessão com a Apple",
       color: Colors.black87,
       onPressed: () => BlocProvider.of<LoginBloc>(context).add(
         LoginWithAppleEvent(),
